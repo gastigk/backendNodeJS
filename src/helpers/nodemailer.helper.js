@@ -4,17 +4,14 @@ import nodemailer from 'nodemailer';
 import Mailgen from 'mailgen';
 import Producto from '../models/product.model.js';
 
-const urlActual = config.urls.urlLocal;
-
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: config.gmail.user,
     pass: config.gmail.pass,
   },
+  tls : { rejectUnauthorized: false }
 });
-
-const port = config.ports.prodPort || '';
 
 export const sendPurchaseConfirmationEmail = async (userEmail, cart, user) => {
   try {
@@ -66,34 +63,12 @@ export const sendPurchaseConfirmationEmail = async (userEmail, cart, user) => {
     };
 
     const emailBody = mailGenerator.generate(emailContent);
-    const attachments = cart.items.reduce((acc, item) => {
-      const attachment = {
-        filename: item.producto.thumbnail,
-        path: `${urlActual}:${port}${item.producto.thumbnail}`,
-        cid: `${item.producto.thumbnail}@elseptimorayo.com`,
-      };
-      acc.push(attachment);
-      return acc;
-    }, []);
 
     const mailOptions = {
       from: 'El Séptimo Rayo <tickets@elseptimorayo.com>',
       to: userEmail,
       subject: 'Confirmation of purchase at El Séptimo Rayo',
       html: emailBody,
-      attachments: [
-        {
-          filename: 'logo.webp',
-          path: 'https://elseptimorayo.com/img/logo.webp',
-          cid: 'logo@elseptimorayo.com',
-        },
-        {
-          filename: '116356.png',
-          path: 'https://cdn-icons-png.flaticon.com/512/116/116356.png',
-          cid: 'cart@elseptimorayo.com',
-        },
-        ...attachments,
-      ],
     };
 
     await transporter.sendMail(mailOptions);
