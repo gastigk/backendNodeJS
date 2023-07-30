@@ -1,41 +1,112 @@
-<h1>Realtime products</h1>
-<hr />
-<form id="createForm">
-    <div class="m-2">Title: <input type="text" id="title"></div>
-    <div class="m-2">Description: <input type="text" id="description"></div>
-    <div class="m-2">Price: <input type="text" id="price"></div>
-    <div class="m-2">Code: <input type="text" id="code"></div>
-    <div class="m-2">Stock: <input type="text" id="stock"></div>
-    <div class="m-2">Category: <input type="text" id="category"></div>
-</form>
-<button id="createBtn" class="btn btn-primary">Create Product</button>
-<hr />
-<table id="realProductsTable" class="table table-striped">
-    <thead>
-        <tr>
-            <td></td>
-            <td><strong>Producto</strong></td>
-            <td><strong>Descripción</strong></td>
-            <td><strong>Precio</strong></td>
-            <td><strong>Código</strong></td>
-            <td><strong>Stock</strong></td>
-            <td><strong>Categoría</strong></td>
-        </tr>
-    </thead>
-    <tbody>
-    {{#each products}}
-        <tr>
-            <td><button class="btn btn-danger" onclick="deleteProduct('{{this._id}}')">Eliminar</button></td>
-            <td>{{this.title}}</td>
-            <td>{{this.description}}</td>
-            <td>{{this.price}}</td>
-            <td>{{this.code}}</td>
-            <td>{{this.stock}}</td>
-            <td>{{this.category}}</td>
-        </tr>
-    {{/each}}
-    </tbody>
-</table>
+<title>Product Loading</title>
+<link
+  rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+/>
+<div class="container botones_admin">
+  <a href="/admin-panel" class="btn btn-primary">Go back</a>
+</div>
 
+<div class="container text-center">
+  <h1>Loading of Products in Real Time
+    <p id="username">
+      {{user.email}}
+      {{user.user.email}}
+    </p>
+  </h1>
+</div>
+<input type="hidden" name="user" value="{{user.email}} {{user.user.email}}" />
+<section class="products" id="products">
+  <div id="product-container" class="container products">
+    <div class="card" style="width: 18rem;">
+      <form
+        action="/realtimeproducts"
+        method="POST"
+        enctype="multipart/form-data"
+        id="product-form"
+      >
+        <div class="card-body">
+          <div class="form-group">
+            <label for="title">Name</label>
+            <input type="text" class="form-control" id="title" name="title" />
+          </div>
+          <div class="form-group">
+            <label for="category">Category</label>
+            <input
+              type="text"
+              class="form-control"
+              id="category"
+              name="category"
+            />
+          </div>
+          <div class="form-group">
+            <label for="thumbnail">Img</label>
+            <input
+              type="file"
+              class="form-control"
+              id="thumbnail"
+              name="thumbnail"
+            />
+          </div>
+          <div class="form-group">
+            <label for="code">Code</label>
+            <input type="text" class="form-control" id="code" name="code" />
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea
+              class="form-control"
+              id="description"
+              name="description"
+              rows="3"
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label for="price">Price</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">$</span>
+              </div>
+              <input
+                type="number"
+                class="form-control"
+                id="price"
+                name="price"
+              />
+              <div class="input-group-append">
+                <span class="input-group-text">.00</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="stock">Stock</label>
+            <input type="number" class="form-control" id="stock" name="stock" />
+          </div>
+          <div class="form-group align-center text-center">
+            <button type="submit" class="btn btn-success">Add</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<div class="line"></div>
+
+<h1 class="text-center my-3">View of Products in Real Time</h1>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div id="product-list" class="d-flex flex-wrap justify-content-center">
+
+      </div>
+    </div>
+  </div>
+</div>
+<p id="username" style="visibility: hidden;">
+  {{user.email}}
+  {{user.user.email}}
+</p>
 <script src="/socket.io/socket.io.js"></script>
-<script src="/js/index.js"></script>
+<script src="/js/products.js"></script>

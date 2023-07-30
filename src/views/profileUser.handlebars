@@ -1,0 +1,15 @@
+<section class="noAutorizado">
+  <div class="container login usersss">
+    {{#if user}}
+      <h1><span>Full name: </span>{{user.first_name}}
+        {{user.last_name}}
+        {{user.user.first_name}}</h1>
+      <h1><span>E-mail: </span>{{user.email}} {{user.user.email}}</h1>
+      <h1><span>Role: </span>{{user.role}} {{user.user.role}}</h1>
+      <h1><span>Age: </span>{{user.age}} {{user.user.age}}</h1>
+      <h1><span>Phone: </span>{{user.phone}} {{user.user.phone}}</h1>
+      <a href="/" class="btn btn-success">Go back</a>
+      <a href="/logout" class="btn btn-danger">Logout</a>
+    {{/if}}
+  </div>
+</section>

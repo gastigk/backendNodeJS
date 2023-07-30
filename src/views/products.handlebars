@@ -1,0 +1,84 @@
+<div class="container text-center index_div">
+    <h1>All our Products</h1>
+</div>
+
+<div class="container text-center index_div">
+    <h2>Filter by Categories</h2>
+    <form action="/products" method="GET">
+        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="category">
+            {{#each allCategories}}
+            <option value="{{ this }}">{{ this }}</option>
+            {{/each}}
+        </select>
+        <div class="container botones-filtro">
+            <button type="submit" class="btn btn-primary">Filter</button>
+            <a href="/products" class="btn btn-secondary">Go back</a>
+        </div>
+    </form>
+</div>
+
+<section class="products">
+    <div id="product-container" class="container products">
+        {{#productos}}
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src={{ this.thumbnail }} alt={{ this.title }}>
+            <div class="card-body">
+                <h4 class="card-title">{{ this.title }}</h4>
+                <p class="card-text">{{ this.description }} </p>
+                <h5 class="card-text">${{ this.price }}.- </h5>
+                <div class="Buttons_Pay">
+                    <form action="/carts/{{this._id}}" method="POST">
+                        <div class="input-group group-comprar">
+                            {{#if this.stock}}
+                            <input type="number" name="cantidad" class="form-control" value="1" min="1"
+                                max={{this.stock}}>
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-success">Add to Cart</button>
+                            </div>
+                            {{else}}
+                            <h1 class="NoHayStock">¡No stock!</h1>
+                            {{/if}}
+                        </div>
+                    </form>
+                    <a href="/productsid/{{this._id}}" class="btn btn-secondary">Details</a>
+
+                </div>
+            </div>
+        </div>
+        {{/productos}}
+
+        {{!-- Pagination --}}
+
+        <nav aria-label="Pagination">
+            <div class="container text-center">
+                <h2>Pagination</h2>
+            </div>
+
+            <ul class="pagination justify-content-center">
+                {{#if prevLink}}
+                <li class="page-item">
+                    <a class="page-link" href="{{prevLink}}" aria-label="Prev">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                {{/if}}
+                {{#each pages}}
+                <li class="page-item{{#if current}} active{{/if}}">
+                    <a class="page-link" href="{{this.link}}">{{this.page}}</a>
+                </li>
+                {{/each}}
+                {{#if nextLink}}
+                <li class="page-item">
+                    <a class="page-link" href="{{nextLink}}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                {{/if}}
+            </ul>
+        </nav>
+
+        {{!-- End Pagination --}}
+
+    </div>
+
+</section>

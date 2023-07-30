@@ -1,27 +1,38 @@
-let socket = io()
+import loggers from '../server/logger.js';
 
-let chatBox = document.getElementById('chatBox')
-chatBox.addEventListener('keyup', event => {
-    if (event.key === 'Enter') {
-        if (chatBox.value.trim().length > 0) {
-            socket.emit('message', {
-                user : document.getElementById('username').innerText,
-                message: chatBox.value
-            })
-            chatBox.value = ''
-        }
-    }
-})
+fetch('/chat')
+  .then((response) => response.json())
+  .then((messages) => {
+    messages.forEach((message) => {
+      const messageElement = document.createElement('div');
+      messageElement.innerText = `${message.user}: ${message.message}`;
+      history.appendChild(messageElement);
+    });
+  })
+  .catch((err) => loggers.error(err));
 
-socket.on('logs', data => {
-    const divLogs = document.getElementById('messagesLogs')
-    let messages = ''
-    data.reverse().forEach(message => {
-        messages += `<p><i>${message.user}</i>: ${message.message}</p>`
+chatBox.addEventListener('keyup', (event) => {
+  if (event.keyCode === 13) {
+    const user = username.innerText;
+    const message = chatBox.value;
+
+    fetch('/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ user, message }),
     })
-    divLogs.innerHTML = messages
-})
-
-socket.on('alerta', () => {
-    alert('Un nuevo usuario se ha conectado...')
-})
+      .then((response) => {
+        if (response.ok) {
+          const messageElement = document.createElement('div');
+          messageElement.innerText = `${user}: ${message}`;
+          history.appendChild(messageElement);
+          chatBox.value = '';
+        } else {
+          loggers.error('Error sending the message');
+        }
+      })
+      .catch((err) => loggers.error(err));
+  }
+});

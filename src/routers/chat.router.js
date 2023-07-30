@@ -1,10 +1,14 @@
-import { Router } from 'express'
-import { handlePolicies } from '../middlewares/auth.middleware.js'
+import { Router } from 'express';
+import isLoggedIn from '../middlewares/login.middleware.js';
+import {
+  getChatsController,
+  sendChatController,
+} from '../controllers/chat.controller.js';
 
-const router = Router()
+const router = Router();
 
-router.get('/', handlePolicies(['USER']), (req, res) => {
-    res.render('chat', { user: req.session.user.email })
-})
+router.get('/', isLoggedIn, getChatsController);
 
-export default router
+router.post('/', isLoggedIn, sendChatController);
+
+export default router;

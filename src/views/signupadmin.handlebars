@@ -1,0 +1,44 @@
+<div class="iniciodesession">
+    <div class="container login">
+        <h1>User registration by Administrator</h1>
+        <form action="/signupadmin" method="POST">
+            <div class="form-group">
+                <label for="first_name">First Name:</label>
+                <input type="text" class="form-control" id="first_name" name="first_name" required>
+            </div>
+            <div class="form-group">
+                <label for="last_name">Last Name:</label>
+                <input type="text" class="form-control" id="last_name" name="last_name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">E-mail:</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="number">Phone:</label>
+                <input type="text" class="form-control" id="phone" name="phone" required>
+            </div>
+            <div class="form-group">
+                <label for="number">Age:</label>
+                <input type="number" class="form-control" id="age" name="age" required>
+            </div>            
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Re-enter Password:</label>
+                <input type="password" class="form-control" id="repassword" name="repassword" required>
+            </div>
+            <div class="form-group">
+                <label for="role">Role</label>
+                <select id="role" name="role" class="form-control">
+                    <option value="admin" name="admin" selected>Admin</option>
+                    <option value="user" name="user">User</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+        <a href="/users"  class="btn btn-success">Go to Users</a>
+    </div>
+</div>

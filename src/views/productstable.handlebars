@@ -1,0 +1,59 @@
+<div class="container text-center index_div">
+  <h1>All our Products</h1>
+</div>
+<div class="container botones_admin">
+  <a href="/admin-panel" class="btn btn-primary">Go back</a>
+</div>
+
+<section class="products">
+  <div class="container">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Product</th>
+          <th scope="col">Img</th>
+          <th scope="col">Description</th>
+          <th scope="col">Stock</th>
+          <th scope="col">Sort by
+            <br />
+            <form action="/productstable" method="get" id="sortForm">
+              <select
+                name="sortOption"
+                onchange="document.getElementById('sortForm').submit()"
+              >
+                <option>Filter</option>
+                <option value="unorder">Random</option>
+                <option value="asc">Lower price</option>
+                <option value="desc">Higher price</option>
+              </select>
+            </form>
+          </th>
+          <th scope="col" class="center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#products}}
+          <tr>
+            <td>{{this.title}}</td>
+            <td class="ImgTable">
+              <img src="{{this.thumbnail}}" alt="{{this.title}}" />
+            </td>
+            <td>{{this.description}}</td>
+            <td>{{this.stock}}</td>
+            <td>${{this.price}}.-</td>
+            <td class="buttonsTable">
+              <a
+                href="/productsedit/{{this._id}}"
+                class="btn btn-primary"
+              >Edit</a>
+              <a
+                href="/productsdeletebyid/delete/{{this._id}}"
+                class="btn btn-danger"
+              >Delete</a>
+            </td>
+          </tr>
+        {{/products}}
+      </tbody>
+    </table>
+  </div>
+</section>

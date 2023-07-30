@@ -1,20 +1,54 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
+import shortid from 'shortid';
 
-const cartSchema = new mongoose.Schema({
-    products: {
-        type: [{
-            _id: false,
-            product: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "products"
-            },
-            quantity: Number
-        }],
-        default: []
-    }
-})
+const cartSchema = new mongoose.Schema(
+  {
+    items: [
+      {
+        producto: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Product',
+          required: true,
+        },
+        cantidad: {
+          type: Number,
+          required: true,
+        },
+      },
+    ],
+    user: {
+      email: {
+        type: String,
+        required: false,
+      },
+    },
+    purchase_datetime: {
+      type: Date,
+      required: true,
+    },
+    code: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-mongoose.set('strictQuery', false)
-const cartModel = mongoose.model('carts', cartSchema)
+cartSchema.pre('findOne', function (next) {
+  this.populate('items.producto');
+  next();
+});
 
-export default cartModel
+cartSchema.pre('save', function (next) {
+  if (!this.code) {
+    this.code = shortid.generate();
+  }
+  next();
+});
+
+const Cart = mongoose.model('Cart', cartSchema);
+
+export default Cart;

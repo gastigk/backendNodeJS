@@ -1,0 +1,21 @@
+<div class="container">
+  <section class="cart">
+    <div id="cart-container" class="container cart">
+      <div class="card" style="width: 18rem;">
+        <img
+          class="card-img-top"
+          src="{{this.producto.thumbnail}}"
+          alt="Image product"
+        />
+        <div class="card-body">
+          <h4 class="card-title">{{this.producto.title}}</h4>
+          <p class="card-text">Quantity: {{this.cantidad}}</p>
+          <h5 class="card-text">Unit price: $
+            {{this.producto.price}}.-</h5>
+          <h5 class="card-text">Total price: $ {{totalPrice}}.-</h5>
+          <a href="/carts" class="btn btn-primary">Go back</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

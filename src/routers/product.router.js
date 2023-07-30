@@ -1,19 +1,19 @@
-import { Router } from 'express'
+import { Router } from 'express';
 import {
-    getAllProductsController,
-    getProductByIdController,
-    createProductController,
-    udpateProductController,
-    deleteProductController
-} from '../controllers/product.controller.js'
-import { handlePolicies } from '../middlewares/auth.middleware.js'
+  getAllProductsController,
+  getProductByCategoryController,
+  createProductController,
+  getProductByIdController,
+} from '../controllers/product.controller.js';
 
-const router = Router()
+const router = Router();
+import configureMulter from '../helpers/multer.helper.js';
 
-router.get('/', handlePolicies(['USER', 'ADMIN']), getAllProductsController)
-router.get('/:pid', handlePolicies(['USER', 'ADMIN']), getProductByIdController)
-router.post('/', handlePolicies(['ADMIN']), createProductController)
-router.put('/:pid', handlePolicies(['ADMIN']), udpateProductController)
-router.delete('/:pid', handlePolicies(['ADMIN']), deleteProductController)
+const upload = await configureMulter();
 
-export default router
+router.get('/', getAllProductsController);
+router.post('/', upload.single('thumbnail'), createProductController);
+router.get('/filter/:category', getProductByCategoryController);
+router.get('/:pid', getProductByIdController);
+
+export default router;

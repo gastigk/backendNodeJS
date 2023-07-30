@@ -1,0 +1,61 @@
+<div class="container text-center index_div">
+  <h1>Product with ID: {{product._id}} </h1>
+</div>
+<section class="products">
+  <div class="container text-center product_container">
+    <h1>{{product.title}}</h1>
+
+    <div class="row">
+      <div class="col-md-6">
+        <img src="{{product.thumbnail}}" alt="{{product.title}}" />
+      </div>
+      <div class="col-md-6 text-left description_product">
+        <h2>Category: {{product.category}}</h2>
+        <h3>Code: {{product.code}}</h3>
+        <h5>{{product.description}}</h5>
+        <h4>Stock: {{product.stock}}</h4>
+        <h5 class="price_product">${{product.price}}.-</h5>
+        <div class="buttons_pay">
+          <form action="/carts/{{product._id}}" method="POST">
+            <div class="input-group group-comprar">
+              {{#if product.stock}}
+                <input
+                  type="number"
+                  name="cantidad"
+                  class="form-control"
+                  value="1"
+                  min="1"
+                  max={{product.stock}}
+                />
+                <div class="input-group-append">
+                  <button type="submit" class="btn btn-success">Add to Cart</button>
+                </div>
+              {{else}}
+                <h1 class="NoHayStock">¡No stock!</h1>
+              {{/if}}
+            </div>
+          </form>
+
+          <div class="links">
+            {{#if adminRole}}
+              <a
+                href="/productsedit/{{product._id}}"
+                class="btn btn-secondary"
+              >Edit</a>
+              <a
+                href="/productsdeletebyid/delete/{{product._id}}"
+                class="btn btn-danger"
+              >Delete</a>
+            {{/if}}
+
+            <a href="/products" class="btn btn-primary">Go back</a>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>

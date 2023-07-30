@@ -1,0 +1,30 @@
+<div class="iniciodesession">
+  <div class="container login">
+    <h1>Log in</h1>
+    <form action="/login" method="POST">
+      <div class="form-group">
+        <label for="email">E-mail:</label>
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          name="email"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          name="password"
+          required
+        />
+      </div>
+      <button type="submit" class="btn btn-primary">Log in</button>
+      <a href="/github" class="github-button">Sign in with GitHub</a>
+      <a href="/signup">You do not have an account? Register</a>
+    </form>
+  </div>
+</div>
