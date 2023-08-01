@@ -239,31 +239,33 @@ export const addProductToCartController = async (req, res) => {
 };
 
 // remove a product from the cart
-export const deleteCartByIdController = async (req, res) => { // DAO Aplicado  
-  const user = getUserFromToken(req);
+export const deleteCartByIdController = async (req, res) => {
+  let user = getUserFromToken(req);
   const { cartId, itemId } = req.params;
   if (!mongoose.Types.ObjectId.isValid(cartId)) {
-      return res.status(400).json({ error: 'ID de carrito inválido' });
+    return res.status(400).json({ error: 'invalid cart id' });
   }
 
   try {
-      const cart = await CartService.getById(cartId);
-      if (!cart) {
-          return res.status(404).render('error/error404', { user });
-      }
+    const cart = await CartService.getById(cartId);
+    if (!cart) {
+      return res.status(404).render('error/error404', { user });
+    }
 
-      const itemIndex = cart.items.findIndex((item) => item._id.equals(itemId));
-      if (itemIndex === -1) {
-          return res.status(404).render('error/notCartProducts', { cartId, itemId, user });
-      }
+    const itemIndex = cart.items.findIndex((item) => item._id.equals(itemId));
+    if (itemIndex === -1) {
+      return res
+        .status(404)
+        .render('error/notCartProducts', { cartId, itemId, user });
+    }
 
-      cart.items.splice(itemIndex, 1);
-      await cart.save();
-      return res.render('cartsDeleteById', { cartId, itemId, user });
+    cart.items.splice(itemIndex, 1);
+    await cart.save();
+    return res.render('cartsDeleteById', { cartId, itemId, user });
   } catch (error) {
-      user = getUserFromToken(req);
-      customError(error);
-      loggers.error('Error al eliminar un producto del carrito');
-      return res.status(500).render('error/notCart', { user });
+    user = getUserFromToken(req);
+    customError(error);
+    loggers.error('Error when removing a product from the cart');
+    return res.status(500).render('error/notCart', { user });
   }
 };
