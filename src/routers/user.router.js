@@ -1,9 +1,6 @@
 import { Router } from 'express';
 import isAdmin from '../middlewares/admin.middleware.js';
 import isLoggedIn from '../middlewares/login.middleware.js';
-
-const router = Router();
-
 import {
   getAllUsersController,
   getProfileUsersController,
@@ -13,6 +10,8 @@ import {
   editUserByIdController,
   deleteUserByIdController,
 } from '../controllers/user.controller.js';
+
+const router = Router();
 
 router.get('/', isAdmin, getAllUsersController);
 router.get('/profile', isLoggedIn, getProfileUsersController);

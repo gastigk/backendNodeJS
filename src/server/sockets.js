@@ -1,5 +1,6 @@
 import messageModel from './models/message.model.js'
 
+// socketServer listening
 export default (io) => {
     io.on("connection", async socket => {
         console.log(`New client connected`)

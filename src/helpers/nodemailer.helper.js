@@ -10,7 +10,7 @@ const transporter = nodemailer.createTransport({
     user: config.gmail.user,
     pass: config.gmail.pass,
   },
-  tls : { rejectUnauthorized: false }
+  tls: { rejectUnauthorized: false },
 });
 
 export const sendPurchaseConfirmationEmail = async (userEmail, cart, user) => {
@@ -40,7 +40,7 @@ export const sendPurchaseConfirmationEmail = async (userEmail, cart, user) => {
           'Your purchase at El Séptimo Rayo has been completed successfully. Below are the details of it:',
         table: {
           data: cart.items.map((item) => ({
-            Img: `<img src="cid:${item.producto.thumbnail}@elseptimorayo.com" alt="${item.producto.title}" width="60">`,
+            // Img: `<img src="cid:${item.producto.thumbnail}@elseptimorayo.com" alt="${item.producto.title}" width="60">`,
             Name: item.producto.title,
             Quatity: item.cantidad,
             Subtotal: `$ ${item.producto.price}.-`,
@@ -57,7 +57,7 @@ export const sendPurchaseConfirmationEmail = async (userEmail, cart, user) => {
           `Total price: $ ${totalPrice}.-`,
           `Purchase code: ${cart.code}`,
           `Date and time of purchase: ${cart.purchase_datetime}`,
-          `<img src="cid:logo@elseptimorayo.com" alt="El Séptimo Rayo" width="60">`,
+          // `<img src="cid:logo@elseptimorayo.com" alt="El Séptimo Rayo" width="60">`,
         ],
       },
     };
@@ -78,9 +78,7 @@ export const sendPurchaseConfirmationEmail = async (userEmail, cart, user) => {
       try {
         const product = await Producto.findById(item.producto._id);
         if (!product) {
-          loggers.warning(
-            `Product not found with id: ${item.producto._id}`
-          );
+          loggers.warning(`Product not found with id: ${item.producto._id}`);
           continue;
         }
 
@@ -95,10 +93,12 @@ export const sendPurchaseConfirmationEmail = async (userEmail, cart, user) => {
         product.stock = newStock;
         await product.save();
       } catch (err) {
-        loggers.error('Error updating stock', err);
+        customError(err);
+        loggers.error('Error updating stock');
       }
     }
   } catch (err) {
-    loggers.error('Failed to send email', err);
+    customError(err);
+    loggers.error('Failed to send email');
   }
 };

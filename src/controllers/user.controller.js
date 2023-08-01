@@ -5,16 +5,19 @@ import CustomError from '../services/error/custom.error.js';
 import EErros from '../services/error/enums.error.js';
 import { generateUserErrorInfo } from '../services/error/info.error.js';
 import UsersDTO from '../dto/user.dto.js';
+import customError from '../services/error.log.js';
 
 export const getAllUsersController = async (req, res) => {
   try {
+    const user = getUserFromToken(req);
     const users = await UserService.getAll();
     let resultsDTO = users.map((user) => new UsersDTO(user));
     const userObjects = users.map((user) => user.toObject());
-    res.render('users', { users: userObjects, user: resultsDTO[0] });
+    res.render('users', { users: userObjects, user, resultsDTO });
   } catch (err) {
-    loggers.error('Error del servidor', err);
-    res.status(500).send('Error del servidor');
+    customError(err);
+    loggers.error('Error server');
+    res.status(500).send('Error server', { user });
   }
 };
 
@@ -39,19 +42,18 @@ export const createNewUserTest = async (req, res) => {
   if (!user.first_name || !user.last_name || !user.email) {
     try {
       throw new CustomError(
-        'Error de Creacion de Usuario',
+        'User creation error',
         generateUserErrorInfo(user),
-        'Error típico al crear un usuario nuevo cuando no se completan los campos obligatorios',
+        'Typical error when creating a new user when the required fields are not completed',
         EErros.INVALID_TYPES_ERROR
       );
     } catch (error) {
-      loggers.error(`Error de Creacion de Usuario: ${error.message}`);
-      loggers.error(`Información adicional del error: ${error.cause}`);
+      loggers.error(`User creation error: ${error.message}`);
+      loggers.error(`Additional error information: ${error.cause}`);
 
       return res.redirect('/users/newUser');
     }
   }
-
   users.push(user);
   res.redirect('/users');
 };
@@ -65,11 +67,11 @@ export const getUserForEditByIdController = async (req, res) => {
       user = getUserFromToken(req);
       return res.status(404).render('error/error404', { user });
     }
-
     res.render('editUser', { user });
   } catch (err) {
-    loggers.error(err);
-    res.status(500).send('Error del servidor');
+    customError(err);
+    loggers.error('Error server');
+    res.status(500).render('error/error500', { user });
   }
 };
 
@@ -93,8 +95,9 @@ export const editUserByIdController = async (req, res) => {
 
     res.redirect('/users');
   } catch (err) {
-    loggers.error(err);
-    res.status(500).send('Error del servidor');
+    customError(err);
+    loggers.error('Error server');
+    res.status(500).render('error/error500', { user });
   }
 };
 
@@ -111,7 +114,8 @@ export const deleteUserByIdController = async (req, res) => {
 
     res.render('userDelete', { user });
   } catch (err) {
-    loggers.error(err);
-    res.status(500).send('Error del servidor');
+    customError(err);
+    loggers.error('Error server');
+    res.status(500).render('error/error500', { user });
   }
 };

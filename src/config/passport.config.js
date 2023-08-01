@@ -49,8 +49,9 @@ export const authenticateJWT = (req, res, next) => {
         req.user = user;
         next();
       })
-      .catch((err) => {
-        loggers.error(err);
+      .catch((error) => {
+        customError(error);
+        loggers.error('Error to verify user token');
         return res.status(500).json({ message: 'Internal server error' });
       });
   });
@@ -89,8 +90,9 @@ passport.use(
 
         await newUser.save();
         return done(null, newUser);
-      } catch (err) {
-        loggers.error(err);
+      } catch (error) {
+        customError(error);
+        loggers.error('Error to signup');
         return done(err);
       }
     }

@@ -35,6 +35,8 @@ paths:
                 category:
                   type: string
                   required: true
+                size:
+                  type: string
                 code:
                   type: string
                 description:
@@ -61,7 +63,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Product"
-  /products/{productId}:
+
+  /productsid/{productId}:
     get:
       summary: Get a product by ID
       parameters:
@@ -78,6 +81,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Product"
+
+  /productseditbyid/{productId}:
     put:
       summary: Update a product by ID
       parameters:
@@ -100,6 +105,8 @@ paths:
                 category:
                   type: string
                   required: true
+                size:
+                  type: string
                 code:
                   type: string
                 description:
@@ -126,6 +133,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Product"
+
+  /productsdeletebyid/delete/{productId}:
     delete:
       summary: Delete a product by ID
       parameters:
@@ -142,6 +151,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Product"
+
 components:
   schemas:
     Product:
@@ -150,6 +160,8 @@ components:
         title:
           type: string
         category:
+          type: string
+        size:
           type: string
         code:
           type: string

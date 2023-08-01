@@ -5,11 +5,10 @@ import {
   editAndChargeProductByIdController,
   adminPanelController,
 } from '../controllers/product.admin.controller.js';
-
 import isAdmin from '../middlewares/admin.middleware.js';
-const router = Router();
-
 import configureMulter from '../helpers/multer.helper.js';
+
+const router = Router();
 const upload = await configureMulter();
 
 router.get('/', isAdmin, adminPanelController);
@@ -20,6 +19,6 @@ router.post(
   isAdmin,
   upload.single('thumbnail'),
   editAndChargeProductByIdController
-); //
+);
 
 export default router;

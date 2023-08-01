@@ -4,13 +4,11 @@ import { getUserFromToken } from '../middlewares/user.middleware.js';
 import config from '../config/config.js';
 import loggers from '../config/logger.config.js';
 import Cart from '../models/cart.model.js';
-import { errorMessagesProductosMocking } from '../services/error/info.error.js';
-import CustomError from '../services/error/custom.error.js';
-import EErrors from '../services/error/enums.error.js';
+import customError from '../services/error.log.js';
 import { sendPurchaseConfirmationEmail } from '../helpers/nodemailer.helper.js';
 import { sendSMS } from '../helpers/twilio.helper.js';
-
 import { generateMockProducts } from '../services/mocking.service.js';
+
 const cookieName = config.jwt.cookieName;
 
 export const getIndexProductsController = async (req, res) => {
@@ -51,9 +49,11 @@ export const getIndexProductsController = async (req, res) => {
         user,
       });
     }
-  } catch (err) {
-    loggers.error(err);
-    res.status(500).send({ message: 'Internal server error' });
+  } catch (error) {
+    user = getUserFromToken(req);
+    customError(error);
+    loggers.error('Products not found');
+    res.status(500).render('error/notProduct', { user });
   }
 };
 
@@ -91,16 +91,17 @@ export const getAllProductsController = async (req, res, next) => {
       allCategories,
       user,
     });
-  } catch (err) {
-    loggers.error(err);
-    next(err);
+  } catch (error) {
+    customError(error);
+    loggers.error('Products not found');
+    res.status(500).render('error/notProduct', { user });
   }
 };
 
 export const createProductController = async (req, res) => {
   const { title, category, code, description, price, stock } = req.body;
   if (!title) {
-    return res.status(400).send('El campo "title" es obligatorio');
+    return res.status(400).send('The "title" is required');
   }
 
   const newProduct = new Product({
@@ -134,9 +135,10 @@ export const createProductController = async (req, res) => {
       : '';
 
     res.render('products', { productos, prevLink, nextLink });
-  } catch (err) {
-    loggers.error(err);
-    res.status(500).send('Error al guardar el producto en la base de datos');
+  } catch (error) {
+    customError(error);
+    loggers.error('Error saving the product in the database');
+    res.status(500).render('error/notProduct', { user });
   }
 };
 
@@ -172,25 +174,34 @@ export const getProductByCategoryController = async (req, res, next) => {
       prevLink,
       nextLink,
       allProducts,
-      Page,
+      currentPage,
       totalPages,
       user,
     });
-  } catch (err) {
-    loggers.error(err);
-    next(err);
+  } catch (error) {
+    customError(error);
+    loggers.error('Products not found');
+    res.status(500).render('error/notProduct', { user });
   }
 };
 
 export const getProductByIdController = async (req, res) => {
   const productId = req.params.pid;
-  const product = await ProductService.getById(productId);
   const user = getUserFromToken(req);
   const adminRole = user ? user.role === 'admin' : false;
-  if (product) {
+
+  try {
+    const product = await ProductService.getById(productId);
+
+    if (!product) {
+      res.status(404).render('error/error404', { user });
+      return;
+    }
     res.render('productsid', { product, user, adminRole });
-  } else {
-    res.status(404).render('error/error404', { user });
+  } catch (error) {
+    customError(error);
+    loggers.error('Error getting product by ID');
+    res.status(500).render('error/notProduct', { user });
   }
 };
 
@@ -219,9 +230,10 @@ export const getPurchaseController = async (req, res) => {
       totalPrice,
       user,
     });
-  } catch (err) {
-    loggers.error(err);
-    res.status(500).send('Error al procesar la compra');
+  } catch (error) {
+    customError(error);
+    loggers.error('Error processing the purchase');
+    res.status(500).render('error/error500', { user });
   }
 };
 
@@ -244,9 +256,7 @@ export const sendPurchaseController = async (req, res) => {
       try {
         const product = await Product.findById(item.producto._id);
         if (!product) {
-          loggers.warning(
-            `Producto no encontrado con el id: ${item.producto._id}`
-          );
+          loggers.warning(`Product not found with id: ${item.producto._id}`);
           continue;
         }
 
@@ -258,14 +268,14 @@ export const sendPurchaseController = async (req, res) => {
           await product.save();
         } else {
           // if there is not enough stock, show an error message and update the stock
-          loggers.warn(
-            `El producto: ${item.producto.title} esta fuera de stock.!`
-          );
+          loggers.warn(`The product: ${item.producto.title} no stock`);
           product.stock += item.cantidad - product.stock;
           await product.save();
         }
-      } catch (err) {
-        loggers.error('Error al actualizar el stock', err);
+      } catch (error) {
+        customError(error);
+        loggers.error('Error when checking the products in the cart');
+        res.status(500).render('error/error500', { user });
       }
     }
 
@@ -300,9 +310,10 @@ export const sendPurchaseController = async (req, res) => {
       totalPrice,
       user,
     });
-  } catch (err) {
-    loggers.error(err);
-    res.status(500).send('Error processing the purchase');
+  } catch (error) {
+    customError(error);
+    loggers.error('Error processing the purchase');
+    res.status(500).render('error/error500', { user });
   }
 };
 
@@ -310,18 +321,13 @@ export const getMockingProductsController = async (req, res, next) => {
   try {
     await generateMockProducts();
 
-    const products = await ProductService.getAllLimit(100);
+    const products = await ProductService.getAllLimit(50);
 
-    res.json({ products });
-  } catch (err) {
-    loggers.error('Error generating mocking products:', err);
-
-    const customError = new CustomError(
-      errorMessagesProductosMocking.internalServerError,
-      EErrors.InternalServerError
-    );
-
-    next(customError);
+    res.status(200).render('index', { products, user });
+  } catch (error) {
+    customError(error);
+    loggers.error('Error generating test products');
+    res.status(500).render('error/error500', { user });
   }
 };
 
@@ -336,7 +342,8 @@ export const getProductForEditByIdController = async (req, res) => {
       res.status(404).render('error/error404', { user });
     }
   } catch (error) {
-    loggers.error(error);
+    customError(error);
+    loggers.error('Product not found');
     res.status(500).render('error/notProduct', { user });
   }
 };

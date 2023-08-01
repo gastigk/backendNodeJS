@@ -37,7 +37,8 @@ const initializePassportGH = () => {
           });
           return done(null, newUser);
         } catch (err) {
-          loggers.error(err);
+          customError(error);
+          loggers.error('Error to login with GitHub');
           return done('Error to login with GitHub');
         }
       }

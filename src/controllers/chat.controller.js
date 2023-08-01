@@ -1,5 +1,6 @@
 import Chat from '../models/message.model.js';
 import { getUserFromToken } from '../middlewares/user.middleware.js';
+import customError from '../services/error.log.js';
 
 // no DAO applied
 export const getChatsController = async (req, res) => {
@@ -8,9 +9,10 @@ export const getChatsController = async (req, res) => {
     const messages = await Chat.find();
 
     res.render('chat', { messages, user });
-  } catch (err) {
-    loggers.error(err);
-    res.status(500).send('Error getting messages');
+  } catch (error) {
+    customError(error);
+    loggers.error('Error getting messages');
+    res.status(500).render('error/error500', { user });
   }
 };
 
@@ -30,8 +32,9 @@ export const sendChatController = async (req, res) => {
     const newMessage = new Chat({ user, message });
     await newMessage.save();
     res.redirect('/chat');
-  } catch (err) {
-    loggers.error(err);
-    res.status(500).send('Error saving message');
+  } catch (error) {
+    customError(error);
+    loggers.error('Error saving message');
+    res.status(500).render('error/error500', { user });
   }
 };

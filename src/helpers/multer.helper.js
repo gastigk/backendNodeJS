@@ -2,7 +2,9 @@ import multer from 'multer';
 import path from 'path';
 import loggers from '../config/logger.config.js';
 import __dirname from '../server/utils.js';
+import customError from '../services/error.log.js';
 
+// middleware third-party configuration: file upload to server with multer
 const configureMulter = async () => {
   try {
     const storage = multer.diskStorage({
@@ -20,7 +22,8 @@ const configureMulter = async () => {
 
     return upload;
   } catch (error) {
-    loggers.error('Multer configuration error:', error);
+    customError(error);
+    loggers.error('Multer configuration error');
     throw error;
   }
 };

@@ -16,4 +16,5 @@ export default class ProductDaoBD {
   update = async (id, data) =>
     await Product.findByIdAndUpdate(id, data, { returnDocument: 'after' });
   delete = async (id) => await Product.findByIdAndRemove(id).lean();
+  insertMany = async (data) => await Product.insertMany(data);
 }

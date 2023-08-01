@@ -1,6 +1,7 @@
 import Messages from '../models/message.model.js';
 import loggers from './logger.config.js';
 
+// client sends his message
 const chatApp = (socketServer) => {
   let log = [];
   let newproduct = [];

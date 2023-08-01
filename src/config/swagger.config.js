@@ -11,8 +11,7 @@ export const swaggerOptions = {
     info: {
       title: 'E-commerce app',
       version: '1.0.0',
-      description:
-        '<img src="https://jobs.coderhouse.com/assets/logos_coderhouse.png" alt="CoderHouse" height="80" /> <br><br><br> Descripción: <br><br>Test API for Coderhouse Backend Course 2023<br><br>Autenticación: This API does not require authentication for read-only (GET) operations. <br>However, write operations (POST, PUT, DELETE) require admin user authentication.<br><br> Date Format: Dates must be provided in ISO 8601 format (for example, "2023- 07-25 | 12:34:56").<br><br> Errors: The API returns detailed errors in JSON format if any problems occur during operations.',
+      description: '<img src="https://jobs.coderhouse.com/assets/logos_coderhouse.png" alt="CoderHouse" height="80" /> <br><br><br> Descripción: <br><br>Test API for Coderhouse Backend Course 2023<br><br>Autenticación: This API does not require authentication for read-only (GET) operations. <br>However, write operations (POST, PUT, DELETE) require admin user authentication.<br><br> Date Format: Dates must be provided in ISO 8601 format (for example, "2021-10-03 | 17:01:33").<br><br> Errors: The API returns detailed errors in JSON format if any problems occur during operations.',
       termsOfService: 'https://www.coderhouse.com/legales',
       contact: {
         name: 'Gastón Guevara',

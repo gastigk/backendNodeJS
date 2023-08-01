@@ -6,6 +6,8 @@ import config from '../config/config.js';
 import loggers from '../config/logger.config.js';
 import passport from 'passport';
 import { getUserFromToken } from '../middlewares/user.middleware.js';
+import customError from '../services/error.log.js';
+import customMessageSessions from '../services/sessions.log.js';
 
 const cookieName = config.jwt.cookieName;
 const secret = config.jwt.privateKey;
@@ -28,8 +30,9 @@ export const getUserFromCookiesController = async (req, res) => {
       return res.status(200).redirect('/');
     });
   } catch (err) {
-    loggers.error(err);
-    return res.status(500).send('Internal server error');
+    customError(err);
+    loggers.error('Error to get user from cookies');
+    return res.status(500).render('error/error500');
   }
 };
 
@@ -55,20 +58,31 @@ export const sendLogginController = async (req, res) => {
 
         const decodedToken = jwt.verify(userToken, secret);
         const userId = decodedToken.userId;
-
+        const message = `User ${decodedToken.first_name} ${decodedToken.last_name} with ID  #${userId} has been successfully logged in`;
+        customMessageSessions(message);
         res.cookie(cookieName, userToken).redirect('/');
       } else {
+        loggers.error('Error to login user');
         return res.status(401).render('error/notLoggedIn');
       }
     });
   } catch (err) {
-    loggers.error(err);
-    return res.status(500).send('Internal server error');
+    customError(err);
+    loggers.error('Error to login user');
+    return res.status(500).render('error/error500');
   }
 };
 
 // no DAO applied
 export const getLogoutController = async (req, res) => {
+  const user = getUserFromToken(req);
+
+  const firstName = user?.first_name || user?.user?.first_name;
+  const lastName = user?.last_name || user?.user?.last_name;
+  const userId = user?.userId || user?.user?._id;
+
+  const message = `User ${firstName} ${lastName} with ID #${userId} has been logged out successfully`;
+  customMessageSessions(message);
   res.clearCookie(cookieName);
   res.redirect('/');
 };
@@ -82,8 +96,9 @@ export const getSignupController = async (req, res) => {
 export const setSignupController = async (req, res, next) => {
   passport.authenticate('signup', (err, user, info) => {
     if (err) {
+      customError(err);
       loggers.error(err);
-      return res.status(500).send('Server error');
+      return res.status(403).render('error/error403');
     }
 
     if (!user) {
@@ -96,8 +111,9 @@ export const setSignupController = async (req, res, next) => {
 
     req.login(user, (err) => {
       if (err) {
+        customError(err);
         loggers.error(err);
-        return res.status(500).send('Server error');
+        return res.status(403).render('error/error403');
       }
 
       res.redirect('/login');
@@ -115,8 +131,9 @@ export const getSignupAdminController = (req, res) => {
 export const setSignupAdminController = (req, res, next) => {
   passport.authenticate('signup', (err, user, info) => {
     if (err) {
-      loggers.error(err);
-      return res.status(500).send('Server error');
+      customError(err);
+      loggers.error('Error creating user');
+      return res.status(403).render('error/error403');
     }
 
     if (!user) {
@@ -129,8 +146,9 @@ export const setSignupAdminController = (req, res, next) => {
 
     req.login(user, (err) => {
       if (err) {
-        loggers.error(err);
-        return res.status(500).send('Server error');
+        customError(err);
+        loggers.error('Error creating user');
+        return res.status(403).render('error/error403');
       }
 
       res.redirect('/users');

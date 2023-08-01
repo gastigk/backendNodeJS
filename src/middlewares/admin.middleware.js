@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import config from '../config/config.js';
 import loggers from '../config/logger.config.js';
+import customError from '../services/error.log.js';
 
 const secret = config.jwt.privateKey;
 const cookieName = config.jwt.cookieName;
@@ -23,8 +24,9 @@ const isAdmin = (req, res, next) => {
     } else {
       res.render('error/notAuthorized');
     }
-  } catch (err) {
-    loggers.error(err);
+  } catch (error) {
+    customError(error);
+    loggers.error('Token verification failed');
     res.render('error/notAuthorized');
   }
 };

@@ -1,4 +1,3 @@
-// Rutas
 import productRouter from '../routers/product.router.js';
 import mockingproductsRouter from '../routers/mockingproduct.router.js';
 import productsEditRouter from '../routers/product-edit.admin.router.js';
@@ -18,7 +17,6 @@ import usersRouter from '../routers/user.router.js';
 import signupAdminRouter from '../routers/signup.admin.router.js';
 import adminPanel from '../routers/product.admin.router.js';
 
-// Vistas
 const views = [
   { path: '/', router: indexRouter },
   { path: '/products', router: productRouter },

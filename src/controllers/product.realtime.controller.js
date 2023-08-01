@@ -2,6 +2,7 @@ import Product from '../models/product.model.js';
 import { ProductService } from '../repositories/index.js';
 import { getUserFromToken } from '../middlewares/user.middleware.js';
 import loggers from '../config/logger.config.js';
+import customError from '../services/error.log.js';
 
 // no DAO applied
 export const getProductsInRealTimeController = async (req, res) => {
@@ -30,8 +31,9 @@ export const sendProductsInRealTimeController = async (req, res) => {
     await newProduct.save();
     const product = await ProductService.getAll();
     res.render('realtimeproducts', { product: product, user: req.user });
-  } catch (err) {
-    loggers.error(err);
+  } catch (error) {
+    customError(error);
+    loggers.error('Product no found');
     res.status(500).render('error/notProduct', { user });
   }
 };

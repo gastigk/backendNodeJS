@@ -9,11 +9,11 @@ Swal.fire({
   showConfirmButton: true,
   inputValidator: (value) => {
     if (!emailUser) {
-      return 'Please enter your Email';
+      return 'Please enter your e-mail';
     } else if (
       !/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(value.trim())
     ) {
-      return 'Please enter a valid email';
+      return 'Please enter a valid e-mail';
     }
   },
 }).then((result) => {

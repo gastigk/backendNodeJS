@@ -1,10 +1,7 @@
 import exphbs from 'express-handlebars';
 
+//  template engine configuration with handlebars
 const configureHandlebars = (app) => {
-  const handlebarsOptions = {
-    allowProtoPropertiesByDefault: true,
-    allowProtoMethodsByDefault: true,
-  };
   app.engine(
     'handlebars',
     exphbs.engine({

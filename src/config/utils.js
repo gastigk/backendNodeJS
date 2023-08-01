@@ -1,4 +1,6 @@
 import winston from 'winston';
+import config from './config.js';
+
 const swaggerUrls = [
   '/docs',
   '/docs/',
@@ -35,14 +37,13 @@ export const loggermid = (req, res, next) => {
     year: 'numeric',
   });
   const formattedTime = now.toLocaleTimeString('es-AR');
-  const message = {
-    level: 'error',
-    message: `${req.method} on ${req.url} - ${formattedDate} - ${formattedTime}`,
-  };
+  const dominio = config.urls.urlLocal;
+  const port = config.ports.prodPort;
+  const message = `Method ${req.method} at URL: ${dominio}:${port}${req.url} - ${formattedDate} - ${formattedTime}`;
 
   const requestedPath = req.path;
   if (!swaggerUrls.includes(requestedPath)) {
-    req.logger.error(message);
+    logger.error(`Custom message: ${message}`);
   }
 
   next();

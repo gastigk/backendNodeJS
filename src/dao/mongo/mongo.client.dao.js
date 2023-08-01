@@ -18,7 +18,7 @@ export default class MongoClient {
         `Successful connection to the database "${mongoDatabase}" at MongoDB Atlas`
       );
     } catch (err) {
-      loggers.error('cannot connect to database');
+      loggers.error('Cannot connect to database');
     }
   };
 }

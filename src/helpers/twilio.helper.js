@@ -1,6 +1,7 @@
 import twilio from 'twilio';
 import config from '../config/config.js';
 import loggers from '../config/logger.config.js';
+import customError from '../services/error.log.js';
 
 const twilioNumberPhone = config.twilio.numberPhone;
 const twilioAccountSid = config.twilio.accountSid;
@@ -18,6 +19,7 @@ export const sendSMS = async (userPhone) => {
       to: config.twilio.myPhone,
     });
   } catch (err) {
-    loggers.error('Error sending SMS', err);
+    customError(err);
+    loggers.error('Error sending SMS');
   }
 };

@@ -5,10 +5,9 @@ import {
   createProductController,
   getProductByIdController,
 } from '../controllers/product.controller.js';
-
-const router = Router();
 import configureMulter from '../helpers/multer.helper.js';
 
+const router = Router();
 const upload = await configureMulter();
 
 router.get('/', getAllProductsController);

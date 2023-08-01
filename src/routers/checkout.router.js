@@ -6,9 +6,7 @@ import {
 
 const router = Router();
 
-// Endpoint para mostrar el carrito de compras
 router.get('/', getPurchaseController);
-
 router.post('/', sendPurchaseController);
 
 export default router;

@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import config from '../config/config.js';
 import loggers from '../config/logger.config.js';
+import customError from '../services/error.log.js';
 
 const secret = config.jwt.privateKey;
 const cookieName = config.jwt.cookieName;
@@ -16,7 +17,8 @@ export function getUserFromToken(req) {
     const decodedToken = jwt.verify(userToken, secret);
     return decodedToken;
   } catch (error) {
-    loggers.error('Failed to verify token:', error);
+    customError(error);
+    loggers.error('Failed to verify token');
     return null;
   }
 }
@@ -29,7 +31,8 @@ export function getUserId(req) {
     }
     return user.userId;
   } catch (error) {
-    loggers.error('Failed to get user id:', error);
+    customError(error);
+    loggers.error('Failed to get user id');
     return null;
   }
 }

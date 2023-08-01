@@ -11,14 +11,10 @@ switch (config.app.persistence) {
     );
     Product = ProductMongoDAO;
 
-    const { default: CartMongoDAO } = await import(
-      './mongo/cart.mongo.dao.js'
-    );
+    const { default: CartMongoDAO } = await import('./mongo/cart.mongo.dao.js');
     Cart = CartMongoDAO;
 
-    const { default: UserMongoDAO } = await import(
-      './mongo/user.mongo.dao.js'
-    );
+    const { default: UserMongoDAO } = await import('./mongo/user.mongo.dao.js');
     User = UserMongoDAO;
     break;
   default:

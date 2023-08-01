@@ -5,6 +5,7 @@ import { getUserFromToken } from '../middlewares/user.middleware.js';
 import shortid from 'shortid';
 import config from '../config/config.js';
 import loggers from '../config/logger.config.js';
+import customError from '../services/error.log.js';
 
 const cokieName = config.jwt.cookieName;
 let user = null;
@@ -103,9 +104,10 @@ export const createCartController = async (req, res) => {
       cartId,
       user,
     });
-  } catch (err) {
-    loggers.error(err);
-    res.status(500).render('error/notCart');
+  } catch (error) {
+    customError(error);
+    loggers.error('The cart was not found');
+    res.status(500).render('error/notCart', { user });
   }
 };
 
@@ -131,9 +133,11 @@ export const clearCartByid = async (req, res) => {
     cart.items = [];
     await cart.save();
     res.redirect('/');
-  } catch (err) {
-    loggers.error(err);
-    res.status(500).send('Error when emptying the cart');
+  } catch (error) {
+    user = getUserFromToken(req);
+    customError(error);
+    loggers.error('Error when emptying the cart');
+    res.status(500).render('error/notCart', { user });
   }
 };
 
@@ -158,9 +162,11 @@ export const deleteCartById = async (req, res) => {
     }
 
     res.redirect('/');
-  } catch (err) {
-    loggers.error(err);
-    res.status(500).send('Error when emptying the cart');
+  } catch (error) {
+    user = getUserFromToken(req);
+    customError(error);
+    loggers.error('Error deleting cart');
+    res.status(500).render('error/notCart', { user });
   }
 };
 
@@ -193,9 +199,11 @@ export const updateProductsToCartById = async (req, res) => {
     }
 
     res.redirect('/carts');
-  } catch (err) {
-    loggers.error(err);
-    res.status(500).send('Error updating product quantity');
+  } catch (error) {
+    user = getUserFromToken(req);
+    customError(error);
+    loggers.error('Error updating product quantity');
+    res.status(500).render('error/notCart', { user });
   }
 };
 
@@ -223,38 +231,39 @@ export const addProductToCartController = async (req, res) => {
     cart.purchase_datetime = new Date();
     await cart.save();
     res.redirect('/');
-  } catch (err) {
-    loggers.error(err);
+  } catch (error) {
+    customError(error);
+    loggers.error('You are not logged in, please log in');
     res.status(500).redirect('/login');
   }
 };
 
 // remove a product from the cart
-export const deleteCartByIdController = async (req, res) => {
+export const deleteCartByIdController = async (req, res) => { // DAO Aplicado  
   const user = getUserFromToken(req);
   const { cartId, itemId } = req.params;
   if (!mongoose.Types.ObjectId.isValid(cartId)) {
-    return res.status(400).json({ error: 'invalid cart id' });
+      return res.status(400).json({ error: 'ID de carrito inválido' });
   }
 
   try {
-    const cart = await CartService.getById(cartId);
-    if (!cart) {
-      return res.status(404).render('error/error404', { user });
-    }
+      const cart = await CartService.getById(cartId);
+      if (!cart) {
+          return res.status(404).render('error/error404', { user });
+      }
 
-    const itemIndex = cart.items.findIndex((item) => item._id.equals(itemId));
-    if (itemIndex === -1) {
-      return res
-        .status(404)
-        .render('error/notCartProducts', { cartId, itemId, user });
-    }
+      const itemIndex = cart.items.findIndex((item) => item._id.equals(itemId));
+      if (itemIndex === -1) {
+          return res.status(404).render('error/notCartProducts', { cartId, itemId, user });
+      }
 
-    cart.items.splice(itemIndex, 1);
-    await cart.save();
-    return res.render('cartsDeleteById', { cartId, itemId, user });
+      cart.items.splice(itemIndex, 1);
+      await cart.save();
+      return res.render('cartsDeleteById', { cartId, itemId, user });
   } catch (error) {
-    loggers.error(error);
-    return res.status(500).render('error/notCart');
+      user = getUserFromToken(req);
+      customError(error);
+      loggers.error('Error al eliminar un producto del carrito');
+      return res.status(500).render('error/notCart', { user });
   }
 };

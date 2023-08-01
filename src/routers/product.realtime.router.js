@@ -10,7 +10,6 @@ const router = Router();
 const upload = await configureMulter();
 
 router.get('/', isAdmin, getProductsInRealTimeController);
-
 router.post('/', upload.single('thumbnail'), sendProductsInRealTimeController);
 
 export default router;

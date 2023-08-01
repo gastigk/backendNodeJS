@@ -1,6 +1,7 @@
 import { ProductService } from '../repositories/index.js';
 import { getUserFromToken } from '../middlewares/user.middleware.js';
 import loggers from '../config/logger.config.js';
+import customError from '../services/error.log.js';
 
 export const getTableProductsController = async (req, res) => {
   const user = getUserFromToken(req);
@@ -19,7 +20,8 @@ export const getTableProductsController = async (req, res) => {
     const products = await ProductService.getAllQuery(sortQuery);
     res.render('productstable', { products, user });
   } catch (error) {
-    loggers.error(error);
+    customError(error);
+    loggers.error('Product not found');
     res.status(500).render('error/notProduct', { user });
   }
 };
@@ -36,7 +38,8 @@ export const deleteProductByIdController = async (req, res) => {
       res.status(404).render('error/error404', { user });
     }
   } catch (error) {
-    loggers.error(error);
+    customError(error);
+    loggers.error('Product not found');
     res.status(500).render('error/notProduct', { user });
   }
 };
@@ -52,7 +55,8 @@ export const editProductByIdController = async (req, res) => {
       res.status(404).render('error/error404', { user });
     }
   } catch (error) {
-    loggers.error(error);
+    customError(error);
+    loggers.error('Product not found');
     res.status(500).render('error/notProduct', { user });
   }
 };
@@ -73,7 +77,8 @@ export const editAndChargeProductByIdController = async (req, res) => {
 
     res.redirect(`/productseditbyid/${productId}`);
   } catch (error) {
-    loggers.error(error);
+    customError(error);
+    loggers.error('Product not found');
     res.status(500).render('error/notProduct', { user });
   }
 };
@@ -87,9 +92,8 @@ export const adminPanelController = async (req, res) => {
     }
     res.status(200).render('admin-panel', { products, user });
   } catch (error) {
-    loggers.error(
-      `Error getting the requested data from the database: ${error}`
-    );
-    return res.status(403).render('error/notAuthorized');
+    customError(error);
+    loggers.error(`Error getting the requested data from the database`);
+    res.status(500).render('error/error500', { user });
   }
 };

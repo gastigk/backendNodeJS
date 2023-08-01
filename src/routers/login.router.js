@@ -8,9 +8,7 @@ import {
 const router = Router();
 
 router.get('/', getLogginController);
-
 router.post('/', sendLogginController);
-
 router.get('/user', getUserFromCookiesController);
 
 export default router;
