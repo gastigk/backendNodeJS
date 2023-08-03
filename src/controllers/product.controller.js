@@ -1,16 +1,33 @@
-import Product from '../models/product.model.js';
-import { ProductService } from '../repositories/index.js';
-import { getUserFromToken } from '../middlewares/user.middleware.js';
 import config from '../config/config.js';
 import loggers from '../config/logger.config.js';
-import Cart from '../models/cart.model.js';
+import { getUserFromToken } from '../middlewares/user.middleware.js';
+import Product from '../models/product.model.js';
 import customError from '../services/error.log.js';
+import { ProductService } from '../repositories/index.js';
+import { generateMockProducts } from '../services/mocking.service.js';
 import { sendPurchaseConfirmationEmail } from '../helpers/nodemailer.helper.js';
 import { sendSMS } from '../helpers/twilio.helper.js';
-import { generateMockProducts } from '../services/mocking.service.js';
 
 const cookieName = config.jwt.cookieName;
 
+// defining functions
+export async function removeProductFromCart(cart, productId) {
+  try {
+    const productIndex = cart.items.findIndex(
+      (item) => item.producto.toString() === productId
+    );
+
+    if (productIndex !== -1) {
+      cart.items.splice(productIndex, 1);
+      await CartService.update(cart._id, cart);
+    }
+  } catch (error) {
+    customError(error);
+    loggers.error('Error al eliminar el producto del carrito');
+  }
+}
+
+// defining controllers
 export const getIndexProductsController = async (req, res) => {
   try {
     const limit = parseInt(req.query.limit);
@@ -19,6 +36,7 @@ export const getIndexProductsController = async (req, res) => {
 
     if (!userToken) {
       res.status(200).render('index', {
+        style: 'index',
         products: products.slice(0, 4),
         productLength: products.length,
         user: null,
@@ -29,6 +47,7 @@ export const getIndexProductsController = async (req, res) => {
 
     if (!user) {
       res.status(200).render('index', {
+        style: 'index',
         products: products.slice(0, 4),
         productLength: products.length,
         user: null,
@@ -38,19 +57,20 @@ export const getIndexProductsController = async (req, res) => {
 
     if (isNaN(limit)) {
       res.status(200).render('index', {
+        style: 'index',
         products: products.slice(0, 4),
         productLength: products.length,
         user,
       });
     } else {
       res.status(200).render('index', {
+        style: 'index',
         products: products.slice(0, limit),
         productLength: products.length,
         user,
       });
     }
   } catch (error) {
-    user = getUserFromToken(req);
     customError(error);
     loggers.error('Products not found');
     res.status(500).render('error/notProduct', { user });
@@ -65,7 +85,6 @@ export const getAllProductsController = async (req, res, next) => {
     if (userToken) {
       user = getUserFromToken(req);
     }
-
     const page = parseInt(req.query.page) || 1;
     const limit = 8;
     const category = req.query.category;
@@ -85,6 +104,7 @@ export const getAllProductsController = async (req, res, next) => {
     const allCategories = await ProductService.getByCategory('category');
 
     res.render('products', {
+      style: 'products',
       productos,
       prevLink,
       nextLink,
@@ -119,7 +139,7 @@ export const createProductController = async (req, res) => {
     await newProduct.save();
 
     const page = 1;
-    const limit = 16;
+    const limit = 9;
 
     const result = await ProductService.paginate(
       {},
@@ -134,7 +154,12 @@ export const createProductController = async (req, res) => {
       ? `/products?page=${result.nextPage}`
       : '';
 
-    res.render('products', { productos, prevLink, nextLink });
+    res.render('products', {
+      style: 'products',
+      productos,
+      prevLink,
+      nextLink,
+    });
   } catch (error) {
     customError(error);
     loggers.error('Error saving the product in the database');
@@ -170,6 +195,7 @@ export const getProductByCategoryController = async (req, res, next) => {
 
     const allProducts = await ProductService.getByCategoryAll('category');
     res.render('products', {
+      style: 'products',
       productos,
       prevLink,
       nextLink,
@@ -197,7 +223,7 @@ export const getProductByIdController = async (req, res) => {
       res.status(404).render('error/error404', { user });
       return;
     }
-    res.render('productsid', { product, user, adminRole });
+    res.render('productsid', { style: 'productsid', product, user, adminRole });
   } catch (error) {
     customError(error);
     loggers.error('Error getting product by ID');
@@ -209,7 +235,7 @@ export const getProductByIdController = async (req, res) => {
 export const getPurchaseController = async (req, res) => {
   try {
     const user = getUserFromToken(req);
-    const cart = await Cart.findOne({
+    const cart = await CartService.getOne({
       user: { email: user.email || user.user.email },
     }).populate('items.producto');
 
@@ -218,18 +244,43 @@ export const getPurchaseController = async (req, res) => {
       return;
     }
 
-    const totalPrice = cart.items.reduce(
-      (total, item) => total + item.producto.price * item.cantidad,
-      0
+    const productsOutOfStock = cart.items.filter(
+      (item) => item.producto.stock <= 0
     );
 
-    res.render('checkout', {
-      cart,
-      code: cart.code,
-      purchaseDatetime: cart.purchase_datetime,
-      totalPrice,
-      user,
-    });
+    if (productsOutOfStock.length > 0) {
+      for (const item of productsOutOfStock) {
+        await removeProductFromCart(cart, item.producto._id);
+      }
+      const updatedCart = await CartService.getOne({ _id: cart._id }).populate(
+        'items.producto'
+      );
+      const totalPrice = updatedCart.items.reduce(
+        (total, item) => total + item.producto.price * item.cantidad,
+        0
+      );
+      res.render('checkout', {
+        style: 'checkout',
+        cart: updatedCart,
+        code: updatedCart.code,
+        purchaseDatetime: updatedCart.purchase_datetime,
+        totalPrice,
+        user,
+      });
+    } else {
+      const totalPrice = cart.items.reduce(
+        (total, item) => total + item.producto.price * item.cantidad,
+        0
+      );
+      res.render('checkout', {
+        style: 'checkout',
+        cart,
+        code: cart.code,
+        purchaseDatetime: cart.purchase_datetime,
+        totalPrice,
+        user,
+      });
+    }
   } catch (error) {
     customError(error);
     loggers.error('Error processing the purchase');
@@ -240,7 +291,7 @@ export const getPurchaseController = async (req, res) => {
 export const sendPurchaseController = async (req, res) => {
   try {
     const user = getUserFromToken(req);
-    const cart = await Cart.findOne({
+    const cart = await CartService.getOne({
       user: { email: user.email || user.user.email },
     }).populate('items.producto');
 
@@ -304,6 +355,7 @@ export const sendPurchaseController = async (req, res) => {
       0
     );
     res.render('checkout', {
+      style: 'checkout',
       cart,
       code: cart.code,
       purchaseDatetime: cart.purchase_datetime,
@@ -323,10 +375,10 @@ export const getMockingProductsController = async (req, res, next) => {
 
     const products = await ProductService.getAllLimit(50);
 
-    res.status(200).render('index', { products, user });
+    res.status(200).render('index', { style: 'index', products, user });
   } catch (error) {
     customError(error);
-    loggers.error('Error generating test products');
+    loggers.error('Error generating mocking products');
     res.status(500).render('error/error500', { user });
   }
 };
@@ -337,7 +389,7 @@ export const getProductForEditByIdController = async (req, res) => {
   try {
     const producto = await ProductService.getById(productId);
     if (producto) {
-      res.render('productsedit', { producto, user });
+      res.render('productsedit', { style: 'productsedit', producto, user });
     } else {
       res.status(404).render('error/error404', { user });
     }

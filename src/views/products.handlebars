@@ -27,21 +27,18 @@
                 <p class="card-text">{{ this.description }} </p>
                 <h5 class="card-text">${{ this.price }}.- </h5>
                 <div class="Buttons_Pay">
-                    <form action="/carts/{{this._id}}" method="POST">
-                        <div class="input-group group-comprar">
+                    <nav class="navbar bg-body-tertiary">
+                      <form action="/carts/{{this._id}}" method="POST" class="container-fluid justify-content-start">
                             {{#if this.stock}}
                             <input type="number" name="cantidad" class="form-control" value="1" min="1"
                                 max={{this.stock}}>
-                            <div class="input-group-append">
-                                <button type="submit" class="btn btn-success">Add to Cart</button>
-                            </div>
-                            {{else}}
+                        <button type="submit" class="btn btn-outline-success me-2" type="button">Add to Cart</button>
+                        <a href="/productsid/{{this._id}}"class="btn btn-sm btn-outline-secondary" type="button">Details</a>
+                                                    {{else}}
                             <h1 class="NoHayStock">¡No stock!</h1>
                             {{/if}}
-                        </div>
-                    </form>
-                    <a href="/productsid/{{this._id}}" class="btn btn-secondary">Details</a>
-
+                      </form>
+                    </nav>
                 </div>
             </div>
         </div>

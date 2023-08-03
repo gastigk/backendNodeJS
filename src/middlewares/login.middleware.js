@@ -10,7 +10,7 @@ const isLoggedIn = (req, res, next) => {
   const userToken = req.cookies[cookieName];
 
   if (!userToken) {
-    return res.redirect('/login');
+    return res.redirect('/login', { style: 'login' });
   }
 
   try {
@@ -21,7 +21,7 @@ const isLoggedIn = (req, res, next) => {
       req.user = user;
       next();
     } else {
-      return res.redirect('/login');
+      return res.redirect('/login', { style: 'login' });
     }
   } catch (error) {
     customError(error);

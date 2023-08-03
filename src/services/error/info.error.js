@@ -7,19 +7,18 @@ export const generateUserErrorInfo = (user) => {
 
   const errorInfo = requiredProperties
     .filter((prop) => !prop.value)
-    .map((prop) => `- ${prop.name}: Falta completar el campo`);
+    .map((prop) => `- ${prop.name}: Missing to complete the field`);
 
   return `
-        Uno o más campos están incompletos o no son válidos.
-        Lista de campos obligatorios:
+  One or more fields are incomplete or invalid.
+  List of required fields:
         ${errorInfo.join('\n')}
     `;
 };
 
 export const errorMessagesProductosMocking = {
-  invalidFields: 'Uno o más campos son inválidos.',
-  missingFields:
-    'Uno o más campos son obligatorios y no fueron proporcionados.',
-  notFound: 'El recurso solicitado no fue encontrado.',
-  internalServerError: 'Error interno del servidor.',
+  invalidFields: 'One or more fields are invalid.',
+  missingFields: 'One or more fields are required and were not provided.',
+  notFound: 'The requested resource was not found.',
+  internalServerError: 'Error server.',
 };

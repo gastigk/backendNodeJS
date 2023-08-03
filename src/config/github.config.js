@@ -1,7 +1,8 @@
 import passport from 'passport';
 import GitHubStrategy from 'passport-github2';
-import Users from '../models/user.model.js';
 import jwt from 'jsonwebtoken';
+
+import Users from '../models/user.model.js';
 import config from './config.js';
 import loggers from './logger.config.js';
 
@@ -36,7 +37,7 @@ const initializePassportGH = () => {
             secure: true,
           });
           return done(null, newUser);
-        } catch (err) {
+        } catch (error) {
           customError(error);
           loggers.error('Error to login with GitHub');
           return done('Error to login with GitHub');

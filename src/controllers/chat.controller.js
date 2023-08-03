@@ -8,7 +8,7 @@ export const getChatsController = async (req, res) => {
     let user = getUserFromToken(req);
     const messages = await Chat.find();
 
-    res.render('chat', { messages, user });
+    res.render('chat', { style: 'chat', messages, user });
   } catch (error) {
     customError(error);
     loggers.error('Error getting messages');

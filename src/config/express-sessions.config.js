@@ -1,5 +1,6 @@
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
+
 import config from '../config/config.js';
 
 const configureSession = (app) => {

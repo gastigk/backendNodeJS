@@ -1,13 +1,15 @@
-import { UserService } from '../repositories/index.js';
+import passport from 'passport';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+
 import { generateToken } from '../config/passport.config.js';
 import config from '../config/config.js';
 import loggers from '../config/logger.config.js';
-import passport from 'passport';
 import { getUserFromToken } from '../middlewares/user.middleware.js';
 import customError from '../services/error.log.js';
 import customMessageSessions from '../services/sessions.log.js';
+import { UserService } from '../repositories/index.js';
+import { sendWelcomeUser } from '../helpers/nodemailer.helper.js';
 
 const cookieName = config.jwt.cookieName;
 const secret = config.jwt.privateKey;
@@ -29,8 +31,8 @@ export const getUserFromCookiesController = async (req, res) => {
 
       return res.status(200).redirect('/');
     });
-  } catch (err) {
-    customError(err);
+  } catch (error) {
+    customError(error);
     loggers.error('Error to get user from cookies');
     return res.status(500).render('error/error500');
   }
@@ -38,7 +40,7 @@ export const getUserFromCookiesController = async (req, res) => {
 
 // no DAO applied
 export const getLogginController = async (req, res) => {
-  res.render('login');
+  res.render('login', { style: 'login' });
 };
 
 export const sendLogginController = async (req, res) => {
@@ -53,13 +55,15 @@ export const sendLogginController = async (req, res) => {
 
     bcrypt.compare(password, user.password).then((result) => {
       if (result) {
+        user.active = true;
+        user.save();
         const token = generateToken(user);
         const userToken = token;
-
         const decodedToken = jwt.verify(userToken, secret);
         const userId = decodedToken.userId;
         const message = `User ${decodedToken.first_name} ${decodedToken.last_name} with ID  #${userId} has been successfully logged in`;
         customMessageSessions(message);
+
         res.cookie(cookieName, userToken).redirect('/');
       } else {
         loggers.error('Error to login user');
@@ -83,13 +87,21 @@ export const getLogoutController = async (req, res) => {
 
   const message = `User ${firstName} ${lastName} with ID #${userId} has been logged out successfully`;
   customMessageSessions(message);
-  res.clearCookie(cookieName);
-  res.redirect('/');
+
+  try {
+    await UserService.update(userId, { active: false });
+    res.clearCookie(cookieName);
+    res.redirect('/');
+  } catch (err) {
+    customError(err);
+    loggers.error('Error to update user status to inactive');
+    return res.status(500).render('error/error500');
+  }
 };
 
 // no DAO applied
 export const getSignupController = async (req, res) => {
-  res.render('signup');
+  res.render('signup', { style: 'signup' });
 };
 
 // no DAO applied
@@ -109,13 +121,18 @@ export const setSignupController = async (req, res, next) => {
       }
     }
 
-    req.login(user, (err) => {
+    req.login(user, async (err) => {
       if (err) {
         customError(err);
         loggers.error(err);
         return res.status(403).render('error/error403');
       }
-
+      try {
+        await sendWelcomeUser(user.email);
+      } catch (err) {
+        customError(err);
+        loggers.error('Error sending welcome email');
+      }
       res.redirect('/login');
     });
   })(req, res, next);
@@ -124,7 +141,7 @@ export const setSignupController = async (req, res, next) => {
 // no DAO applied
 export const getSignupAdminController = (req, res) => {
   const user = getUserFromToken(req);
-  res.render('signupadmin', { user });
+  res.render('signupadmin', { style:'signupadmin',user });
 };
 
 // no DAO applied
@@ -144,13 +161,18 @@ export const setSignupAdminController = (req, res, next) => {
       }
     }
 
-    req.login(user, (err) => {
+    req.login(user, async (err) => {
       if (err) {
         customError(err);
         loggers.error('Error creating user');
         return res.status(403).render('error/error403');
       }
-
+      try {
+        await sendWelcomeUser(user.email);
+      } catch (err) {
+        customError(err);
+        loggers.error('Error sending welcome email', err);
+      }
       res.redirect('/users');
     });
   })(req, res, next);

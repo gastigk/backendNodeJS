@@ -1,8 +1,9 @@
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import bcrypt from 'bcrypt';
-import User from '../models/user.model.js';
 import jwt from 'jsonwebtoken';
+
+import User from '../models/user.model.js';
 import config from './config.js';
 import loggers from './logger.config.js';
 
@@ -17,6 +18,8 @@ export const generateToken = (user) => {
     role: user.role,
     age: user.age,
     phone: user.phone,
+    active: user.active,
+    updatedAt: user.updatedAt,
   };
 
   const token = jwt.sign(payload, secret, {
@@ -33,17 +36,17 @@ export const authenticateJWT = (req, res, next) => {
     return res.status(401).json({ message: 'Missing authorization token' });
   }
 
-  jwt.verify(token, secret, (err, decodedToken) => {
-    if (err) {
-      loggers.error(err);
-      return res.status(403).json({ message: 'Invalid token' });
+  jwt.verify(token, secret, (error, decodedToken) => {
+    if (error) {
+      loggers.error(error);
+      return res.status(403).render('error/error403');
     }
 
     User.findById(decodedToken.userId)
       .exec()
       .then((user) => {
         if (!user) {
-          return res.status(404).json({ message: 'User not found' });
+          return res.status(404).render('error/error404');
         }
 
         req.user = user;
@@ -52,7 +55,7 @@ export const authenticateJWT = (req, res, next) => {
       .catch((error) => {
         customError(error);
         loggers.error('Error to verify user token');
-        return res.status(500).json({ message: 'Internal server error' });
+        return res.status(500).render('error/error500');
       });
   });
 };

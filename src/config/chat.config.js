@@ -1,5 +1,6 @@
-import Messages from '../models/message.model.js';
 import loggers from './logger.config.js';
+
+import Messages from '../models/message.model.js';
 
 // client sends his message
 const chatApp = (socketServer) => {

@@ -1,4 +1,5 @@
 import { Router } from 'express';
+
 import isAdmin from '../middlewares/admin.middleware.js';
 import { getProductForEditByIdController } from '../controllers/product.controller.js';
 

@@ -1,27 +1,31 @@
-import Product from '../models/product.model.js';
+import { ProductService } from '../repositories/index.js';
+import loggers from '../config/logger.config.js';
+import customError from './error.log.js';
 
 export const generateMockProducts = async () => {
   try {
     const mockProducts = [];
 
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 33; i++) {
       const newProduct = {
         title: `Mocking Product #${i}`,
-        category: 'Tennis',
+        category: 'Test',
         code: `T${i}`,
         description:
           'Test Description - This is a randomly generated test description for the product',
-        price: 15249,
-        stock: 10,
-        thumbnail: `https://res.cloudinary.com/drl62fylt/image/upload/v1676036080/piedra_hwjvu6.jpg`,
+        price: 12.999,
+        stock: 13,
+        thumbnail: `https://res.cloudinary.com/drl62fylt/image/upload/c_thumb,w_200,h_200,g_auto/v1676035925/rituales_kiqmd2.jpg`,
         status: true,
       };
 
       mockProducts.push(newProduct);
     }
 
-    await Product.insertMany(mockProducts);
+    await ProductService.insertMany(mockProducts);
   } catch (error) {
-    console.error('Error generating test products:', error);
+    customError(error);
+    loggers.error('Error al generar productos de prueba');
+    throw error;
   }
 };

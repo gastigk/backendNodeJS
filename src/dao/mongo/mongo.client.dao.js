@@ -5,6 +5,7 @@ import loggers from '../../config/logger.config.js';
 const mongoConnection = config.db.mongo_connection;
 const mongoDatabase = config.db.mongo_database;
 
+// connected to the ODM (Object Document Mapping): mongoose
 export default class MongoClient {
   constructor() {
     this.connected = true;
@@ -15,10 +16,10 @@ export default class MongoClient {
     try {
       await this.client.connect(mongoConnection);
       loggers.info(
-        `Successful connection to the database "${mongoDatabase}" at MongoDB Atlas`
+        `Successful connection to the DB "${mongoDatabase}" at MongoDB Atlas`
       );
     } catch (err) {
-      loggers.error('Cannot connect to database');
+      loggers.error('Cannot connect to DB');
     }
   };
 }

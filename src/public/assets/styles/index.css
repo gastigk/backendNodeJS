@@ -1,108 +1,219 @@
-.index_div{
-    padding: 2rem;
+/* Variables */
+:root {
+  /* Colores */
+  --first: #90a755;
+  --second: #f5f5f5;
+  --third: #3d4b19;
+  --fourth: #7d895d;
+  --gold: #c29436;
+  --light: #eee;
+  --dark: #333;
+  --sweetdark: #e3e3e3;
+  --brick: #c93c20;
+  /* Tamaños */
+  --small: 200px;
+  --medium: 400px;
+  --large: 600px;
 }
-.index_div h1,
-.index_div h2,
-.index_div h3{
-    padding: 1rem;
+
+/* Reglas de Utilidad */
+* {
+  font-family: var(--fontR);
+  box-sizing: border-box;
+  scroll-behavior: smooth;
 }
-.index_div h1{
-    font-size: 2rem;
-    color: var(--first);
+
+/* Reinicios de Estilos */
+/* Margenes */
+body,
+h1,
+h2,
+h3,
+h4,
+header p,
+.submenu,
+.subitems,
+.menu {
+  margin: 0;
 }
-.index_div h1 span{
-    color: var(--gold);
+
+h1 {
+  font-size: 1.3em;
+  margin-block-start: 0.77em;
+  margin-block-end: 0.77em;
 }
-.index_div__div{
-    display: flex;
-    justify-content: space-evenly;
+
+h2 {
+  font-size: 1.1em;
 }
-.index_div__div a{
-    max-width: 10rem;
+
+h3 {
+  font-size: 0.9em;
 }
-.login{
-    padding: 4rem;
-    max-width: 30rem;
-    border: 1px solid var(--gold);
-    border-radius: 2rem;
-    margin: 2rem;
+
+p {
+  font-size: 0.6em;
 }
-.checkout{
-    padding: 4rem;   
-    border: 1px solid var(--gold);
-    border-radius: 2rem;
-    margin: 2rem;
+
+/* Rellenos */
+.submenu,
+.subitems,
+.menu {
+  padding: 0;
 }
-.checkout h1{
-    font-size: 1.2rem;
-    color: var(--first);
-    text-align: left;
+
+/* Bordes */
+iframe {
+  border: 0;
 }
-.checkout h2{
-    color: var(--gold);
-    font-size: 1.5rem;
+
+/* Estilos */
+:is(header, nav, footer, ul) a {
+  text-decoration: none;
 }
-.michat,
-.iniciodesession,
-.noAutorizado{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 6rem 0;
+
+:is(ul) li {
+  list-style: none;
 }
-.nonono{
-    border: 2px solid var(--brick);    
+
+.products {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding: 1rem;
 }
-.red{
-    color: red;
-    font-weight: bold;
+
+.buttons_pay {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: stretch;
 }
-.green{
-    color: green;
-    font-weight: bold;
+
+.buttons_pay form {
+  margin: 1rem;
 }
-.violet{
-    color: violet;
-    font-weight: bold;
+
+.buttons_pay .links {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-.line{
-    width: 100%;
-    height: 4px;
-    background-color: var(--first);
-    border-radius: 50%;
-    margin: 3rem 0;
+
+.group-comprar {
+  align-items: center;
+  justify-content: space-between;
 }
-.form-group{
-    margin-bottom: .8rem;
+
+.group-comprar input {
+  height: 2.5rem;
+  max-width: 4rem;
 }
-.headTable{
-    background-color: var(--first);
-    color: var(--light);
+
+/* Add buttom */
+.cssbuttons-io-button {
+  display: flex;
+  align-items: center;
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 16px;
+  padding: 0.7em 1.4em 0.7em 1.1em;
+  color: white;
+  background: #ad5389;
+  background: linear-gradient(
+    0deg,
+    rgba(20, 167, 62, 1) 0%,
+    rgba(102, 247, 113, 1) 100%
+  );
+  border: none;
+  box-shadow: 0 0.7em 1.5em -0.5em #14a73e98;
+  letter-spacing: 0.05em;
+  border-radius: 20em;
 }
-.tablaUsuarios{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-top: 3rem;
-    margin-bottom: 5rem;
+
+.cssbuttons-io-button svg {
+  margin-right: 6px;
 }
-.usuarios{
-    display: flex;
-    justify-content: center;
-    font-size: 1.6rem;
+
+.cssbuttons-io-button:hover {
+  box-shadow: 0 0.5em 1.5em -0.5em #14a73e98;
 }
-.btnusuaios{
-    width: 8rem;
+
+.cssbuttons-io-button:active {
+  box-shadow: 0 0.3em 1em -0.5em #14a73e98;
 }
-.bienvenida{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
-    margin: 3rem 0; 
+
+/* Detail buttom */
+.beautiful-button {
+  position: relative;
+  display: inline-block;
+  background: linear-gradient(to bottom, #1b1c3f, #4a4e91);
+  /* Gradient background */
+  color: white;
+  /* White text color */
+  font-family: "Segoe UI", sans-serif;
+  /* Stylish and legible font */
+  font-weight: bold;
+  font-size: 18px;
+  /* Large font size */
+  border: none;
+  /* No border */
+  border-radius: 30px;
+  /* Rounded corners */
+  padding: 14px 28px;
+  /* Large padding */
+  cursor: pointer;
+  /* Cursor on hover */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  /* Subtle shadow */
+  animation: button-shimmer 2s infinite;
+  transition: all 0.3s ease-in-out;
+  /* Smooth transition */
 }
-.bienvenida img{
-    width: 3rem;   
+.beautiful-button a {
+  text-decoration: none;
+  /* Gradient background */
+  color: white;
+  /* White text color */
+  font-family: "Segoe UI", sans-serif;
+  /* Stylish and legible font */
+  font-weight: bold;
+  font-size: 18px;
+}
+
+/* Hover animation */
+.beautiful-button:hover {
+  background: linear-gradient(to bottom, #2c2f63, #5b67b7);
+  animation: button-particles 1s ease-in-out infinite;
+  transform: translateY(-2px);
+}
+
+/* Click animation */
+.beautiful-button:active {
+  transform: scale(0.95);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Shimmer animation */
+@keyframes button-shimmer {
+  0% {
+    background-position: left top;
+  }
+
+  100% {
+    background-position: right bottom;
+  }
+}
+
+/* Particle animation */
+@keyframes button-particles {
+  0% {
+    background-position: left top;
+  }
+
+  100% {
+    background-position: right bottom;
+  }
 }

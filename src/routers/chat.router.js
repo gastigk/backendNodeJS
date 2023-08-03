@@ -1,4 +1,5 @@
 import { Router } from 'express';
+
 import isLoggedIn from '../middlewares/login.middleware.js';
 import {
   getChatsController,
@@ -8,7 +9,6 @@ import {
 const router = Router();
 
 router.get('/', isLoggedIn, getChatsController);
-
 router.post('/', isLoggedIn, sendChatController);
 
 export default router;

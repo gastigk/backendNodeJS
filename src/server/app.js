@@ -4,7 +4,6 @@ import loggers from '../config/logger.config.js';
 import { getUserFromToken } from '../middlewares/user.middleware.js';
 import customError from '../services/error.log.js';
 
-
 const app = express();
 
 // third party configuration: static file compression with Brotli
@@ -72,7 +71,6 @@ import path from 'path';
 app.use(express.static(path.resolve('..', 'public'))); // use a folder's resources statically
 app.set('views', '../views/');
 
-// middleware of error
 import errorHandler from '../middlewares/error.middleware.js';
 app.use(errorHandler);
 
