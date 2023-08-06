@@ -6,14 +6,11 @@ import loggers from '../config/logger.config.js';
 import { ProductService } from '../repositories/index.js';
 import customError from '../services/error.log.js';
 
-const urlActual = config.urls.urlLocal;
-const port = config.ports.prodPort || '';
-
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: config.gmail.user,
-    pass: config.gmail.pass,
+    user: config.nodemailer.user,
+    pass: config.nodemailer.pass,
   },
   tls: { rejectUnauthorized: false },
 });

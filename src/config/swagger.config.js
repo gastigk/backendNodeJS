@@ -3,7 +3,7 @@ import __dirname from '../server/utils.js';
 
 const url = config.urls.urlLocal;
 const ports = config.ports.prodPort;
-const email = config.gmail.user;
+const email = config.nodemailer.user;
 
 export const swaggerOptions = {
   definition: {

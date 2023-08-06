@@ -18,7 +18,7 @@ export const generateMockProducts = async () => {
         status: faker.datatype.boolean(),
         stock: faker.number.int(100),
         category: faker.commerce.department(),
-        thumbnails: [],
+        thumbnail: faker.image.urlLoremFlickr({ width: 640, height: 480, category: 'abstract' })
       };
 
       mockProducts.push(newProduct);
@@ -27,7 +27,7 @@ export const generateMockProducts = async () => {
     await ProductService.insertMany(mockProducts);
   } catch (error) {
     customError(error);
-    loggers.error('Error al generar productos de prueba');
+    loggers.error('Error to create mocking products de prueba');
     throw error;
   }
 };

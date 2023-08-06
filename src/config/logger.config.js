@@ -55,6 +55,6 @@ const createLogger = () => {
   }
 };
 
-const loggers = createLogger(config.log.level);
+const loggers = createLogger(config.app.persistence);
 
 export default loggers;
