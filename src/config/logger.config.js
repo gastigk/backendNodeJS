@@ -25,7 +25,7 @@ const customWinstonOptions = {
 
 winston.addColors(customWinstonOptions.colors);
 
-const prod = config.log.level === 'PROD';
+const prod = config.app.environment === 'PROD';
 
 const createLogger = () => {
   if (prod) {
