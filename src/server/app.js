@@ -52,7 +52,7 @@ import { registerHandlebarsHelpers } from '../helpers/handlebars.helper.js';
 registerHandlebarsHelpers(app);
 configureHandlebars(app);
 
-// middleware third-party configuration: cookie analysis with cookie-parser
+// middleware third-party configuration: allows you to manage cookies within requests
 import cookieParser from 'cookie-parser';
 app.use(cookieParser());
 

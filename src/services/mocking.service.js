@@ -1,3 +1,5 @@
+import { faker } from '@faker-js/faker'
+
 import { ProductService } from '../repositories/index.js';
 import loggers from '../config/logger.config.js';
 import customError from './error.log.js';
@@ -8,15 +10,15 @@ export const generateMockProducts = async () => {
 
     for (let i = 0; i < 33; i++) {
       const newProduct = {
-        title: `Mocking Product #${i}`,
-        category: 'Test',
-        code: `T${i}`,
-        description:
-          'Test Description - This is a randomly generated test description for the product',
-        price: 12.999,
-        stock: 13,
-        thumbnail: `https://res.cloudinary.com/drl62fylt/image/upload/c_thumb,w_200,h_200,g_auto/v1676035925/rituales_kiqmd2.jpg`,
-        status: true,
+        _id: faker.database.mongodbObjectId(),
+        title: faker.commerce.productName(),
+        description: faker.commerce.productDescription(),
+        price: faker.commerce.price(),
+        code: faker.string.alphanumeric(5),
+        status: faker.datatype.boolean(),
+        stock: faker.number.int(100),
+        category: faker.commerce.department(),
+        thumbnails: [],
       };
 
       mockProducts.push(newProduct);
