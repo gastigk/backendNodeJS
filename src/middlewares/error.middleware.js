@@ -1,5 +1,5 @@
 import EErros from '../services/error/enums.error.js';
-import logger from '../config/logger.config.js';
+import loggers from '../config/loggers.config.js';
 
 const swaggerUrls = [
   '/docs',
@@ -16,10 +16,10 @@ const swaggerUrls = [
 export default (error, req, res, next) => {
   const requestedPath = req.path;
   if (swaggerUrls.includes(requestedPath)) {
-    logger.info('Swagger route: ' + requestedPath);
+    loggers.info('Swagger route: ' + requestedPath);
     next();
   } else {
-    logger.error(error.name);
+    loggers.error(error.name);
 
     switch (error.code) {
       case EErros.INVALID_TYPES_ERROR:

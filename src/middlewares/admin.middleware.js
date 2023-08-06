@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 
 import config from '../config/config.js';
-import loggers from '../config/logger.config.js';
+import loggers from '../config/loggers.config.js';
 import customError from '../services/error.log.js';
 
 const secret = config.jwt.privateKey;
@@ -11,7 +11,7 @@ const isAdmin = (req, res, next) => {
   const userToken = req.cookies[cookieName];
 
   if (!userToken) {
-    res.render('error/notAuthorized');
+    res.render('error/notAuthorized', { style:'notAuthorized' })
     return;
   }
 
@@ -23,12 +23,12 @@ const isAdmin = (req, res, next) => {
       req.user = user;
       next();
     } else {
-      res.render('error/notAuthorized');
+      res.render('error/notAuthorized', { style:'notAuthorized' })
     }
   } catch (error) {
     customError(error);
     loggers.error('Token verification failed');
-    res.render('error/notAuthorized');
+    res.render('error/notAuthorized', { style:'notAuthorized' })
   }
 };
 

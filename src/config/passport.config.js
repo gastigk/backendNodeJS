@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 
 import User from '../models/user.model.js';
 import config from './config.js';
-import loggers from './logger.config.js';
+import loggers from './loggers.config.js';
 
 const secret = config.jwt.privateKey;
 
@@ -39,14 +39,14 @@ export const authenticateJWT = (req, res, next) => {
   jwt.verify(token, secret, (error, decodedToken) => {
     if (error) {
       loggers.error(error);
-      return res.status(403).render('error/error403');
+      return res.status(403).render('error/error403', { style:'error403' });
     }
 
     User.findById(decodedToken.userId)
       .exec()
       .then((user) => {
         if (!user) {
-          return res.status(404).render('error/error404');
+          return res.status(404).render('error/error404', { style:'error404' });
         }
 
         req.user = user;
@@ -55,7 +55,7 @@ export const authenticateJWT = (req, res, next) => {
       .catch((error) => {
         customError(error);
         loggers.error('Error to verify user token');
-        return res.status(500).render('error/error500');
+        return res.status(500).render('error/error500', { style:'error500' });
       });
   });
 };

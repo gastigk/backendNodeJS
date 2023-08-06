@@ -2,9 +2,9 @@ import passport from 'passport';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-import { generateToken } from '../config/passport.config.js';
+import { generateToken } from '../helpers/jwt.helper.js';
 import config from '../config/config.js';
-import loggers from '../config/logger.config.js';
+import loggers from '../config/loggers.config.js';
 import { getUserFromToken } from '../middlewares/user.middleware.js';
 import customError from '../services/error.log.js';
 import customMessageSessions from '../services/sessions.log.js';
@@ -18,7 +18,7 @@ export const getUserFromCookiesController = async (req, res) => {
   const userToken = req.cookies[cookieName];
 
   if (!userToken) {
-    return res.status(401).render('error/notLoggedIn');
+    return res.status(401).render('error/notLoggedIn', { style:'notLoggedIn' });
   }
 
   try {
@@ -26,7 +26,7 @@ export const getUserFromCookiesController = async (req, res) => {
     const userId = decodedToken.userId;
     UserService.getById(userId, (err, user) => {
       if (err || !user) {
-        return res.status(404).render('error/error404');
+        return res.status(404).render('error/error404', { style:'error404' });
       }
 
       return res.status(200).redirect('/');
@@ -34,7 +34,7 @@ export const getUserFromCookiesController = async (req, res) => {
   } catch (error) {
     customError(error);
     loggers.error('Error to get user from cookies');
-    return res.status(500).render('error/error500');
+    return res.status(500).render('error/error500', { style:'error500' });
   }
 };
 
@@ -50,7 +50,7 @@ export const sendLogginController = async (req, res) => {
     const user = await UserService.getOne({ email: email });
 
     if (!user) {
-      return res.status(401).render('error/notLoggedIn');
+      return res.status(401).render('error/notLoggedIn', { style:'notLoggedIn' });
     }
 
     bcrypt.compare(password, user.password).then((result) => {
@@ -67,13 +67,13 @@ export const sendLogginController = async (req, res) => {
         res.cookie(cookieName, userToken).redirect('/');
       } else {
         loggers.error('Error to login user');
-        return res.status(401).render('error/notLoggedIn');
+        return res.status(401).render('error/notLoggedIn', { style:'notLoggedIn' });
       }
     });
   } catch (err) {
     customError(err);
     loggers.error('Error to login user');
-    return res.status(500).render('error/error500');
+    return res.status(500).render('error/error500', { style:'error500' });
   }
 };
 
@@ -95,7 +95,7 @@ export const getLogoutController = async (req, res) => {
   } catch (err) {
     customError(err);
     loggers.error('Error to update user status to inactive');
-    return res.status(500).render('error/error500');
+    return res.status(500).render('error/error500', { style:'error500' });
   }
 };
 
@@ -110,14 +110,14 @@ export const setSignupController = async (req, res, next) => {
     if (err) {
       customError(err);
       loggers.error(err);
-      return res.status(403).render('error/error403');
+      return res.status(403).render('error/error403', { style:'error403' });
     }
 
     if (!user) {
       if (info.message === 'Email already exists.') {
-        return res.render('error/notSignupByEmail');
+        return res.render('error/notSignupByEmail', { style:'notSignupByEmail' });
       } else if (info.message === 'Phone already exists.') {
-        return res.render('error/notSignupByPhone');
+        return res.render('error/notSignupByPhone', { style:'notSignupByPhone' });
       }
     }
 
@@ -125,7 +125,7 @@ export const setSignupController = async (req, res, next) => {
       if (err) {
         customError(err);
         loggers.error(err);
-        return res.status(403).render('error/error403');
+        return res.status(403).render('error/error403', { style:'error403' });
       }
       try {
         await sendWelcomeUser(user.email);
@@ -150,14 +150,14 @@ export const setSignupAdminController = (req, res, next) => {
     if (err) {
       customError(err);
       loggers.error('Error creating user');
-      return res.status(403).render('error/error403');
+      return res.status(403).render('error/error403', { style:'error403' });
     }
 
     if (!user) {
       if (info.message === 'Email already exists.') {
-        return res.render('error/notSignupByEmail');
+        return res.render('error/notSignupByEmail', { style:'notSignupByEmail' });
       } else if (info.message === 'Phone already exists.') {
-        return res.render('error/notSignupByPhone');
+        return res.render('error/notSignupByPhone', { style:'notSignupByPhone' });
       }
     }
 
@@ -165,7 +165,7 @@ export const setSignupAdminController = (req, res, next) => {
       if (err) {
         customError(err);
         loggers.error('Error creating user');
-        return res.status(403).render('error/error403');
+        return res.status(403).render('error/error403', { style:'error403' });
       }
       try {
         await sendWelcomeUser(user.email);

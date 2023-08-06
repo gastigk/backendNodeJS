@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import config from '../config/config.js';
-import loggers from '../config/logger.config.js';
+import loggers from '../config/loggers.config.js';
 import customError from '../services/error.log.js';
 
 const secret = config.jwt.privateKey;

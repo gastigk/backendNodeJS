@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import loggers from '../config/logger.config.js';
+import loggers from '../config/loggers.config.js';
 
 const logDirectory = path.join('../', 'logs');
 

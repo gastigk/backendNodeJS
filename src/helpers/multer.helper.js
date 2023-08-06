@@ -1,7 +1,7 @@
 import multer from 'multer';
 import path from 'path';
 
-import loggers from '../config/logger.config.js';
+import loggers from '../config/loggers.config.js';
 import __dirname from '../server/utils.js';
 import customError from '../services/error.log.js';
 

@@ -1,5 +1,5 @@
 import config from '../config/config.js';
-import loggers from '../config/logger.config.js';
+import loggers from '../config/loggers.config.js';
 import { getUserFromToken } from '../middlewares/user.middleware.js';
 import Product from '../models/product.model.js';
 import customError from '../services/error.log.js';
@@ -73,7 +73,7 @@ export const getIndexProductsController = async (req, res) => {
   } catch (error) {
     customError(error);
     loggers.error('Products not found');
-    res.status(500).render('error/notProduct', { user });
+    res.status(500).render('error/notProduct', { style:'notProduct', user });
   }
 };
 
@@ -114,7 +114,7 @@ export const getAllProductsController = async (req, res, next) => {
   } catch (error) {
     customError(error);
     loggers.error('Products not found');
-    res.status(500).render('error/notProduct', { user });
+    res.status(500).render('error/notProduct', { style:'notProduct', user });
   }
 };
 
@@ -141,7 +141,7 @@ export const createProductController = async (req, res) => {
     const page = 1;
     const limit = 9;
 
-    const result = await ProductService.paginate(
+    const result = await ProductService.getAllPaginate(
       {},
       { page, limit, lean: true }
     );
@@ -163,7 +163,7 @@ export const createProductController = async (req, res) => {
   } catch (error) {
     customError(error);
     loggers.error('Error saving the product in the database');
-    res.status(500).render('error/notProduct', { user });
+    res.status(500).render('error/notProduct', { style:'notProduct', user });
   }
 };
 
@@ -207,7 +207,7 @@ export const getProductByCategoryController = async (req, res, next) => {
   } catch (error) {
     customError(error);
     loggers.error('Products not found');
-    res.status(500).render('error/notProduct', { user });
+    res.status(500).render('error/notProduct', { style:'notProduct', user });
   }
 };
 
@@ -220,14 +220,14 @@ export const getProductByIdController = async (req, res) => {
     const product = await ProductService.getById(productId);
 
     if (!product) {
-      res.status(404).render('error/error404', { user });
+      res.status(404).render('error/error404', { style:'error404', user });
       return;
     }
     res.render('productsid', { style: 'productsid', product, user, adminRole });
   } catch (error) {
     customError(error);
     loggers.error('Error getting product by ID');
-    res.status(500).render('error/notProduct', { user });
+    res.status(500).render('error/notProduct', { style:'notProduct', user });
   }
 };
 
@@ -240,7 +240,7 @@ export const getPurchaseController = async (req, res) => {
     }).populate('items.producto');
 
     if (!cart) {
-      res.status(404).render('error/error404', { user });
+      res.status(404).render('error/error404', { style:'error404', user });
       return;
     }
 
@@ -284,7 +284,7 @@ export const getPurchaseController = async (req, res) => {
   } catch (error) {
     customError(error);
     loggers.error('Error processing the purchase');
-    res.status(500).render('error/error500', { user });
+    res.status(500).render('error/error500', { style:'error500', user });
   }
 };
 
@@ -296,7 +296,7 @@ export const sendPurchaseController = async (req, res) => {
     }).populate('items.producto');
 
     if (!cart) {
-      res.status(404).render('error/error404', { user });
+      res.status(404).render('error/error404', { style:'error404', user });
       return;
     }
 
@@ -326,7 +326,7 @@ export const sendPurchaseController = async (req, res) => {
       } catch (error) {
         customError(error);
         loggers.error('Error when checking the products in the cart');
-        res.status(500).render('error/error500', { user });
+        res.status(500).render('error/error500', { style:'error500', user });
       }
     }
 
@@ -334,7 +334,7 @@ export const sendPurchaseController = async (req, res) => {
 
     // check if there are any products left in the cart
     if (cart.items.length === 0) {
-      res.render('error/notStock', {
+      res.render('error/notStock', { style:'notStock',
         // Error: there is not enough stock for any of the products in the cart
         user,
         products: cart.items.map((item) => item.producto),
@@ -365,7 +365,7 @@ export const sendPurchaseController = async (req, res) => {
   } catch (error) {
     customError(error);
     loggers.error('Error processing the purchase');
-    res.status(500).render('error/error500', { user });
+    res.status(500).render('error/error500', { style:'error500',user });
   }
 };
 
@@ -379,7 +379,7 @@ export const getMockingProductsController = async (req, res, next) => {
   } catch (error) {
     customError(error);
     loggers.error('Error generating mocking products');
-    res.status(500).render('error/error500', { user });
+    res.status(500).render('error/error500', { style:'error500', user });
   }
 };
 
@@ -391,11 +391,11 @@ export const getProductForEditByIdController = async (req, res) => {
     if (producto) {
       res.render('productsedit', { style: 'productsedit', producto, user });
     } else {
-      res.status(404).render('error/error404', { user });
+      res.status(404).render('error/error404', { style:'error404', user });
     }
   } catch (error) {
     customError(error);
     loggers.error('Product not found');
-    res.status(500).render('error/notProduct', { user });
+    res.status(500).render('error/notProduct', { style:'notProduct',user });
   }
 };

@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-import loggers from '../../config/logger.config.js';
+import loggers from '../../config/loggers.config.js';
 
 import path from 'path';
 import { fileURLToPath } from 'url';

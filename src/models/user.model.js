@@ -3,37 +3,16 @@ import mongoose from 'mongoose';
 const userCollection = 'users';
 
 const userSchema = new mongoose.Schema({
-  first_name: {
-    type: String,
-  },
-  last_name: {
-    type: String,
-  },
-  email: {
-    type: String,
-    unique: true,
-    index: true,
-  },
-  phone: {
-    type: String,
-    unique: true,
-  },
-  age: {
-    type: String,
-  },
-  role: {
-    type: String,
-  },
-  password: {
-    type: String,
-  },
-  cart: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Cart',
-    required: false,
-  },
+  first_name: { type: String, required: true },
+  last_name: { type: String, required: true },
+  email: { type: String, unique: true, required: true },
+  age: { type: Number, required: true },
+  password: { type: String, required: true },
+  cart: { type: mongoose.Schema.Types.ObjectId, ref: 'Cart' },
+  role: { type: String, enum: ['user', 'admin', 'premium'], default: 'user' },
 });
 
-const Users = mongoose.model(userCollection, userSchema);
+mongoose.set('strictQuery', false);
+const UserModel = mongoose.model(userCollection, userSchema);
 
-export default Users;
+export default UserModel;

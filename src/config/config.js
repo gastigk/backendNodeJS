@@ -41,5 +41,5 @@ export default {
   urls: {
     urlLocal: process.env.URL_LOCAL,
     urlProd: process.env.URL_PROD,
-  }
+  },
 };

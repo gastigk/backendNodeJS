@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 
 import Users from '../models/user.model.js';
 import config from './config.js';
-import loggers from './logger.config.js';
+import loggers from './loggers.config.js';
 
 const secret = config.jwt.privateKey;
 const cookieName = config.jwt.cookieName;

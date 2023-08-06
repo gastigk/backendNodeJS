@@ -1,4 +1,4 @@
-import loggers from '../config/logger.config.js';
+import loggers from '../config/loggers.config.js';
 import CustomError from '../services/error/custom.error.js';
 import EErros from '../services/error/enums.error.js';
 import { generateUserErrorInfo } from '../services/error/info.error.js';
@@ -102,13 +102,13 @@ export const getUserForEditByIdController = async (req, res) => {
 
     if (!user) {
       user = getUserFromToken(req);
-      return res.status(404).render('error/error404', { user });
+      return res.status(404).render('error/error404', { style: 'error404', user });
     }
     res.render('editUser', { style:'editUser', user });
   } catch (err) {
     customError(err);
     loggers.error('Error server');
-    res.status(500).render('error/error500', { user });
+    res.status(500).render('error/error500', { style: 'error500', user });
   }
 };
 
@@ -127,14 +127,14 @@ export const editUserByIdController = async (req, res) => {
     });
 
     if (!updatedUser) {
-      return res.status(404).render('error/error404', { user });
+      return res.status(404).render('error/error404', { style: 'error404', user });
     }
 
     res.redirect('/users');
   } catch (err) {
     customError(err);
     loggers.error('Error server');
-    res.status(500).render('error/error500', { user });
+    res.status(500).render('error/error500', { style: 'error500', user });
   }
 };
 
@@ -144,7 +144,7 @@ export const deleteUserByIdController = async (req, res) => {
     const user = await UserService.getById(userId);
 
     if (!user) {
-      return res.status(404).render('error/error404', { user });
+      return res.status(404).render('error/error404', { style: 'error404', user });
     }
 
     await UserService.delete(userId); // delete the user from the database
@@ -159,7 +159,7 @@ export const deleteUserByIdController = async (req, res) => {
   } catch (err) {
     customError(err);
     loggers.error('Error server');
-    res.status(500).render('error/error500', { user });
+    res.status(500).render('error/error500', { style: 'error500', user });
   }
 };
 
@@ -176,7 +176,7 @@ export const sendForgotPassword = async (req, res) => {
   } catch (err) {
     customError(err);
     loggers.error('Error sending password reset email.');
-    return res.status(500).render('error/error500');
+    return res.status(500).render('error/error500', { style: 'error500', user });
   }
 };
 
@@ -187,7 +187,7 @@ export const getResetPassword = async (req, res) => {
   } catch (err) {
     customError(err);
     loggers.error('Invalid or expired token');
-    return res.status(500).render('error/error500');
+    return res.status(500).render('error/error500', { style: 'error500', user });
   }
 };
 
@@ -200,6 +200,6 @@ export const setResetPassword = async (req, res) => {
   } catch (err) {
     customError(err);
     loggers.error('Failed to reset password');
-    return res.status(500).render('error/error500');
+    return res.status(500).render('error/error500', { style: 'error500', user });
   }
 };

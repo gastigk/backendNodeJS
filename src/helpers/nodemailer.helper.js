@@ -2,7 +2,7 @@ import nodemailer from 'nodemailer';
 import Mailgen from 'mailgen';
 
 import config from '../config/config.js';
-import loggers from '../config/logger.config.js';
+import loggers from '../config/loggers.config.js';
 import { ProductService } from '../repositories/index.js';
 import customError from '../services/error.log.js';
 

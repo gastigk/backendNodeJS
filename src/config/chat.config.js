@@ -1,4 +1,4 @@
-import loggers from './logger.config.js';
+import loggers from './loggers.config.js';
 
 import Messages from '../models/message.model.js';
 

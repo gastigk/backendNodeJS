@@ -7,8 +7,8 @@ import customError from '../services/error.log.js';
 import {
   sendResetPasswordEmailMethod,
   resetPassword,
-} from '../helpers/functions.helpers.js';
-import { generateToken } from '../middlewares/passport.middleware.js';
+} from '../helpers/nodemailer.helper.js';
+import { generateToken } from '../helpers/jwt.helper.js';
 import { UserService } from '../repositories/index.js';
 
 const secret = config.jwt.privateKey;
@@ -25,7 +25,9 @@ export const sendForgotPassword = async (req, res) => {
   try {
     const user = await UserService.getOne({ email });
     if (!user) {
-      return res.status(404).render('error/userNotFound', { email });
+      return res
+        .status(404)
+        .render('error/userNotFound', { style: 'userNotFound', email });
     }
     const resetToken = generateToken(user._id);
     await sendResetPasswordEmailMethod(email, resetToken);
@@ -33,18 +35,18 @@ export const sendForgotPassword = async (req, res) => {
   } catch (err) {
     customError(err);
     loggers.error('Error sending password reset email', err);
-    return res.status(500).render('error/error500');
+    return res.status(500).render('error/error500', { style: 'error500' });
   }
 };
 
 export const getResetPassword = async (req, res) => {
   const { token } = req.params;
   try {
-    res.render('resetPasswordForm', { style:'resetPasswordForm', token });
+    res.render('resetPasswordForm', { style: 'resetPasswordForm', token });
   } catch (err) {
     customError(err);
     loggers.error('Invalid or expired token');
-    return res.status(500).render('error/error500');
+    return res.status(500).render('error/error500', { style: 'error500' });
   }
 };
 
@@ -60,10 +62,13 @@ export const setResetPassword = async (req, res) => {
   try {
     await resetPassword(userId, pass);
 
-    res.render('passwordResetSuccess', { style:'passwordResetSuccess', user: req.user });
+    res.render('passwordResetSuccess', {
+      style: 'passwordResetSuccess',
+      user: req.user,
+    });
   } catch (err) {
     customError(err);
     loggers.error('Failed to reset password');
-    return res.status(500).render('error/error500');
+    return res.status(500).render('error/error500', { style: 'error500' });
   }
 };

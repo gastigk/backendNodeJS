@@ -1,6 +1,6 @@
 import express from 'express';
 import config from '../config/config.js';
-import loggers from '../config/logger.config.js';
+import loggers from '../config/loggers.config.js';
 import { getUserFromToken } from '../middlewares/user.middleware.js';
 import customError from '../services/error.log.js';
 
@@ -109,8 +109,8 @@ function validateSwaggerRoutes(req, res, next) {
     customError(new Error(message));
     const user = getUserFromToken(req);
     !user
-      ? res.status(404).render('error/error404')
-      : res.status(404).render('error/error404', { user });
+      ? res.status(404).render('error/error404', { style:'error404' })
+      : res.status(404).render('error/error404', { style:'error404', user });
   }
 }
 app.use(validateSwaggerRoutes);

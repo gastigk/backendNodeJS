@@ -1,4 +1,4 @@
-import loggers from '../config/logger.config.js';
+import loggers from '../config/loggers.config.js';
 import customError from '../services/error.log.js';
 import Product from '../models/product.model.js';
 import { ProductService } from '../repositories/index.js';
@@ -38,6 +38,6 @@ export const sendProductsInRealTimeController = async (req, res) => {
   } catch (error) {
     customError(error);
     loggers.error('Product no found');
-    res.status(500).render('error/notProduct', { user });
+    res.status(500).render('error/notProduct', { style: 'notProduct', user });
   }
 };

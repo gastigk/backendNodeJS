@@ -17,6 +17,19 @@ switch (config.app.persistence) {
     const { default: UserMongoDAO } = await import('./mongo/user.mongo.dao.js');
     User = UserMongoDAO;
     break;
+
+  case 'FILE':
+    const { default: ProductFileDAO } = await import(
+      './mongo/product.file.dao.js'
+    );
+    Product = ProductMongoDAO;
+
+    // const { default: CartFileDAO } = await import('./mongo/cart.file.dao.js');
+    // Cart = CartFileDAO;
+
+    // const { default: UserFileDAO } = await import('./mongo/user.file.dao.js');
+    // User = UserFileDAO;
+    break;
   default:
     break;
 }

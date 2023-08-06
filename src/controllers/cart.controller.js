@@ -5,7 +5,7 @@ import Cart from '../models/cart.model.js';
 import { ProductService, CartService } from '../repositories/index.js';
 import { getUserFromToken } from '../middlewares/user.middleware.js';
 import config from '../config/config.js';
-import loggers from '../config/logger.config.js';
+import loggers from '../config/loggers.config.js';
 import customError from '../services/error.log.js';
 
 const cokieName = config.jwt.cookieName;
@@ -63,7 +63,7 @@ export const createCartController = async (req, res) => {
     }
 
     if (!cart || cart.items.length === 0 || (!userEmail && cart.user.email)) {
-      return res.render('error/notCart', { user });
+      return res.render('error/notCart', { style:'notCart', user });
     }
     const cartId = cart._id.toString();
 
@@ -110,7 +110,7 @@ export const createCartController = async (req, res) => {
   } catch (error) {
     customError(error);
     loggers.error('The cart was not found');
-    res.status(500).render('error/notCart', { user });
+    res.status(500).render('error/notCart', { style:'notCart', user });
   }
 };
 
@@ -138,7 +138,7 @@ export const clearCartByid = async (req, res) => {
   } catch (error) {
     customError(error);
     loggers.error('Error when emptying the cart');
-    res.status(500).render('error/notCart', { user });
+    res.status(500).render('error/notCart', { style:'notCart', user });
   }
 };
 
@@ -165,7 +165,7 @@ export const deleteCartById = async (req, res) => {
   } catch (error) {
     customError(error);
     loggers.error('Error deleting cart');
-    res.status(500).render('error/notCart', { user });
+    res.status(500).render('error/notCart', { style:'notCart', user });
   }
 };
 
@@ -200,7 +200,7 @@ export const updateProductsToCartById = async (req, res) => {
   } catch (error) {
     customError(error);
     loggers.error('Error updating product quantity');
-    res.status(500).render('error/notCart', { user });
+    res.status(500).render('error/notCart', { style:'notCart', user });
   }
 };
 
@@ -247,14 +247,14 @@ export const deleteCartByIdController = async (req, res) => {
   try {
     const cart = await CartService.getById(cartId);
     if (!cart) {
-      return res.status(404).render('error/error404', { user });
+      return res.status(404).render('error/error404', { style:'error404', user });
     }
 
     const itemIndex = cart.items.findIndex((item) => item._id.equals(itemId));
     if (itemIndex === -1) {
       return res
         .status(404)
-        .render('error/notCartProducts', { cartId, itemId, user });
+        .render('error/notCartProducts', { style:'notCartProducts', cartId, itemId, user });
     }
 
     cart.items.splice(itemIndex, 1);
@@ -268,6 +268,6 @@ export const deleteCartByIdController = async (req, res) => {
   } catch (error) {
     customError(error);
     loggers.error('Error when removing a product from the cart');
-    return res.status(500).render('error/notCart', { user });
+    return res.status(500).render('error/notCart', { style:'notCart', user });
   }
 };

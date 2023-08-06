@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import config from '../config/config.js';
-import loggers from '../config/logger.config.js';
+import loggers from '../config/loggers.config.js';
 import customError from '../services/error.log.js';
 
 const secret = config.jwt.privateKey;
@@ -26,7 +26,7 @@ const isLoggedIn = (req, res, next) => {
   } catch (error) {
     customError(error);
     loggers.error('Error to verify user token');
-    return res.status(404).render('error/error404');
+    return res.status(404).render('error/error404', { style:'error404' });
   }
 };
 

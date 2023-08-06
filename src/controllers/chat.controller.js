@@ -12,7 +12,7 @@ export const getChatsController = async (req, res) => {
   } catch (error) {
     customError(error);
     loggers.error('Error getting messages');
-    res.status(500).render('error/error500', { user });
+    res.status(500).render('error/error500', { style:'error500', user });
   }
 };
 
@@ -35,6 +35,6 @@ export const sendChatController = async (req, res) => {
   } catch (error) {
     customError(error);
     loggers.error('Error saving message');
-    res.status(500).render('error/error500', { user });
+    res.status(500).render('error/error500', { style:'error500', user });
   }
 };
