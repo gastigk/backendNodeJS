@@ -33,13 +33,13 @@ export const authenticateJWT = (req, res, next) => {
     return res.status(401).json({ message: 'Missing authorization token' });
   }
 
-  jwt.verify(token, secret, (error, decodedToken) => {
+  jwt.verify(token, secret, (error, credentials) => {
     if (error) {
       loggers.error(error);
       return res.status(403).render('error/error403', { style: 'error403' });
     }
 
-    User.findById(decodedToken.userId)
+    User.findById(credentials.userId)
       .exec()
       .then((user) => {
         if (!user) {

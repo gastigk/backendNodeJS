@@ -16,8 +16,8 @@ const isAdmin = (req, res, next) => {
   }
 
   try {
-    const decodedToken = jwt.verify(userToken, secret);
-    const user = decodedToken;
+    const credentials = jwt.verify(userToken, secret);
+    const user = credentials;
 
     if (user.role === 'admin') {
       req.user = user;

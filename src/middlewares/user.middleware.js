@@ -14,8 +14,8 @@ export function getUserFromToken(req) {
     }
 
     const userToken = req.cookies[cookieName];
-    const decodedToken = jwt.verify(userToken, secret);
-    return decodedToken;
+    const credentials = jwt.verify(userToken, secret);
+    return credentials;
   } catch (error) {
     customError(error);
     loggers.error('Failed to verify token');

@@ -14,8 +14,8 @@ const isLoggedIn = (req, res, next) => {
   }
 
   try {
-    const decodedToken = jwt.verify(userToken, secret);
-    const user = decodedToken;
+    const credentials = jwt.verify(userToken, secret);
+    const user = credentials;
 
     if (user) {
       req.user = user;

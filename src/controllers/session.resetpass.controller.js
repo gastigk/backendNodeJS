@@ -55,8 +55,8 @@ export const setResetPassword = async (req, res) => {
   const { password } = req.body;
 
   const userToken = token;
-  const decodedToken = jwt.verify(userToken, secret);
-  const userId = decodedToken.userId;
+  const credentials = jwt.verify(userToken, secret);
+  const userId = credentials.userId;
   const pass = await bcrypt.hash(password, 10);
 
   try {

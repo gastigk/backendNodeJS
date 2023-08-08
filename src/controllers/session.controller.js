@@ -22,8 +22,8 @@ export const getUserFromCookiesController = async (req, res) => {
   }
 
   try {
-    const decodedToken = jwt.verify(userToken, cookieName);
-    const userId = decodedToken.userId;
+    const credentials = jwt.verify(userToken, cookieName);
+    const userId = credentials.userId;
     UserService.getById(userId, (err, user) => {
       if (err || !user) {
         return res.status(404).render('error/error404', { style:'error404' });
@@ -59,9 +59,9 @@ export const sendLogginController = async (req, res) => {
         user.save();
         const token = generateToken(user);
         const userToken = token;
-        const decodedToken = jwt.verify(userToken, secret);
-        const userId = decodedToken.userId;
-        const message = `User ${decodedToken.first_name} ${decodedToken.last_name} with ID  #${userId} has been successfully logged in`;
+        const credentials = jwt.verify(userToken, secret);
+        const userId = credentials.userId;
+        const message = `User ${credentials.first_name} ${credentials.last_name} with ID  #${userId} has been successfully logged in`;
         customMessageSessions(message);
 
         res.cookie(cookieName, userToken).redirect('/');
