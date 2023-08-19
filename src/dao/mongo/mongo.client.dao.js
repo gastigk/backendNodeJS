@@ -1,9 +1,7 @@
 import mongoose from 'mongoose';
+
 import config from '../../config/config.js';
 import loggers from '../../config/loggers.config.js';
-
-const mongoConnection = config.db.mongo_connection;
-const mongoDatabase = config.db.mongo_database;
 
 // connected to the ODM (Object Document Mapping): mongoose
 export default class MongoClient {
@@ -14,9 +12,9 @@ export default class MongoClient {
 
   connect = async () => {
     try {
-      await this.client.connect(mongoConnection);
+      await this.client.connect(config.mongo.uri);
       loggers.info(
-        `Successful connection to the DB "${mongoDatabase}" at MongoDB Atlas`
+        `Successful connection to the DB "${config.mongo.dbname}" at Mongo Atlas`
       );
     } catch (err) {
       loggers.error('Cannot connect to DB');

@@ -1,6 +1,6 @@
 import loggers from './loggers.config.js';
 
-import Messages from '../models/message.model.js';
+import messageModel from '../models/message.model.js';
 
 // client sends his message
 const chatApp = (socketServer) => {
@@ -17,7 +17,7 @@ const chatApp = (socketServer) => {
       socketClient.emit('history', log);
       socketClient.broadcast.emit('history', log);
 
-      Messages.findOneAndUpdate(
+      messageModel.findOneAndUpdate(
         { user: data.user },
         { $push: { message: data.message } },
         { upsert: true }

@@ -1,8 +1,8 @@
 import loggers from '../config/loggers.config.js';
-import CustomError from '../services/error/custom.error.js';
-import EErros from '../services/error/enums.error.js';
-import { generateUserErrorInfo } from '../services/error/info.error.js';
-import customError from '../services/error.log.js';
+import CustomError from '../services/errors/custom.error.js';
+import EErros from '../services/errors/enums.error.js';
+import { generateUserErrorInfo } from '../services/errors/info.error.js';
+import customError from '../services/errors/log.error.js';
 import { UserService } from '../repositories/index.js';
 import { getUserFromToken } from '../middlewares/user.middleware.js';
 import UsersDTO from '../dto/user.dto.js';

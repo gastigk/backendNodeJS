@@ -1,12 +1,12 @@
-import Chat from '../models/message.model.js';
+import chatModel from '../models/message.model.js';
 import { getUserFromToken } from '../middlewares/user.middleware.js';
-import customError from '../services/error.log.js';
+import customError from '../services/errors/log.error.js';
 
 // no DAO applied
 export const getChatsController = async (req, res) => {
   try {
     let user = getUserFromToken(req);
-    const messages = await Chat.find();
+    const messages = await chatModel.find();
 
     res.render('chat', { style: 'chat', messages, user });
   } catch (error) {

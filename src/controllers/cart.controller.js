@@ -1,12 +1,12 @@
 import mongoose from 'mongoose';
 import shortid from 'shortid';
 
-import Cart from '../models/cart.model.js';
+import cartModel from '../models/cart.model.js';
 import { ProductService, CartService } from '../repositories/index.js';
 import { getUserFromToken } from '../middlewares/user.middleware.js';
 import config from '../config/config.js';
 import loggers from '../config/loggers.config.js';
-import customError from '../services/error.log.js';
+import customError from '../services/errors/log.error.js';
 
 const cokieName = config.jwt.cookieName;
 let user = null;
@@ -19,7 +19,7 @@ export async function getOrCreateCart(userEmail = null) {
     if (cart) {
       return cart;
     } else {
-      const newCart = new Cart({
+      const newCart = new cartModel({
         user: { email: userEmail },
         items: [],
         purchase_datetime: new Date(),
@@ -32,7 +32,7 @@ export async function getOrCreateCart(userEmail = null) {
     if (cart) {
       return cart;
     } else {
-      const newCart = new Cart({
+      const newCart = new cartModel({
         items: [],
         purchase_datetime: new Date(),
         code: shortid.generate(),

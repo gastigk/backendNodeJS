@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 import loggers from '../config/loggers.config.js';
-import customError from './error.log.js';
+import customError from './errors/log.error.js';
 
 const logDirectory = path.join('../', 'logs');
 

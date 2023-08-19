@@ -3,7 +3,7 @@ import path from 'path';
 
 import loggers from '../config/loggers.config.js';
 import __dirname from '../server/utils.js';
-import customError from '../services/error.log.js';
+import customError from '../services/errors/log.error.js';
 
 // middleware third-party configuration: file upload to server with multer
 const configureMulter = async () => {

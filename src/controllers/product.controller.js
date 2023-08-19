@@ -1,8 +1,10 @@
 import config from '../config/config.js';
 import loggers from '../config/loggers.config.js';
 import { getUserFromToken } from '../middlewares/user.middleware.js';
-import Product from '../models/product.model.js';
-import customError from '../services/error.log.js';
+import productModel from '../models/product.model.js';
+import customError from '../services/errors/custom.error.js';
+import EErros from '../services/errors/enums.error.js';
+import { generateProductErrorInfo } from '../services/errors/info.error.js';
 import { ProductService } from '../repositories/index.js';
 import { generateMockProducts } from '../services/mocking.service.js';
 import { sendPurchaseConfirmationEmail } from '../helpers/nodemailer.helper.js';
@@ -73,7 +75,7 @@ export const getIndexProductsController = async (req, res) => {
   } catch (error) {
     customError(error);
     loggers.error('Products not found');
-    res.status(500).render('error/notProduct', { style:'notProduct', user });
+    res.status(500).render('error/notProduct', { style: 'notProduct', user });
   }
 };
 
@@ -114,17 +116,22 @@ export const getAllProductsController = async (req, res, next) => {
   } catch (error) {
     customError(error);
     loggers.error('Products not found');
-    res.status(500).render('error/notProduct', { style:'notProduct', user });
+    res.status(500).render('error/notProduct', { style: 'notProduct', user });
   }
 };
 
 export const createProductController = async (req, res) => {
   const { title, category, code, description, price, stock } = req.body;
-  if (!title) {
-    return res.status(400).send('The "title" is required');
+  if (!title || !description || !code || !price || !stock || !category) {
+    customError.createError({
+      name: 'Product creation error',
+      cause: generateProductErrorInfo(req.body),
+      message: 'Error trying to create a product',
+      code: EErros.INVALID_TYPES_ERROR,
+    });
   }
 
-  const newProduct = new Product({
+  const newProduct = new productModel({
     title,
     category,
     status: true,
@@ -163,7 +170,7 @@ export const createProductController = async (req, res) => {
   } catch (error) {
     customError(error);
     loggers.error('Error saving the product in the database');
-    res.status(500).render('error/notProduct', { style:'notProduct', user });
+    res.status(500).render('error/notProduct', { style: 'notProduct', user });
   }
 };
 
@@ -207,7 +214,7 @@ export const getProductByCategoryController = async (req, res, next) => {
   } catch (error) {
     customError(error);
     loggers.error('Products not found');
-    res.status(500).render('error/notProduct', { style:'notProduct', user });
+    res.status(500).render('error/notProduct', { style: 'notProduct', user });
   }
 };
 
@@ -220,14 +227,14 @@ export const getProductByIdController = async (req, res) => {
     const product = await ProductService.getById(productId);
 
     if (!product) {
-      res.status(404).render('error/error404', { style:'error404', user });
+      res.status(404).render('error/error404', { style: 'error404', user });
       return;
     }
     res.render('productsid', { style: 'productsid', product, user, adminRole });
   } catch (error) {
     customError(error);
     loggers.error('Error getting product by ID');
-    res.status(500).render('error/notProduct', { style:'notProduct', user });
+    res.status(500).render('error/notProduct', { style: 'notProduct', user });
   }
 };
 
@@ -240,7 +247,7 @@ export const getPurchaseController = async (req, res) => {
     }).populate('items.producto');
 
     if (!cart) {
-      res.status(404).render('error/error404', { style:'error404', user });
+      res.status(404).render('error/error404', { style: 'error404', user });
       return;
     }
 
@@ -284,7 +291,7 @@ export const getPurchaseController = async (req, res) => {
   } catch (error) {
     customError(error);
     loggers.error('Error processing the purchase');
-    res.status(500).render('error/error500', { style:'error500', user });
+    res.status(500).render('error/error500', { style: 'error500', user });
   }
 };
 
@@ -296,7 +303,7 @@ export const sendPurchaseController = async (req, res) => {
     }).populate('items.producto');
 
     if (!cart) {
-      res.status(404).render('error/error404', { style:'error404', user });
+      res.status(404).render('error/error404', { style: 'error404', user });
       return;
     }
 
@@ -305,7 +312,7 @@ export const sendPurchaseController = async (req, res) => {
     // check the stock of each product in the cart
     for (const item of cart.items) {
       try {
-        const product = await Product.findById(item.producto._id);
+        const product = await productModel.findById(item.producto._id);
         if (!product) {
           loggers.warning(`Product not found with id: ${item.producto._id}`);
           continue;
@@ -326,7 +333,7 @@ export const sendPurchaseController = async (req, res) => {
       } catch (error) {
         customError(error);
         loggers.error('Error when checking the products in the cart');
-        res.status(500).render('error/error500', { style:'error500', user });
+        res.status(500).render('error/error500', { style: 'error500', user });
       }
     }
 
@@ -334,7 +341,8 @@ export const sendPurchaseController = async (req, res) => {
 
     // check if there are any products left in the cart
     if (cart.items.length === 0) {
-      res.render('error/notStock', { style:'notStock',
+      res.render('error/notStock', {
+        style: 'notStock',
         // Error: there is not enough stock for any of the products in the cart
         user,
         products: cart.items.map((item) => item.producto),
@@ -365,7 +373,7 @@ export const sendPurchaseController = async (req, res) => {
   } catch (error) {
     customError(error);
     loggers.error('Error processing the purchase');
-    res.status(500).render('error/error500', { style:'error500',user });
+    res.status(500).render('error/error500', { style: 'error500', user });
   }
 };
 
@@ -379,7 +387,7 @@ export const getMockingProductsController = async (req, res, next) => {
   } catch (error) {
     customError(error);
     loggers.error('Error generating mocking products');
-    res.status(500).render('error/error500', { style:'error500', user });
+    res.status(500).render('error/error500', { style: 'error500', user });
   }
 };
 
@@ -391,11 +399,11 @@ export const getProductForEditByIdController = async (req, res) => {
     if (producto) {
       res.render('productsedit', { style: 'productsedit', producto, user });
     } else {
-      res.status(404).render('error/error404', { style:'error404', user });
+      res.status(404).render('error/error404', { style: 'error404', user });
     }
   } catch (error) {
     customError(error);
     loggers.error('Product not found');
-    res.status(500).render('error/notProduct', { style:'notProduct',user });
+    res.status(500).render('error/notProduct', { style: 'notProduct', user });
   }
 };

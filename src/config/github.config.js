@@ -2,15 +2,15 @@ import passport from 'passport';
 import GitHubStrategy from 'passport-github2';
 import jwt from 'jsonwebtoken';
 
-import Users from '../models/user.model.js';
+import userModel from '../models/user.model.js';
 import config from './config.js';
 import loggers from './loggers.config.js';
 
 const secret = config.jwt.privateKey;
 const cookieName = config.jwt.cookieName;
-const clientID = config.github.client_Id;
-const clientSecret = config.github.client_Secret;
-const callbackURL = config.github.callback_URL;
+const clientID = config.github.clientId;
+const clientSecret = config.github.clientSecret;
+const callbackURL = config.github.callbackUri;
 
 const initializePassportGH = () => {
   passport.use(
@@ -23,10 +23,10 @@ const initializePassportGH = () => {
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
-          const user = await Users.findOne({ email: profile._json.email });
+          const user = await userModel.findOne({ email: profile._json.email });
           if (user) return done(null, user);
 
-          const newUser = await Users.create({
+          const newUser = await userModel.create({
             first_name: profile._json.name,
             email: profile._json.email,
             role: 'user',
@@ -51,7 +51,7 @@ const initializePassportGH = () => {
   });
 
   passport.deserializeUser(async (id, done) => {
-    const user = await Users.findById(id);
+    const user = await userModel.findById(id);
     done(null, user);
   });
 };

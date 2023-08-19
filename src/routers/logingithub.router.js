@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import config from '../config/config.js';
 import loggers from '../config/loggers.config.js';
 import customMessageSessions from '../services/sessions.log.js';
+import customError from '../services/errors/log.error.js';
 
 const router = Router();
 

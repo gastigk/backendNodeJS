@@ -8,18 +8,18 @@ const customWinstonOptions = {
     http: 1,
     info: 2,
     notice: 3,
-    warn: 4,
+    warning: 4,
     error: 5,
-    fatal: 6,
+    alert: 6,
   },
   colors: {
     debug: 'white',
-    http: 'green',
-    notice: 'cyan',
-    info: 'blue',
-    warn: 'yellow',
+    http: 'grey',
+    notice: 'blue',
+    info: 'cyan',
+    warning: 'yellowBG',
     error: 'red',
-    fatal: 'magenta',
+    alert: 'redBG',
   },
 };
 
@@ -31,7 +31,7 @@ const createLogger = () => {
   if (prod) {
     return winston.createLogger({
       levels: customWinstonOptions.levels,
-      level: 'fatal',
+      level: 'alert',
       transports: [
         new winston.transports.File({
           filename: './errors.log',
@@ -42,7 +42,7 @@ const createLogger = () => {
   } else {
     return winston.createLogger({
       levels: customWinstonOptions.levels,
-      level: 'fatal',
+      level: 'alert',
       transports: [
         new winston.transports.Console({
           format: winston.format.combine(
@@ -55,6 +55,6 @@ const createLogger = () => {
   }
 };
 
-const loggers = createLogger(config.app.persistence);
+const loggers = createLogger(config.app.environment);
 
 export default loggers;

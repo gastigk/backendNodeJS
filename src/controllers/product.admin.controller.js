@@ -1,7 +1,7 @@
 import { ProductService } from '../repositories/index.js';
 import { getUserFromToken } from '../middlewares/user.middleware.js';
 import loggers from '../config/loggers.config.js';
-import customError from '../services/error.log.js';
+import customError from '../services/errors/log.error.js';
 
 // defining functions
 export async function removeProductFromCart(cart, productId) {

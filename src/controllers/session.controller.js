@@ -6,7 +6,7 @@ import { generateToken } from '../helpers/jwt.helper.js';
 import config from '../config/config.js';
 import loggers from '../config/loggers.config.js';
 import { getUserFromToken } from '../middlewares/user.middleware.js';
-import customError from '../services/error.log.js';
+import customError from '../services/errors/log.error.js';
 import customMessageSessions from '../services/sessions.log.js';
 import { UserService } from '../repositories/index.js';
 import { sendWelcomeUser } from '../helpers/nodemailer.helper.js';

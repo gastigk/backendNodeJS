@@ -1,13 +1,13 @@
-import Cart from '../../models/cart.model.js';
+import cartModel from '../../models/cart.model.js';
 
 export default class CartDaoBD {
   constructor() {}
-  getOne = async (Object) => await Cart.findOne(Object).exec();
-  getAll = async () => await Cart.find();
-  getById = async (id) => await Cart.findById(id).lean().exec();
-  setCart = async (Array) => await Cart.aggregate(Array);
-  create = async (data) => await Cart.create(data);
+  getOne = async (Object) => await cartModel.findOne(Object).exec();
+  getAll = async () => await cartModel.find();
+  getById = async (id) => await cartModel.findById(id).lean().exec();
+  setCart = async (Array) => await cartModel.aggregate(Array);
+  create = async (data) => await cartModel.create(data);
   update = async (id, data) =>
-    await Cart.findByIdAndUpdate(id, data, { returnDocument: 'after' });
-  delete = async (Object) => await Cart.deleteOne(Object);
+    await cartModel.findByIdAndUpdate(id, data, { returnDocument: 'after' });
+  delete = async (Object) => await cartModel.deleteOne(Object);
 }

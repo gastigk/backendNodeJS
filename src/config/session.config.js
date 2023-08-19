@@ -1,27 +1,19 @@
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 
-import config from '../config/config.js';
+import config from './config.js';
 
 const configureSession = (app) => {
-  const mongoConnection = config.db.mongo_connection;
-  const mongoDatabase = config.db.mongo_database;
-  const secret = config.db.secret;
-
   app.use(
     session({
-      secret: secret,
+      store: MongoStore.create({
+        mongoUrl: config.mongo.uri,
+        dbName: config.mongo.dbname,
+        collectionName: 'sessions',
+      }),
+      secret: config.mongo.secret,
       resave: true,
       saveUninitialized: true,
-      store: MongoStore.create({
-        mongoUrl: mongoConnection,
-        dbName: mongoDatabase,
-        collectionName: 'sessions',
-        mongoOptions: {
-          useNewUrlParser: true,
-          useUnifiedTopology: true,
-        },
-      }),
     })
   );
 

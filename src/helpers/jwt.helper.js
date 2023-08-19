@@ -1,8 +1,9 @@
 import jwt from 'jsonwebtoken';
 
-import User from '../models/user.model.js';
+import userModel from '../models/user.model.js';
 import config from '../config/config.js';
 import loggers from '../config/loggers.config.js';
+import customError from '../services/errors/log.error.js';
 
 const secret = config.jwt.privateKey;
 
@@ -39,7 +40,7 @@ export const authenticateJWT = (req, res, next) => {
       return res.status(403).render('error/error403', { style: 'error403' });
     }
 
-    User.findById(credentials.userId)
+    userModel.findById(credentials.userId)
       .exec()
       .then((user) => {
         if (!user) {

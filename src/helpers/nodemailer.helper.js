@@ -4,7 +4,7 @@ import Mailgen from 'mailgen';
 import config from '../config/config.js';
 import loggers from '../config/loggers.config.js';
 import { ProductService } from '../repositories/index.js';
-import customError from '../services/error.log.js';
+import customError from '../services/errors/log.error.js';
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',

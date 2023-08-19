@@ -1,6 +1,6 @@
 import loggers from '../config/loggers.config.js';
-import customError from '../services/error.log.js';
-import Product from '../models/product.model.js';
+import customError from '../services/errors/log.error.js';
+import productModel from '../models/product.model.js';
 import { ProductService } from '../repositories/index.js';
 import { getUserFromToken } from '../middlewares/user.middleware.js';
 
@@ -16,7 +16,7 @@ export const sendProductsInRealTimeController = async (req, res) => {
     return res.status(400).render('The "title" field is required');
   }
 
-  const newProduct = new Product({
+  const newProduct = new productModel({
     title,
     category,
     status: true,

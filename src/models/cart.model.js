@@ -1,13 +1,15 @@
 import mongoose from 'mongoose';
 import shortid from 'shortid';
 
+const cartCollection = 'carts'
+
 const cartSchema = new mongoose.Schema(
   {
     items: [
       {
         producto: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: 'Product',
+          ref: 'products',
           required: true,
         },
         cantidad: {
@@ -49,6 +51,6 @@ cartSchema.pre('save', function (next) {
   next();
 });
 
-const Cart = mongoose.model('Cart', cartSchema);
+const cartModel = mongoose.model(cartCollection, cartSchema);
 
-export default Cart;
+export default cartModel;

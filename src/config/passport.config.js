@@ -2,8 +2,9 @@ import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import bcrypt from 'bcrypt';
 
-import User from '../models/user.model.js';
+import userModel from '../models/user.model.js';
 import loggers from './loggers.config.js';
+import customError from '../services/errors/log.error.js';
 
 passport.use(
   'signup',
@@ -15,8 +16,8 @@ passport.use(
     },
     async (req, email, password, done) => {
       try {
-        const existingUser = await User.findOne({ email: email });
-        const existingUserPhone = await User.findOne({ phone: req.body.phone });
+        const existingUser = await userModel.findOne({ email: email });
+        const existingUserPhone = await userModel.findOne({ phone: req.body.phone });
 
         if (existingUser) {
           return done(null, false, { message: 'Email already exists.' });
@@ -26,7 +27,7 @@ passport.use(
         }
 
         const hash = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-        const newUser = new User({
+        const newUser = new userModel({
           first_name: req.body.first_name,
           last_name: req.body.last_name,
           email: email,
@@ -53,7 +54,7 @@ const initializePassport = () => {
   });
 
   passport.deserializeUser(async (id, done) => {
-    const user = await User.findById(id);
+    const user = await userModel.findById(id);
     done(null, user);
   });
 

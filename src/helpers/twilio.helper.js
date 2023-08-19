@@ -2,7 +2,7 @@ import twilio from 'twilio';
 
 import config from '../config/config.js';
 import loggers from '../config/loggers.config.js';
-import customError from '../services/error.log.js';
+import customError from '../services/errors/log.error.js';
 
 const twilioNumberPhone = config.twilio.numberPhone;
 const twilioAccountSid = config.twilio.accountSid;

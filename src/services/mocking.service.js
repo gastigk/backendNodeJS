@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker'
 
 import { ProductService } from '../repositories/index.js';
 import loggers from '../config/loggers.config.js';
-import customError from './error.log.js';
+import customError from './errors/log.error.js';
 
 export const generateMockProducts = async () => {
   try {

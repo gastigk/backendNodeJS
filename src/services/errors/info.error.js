@@ -16,9 +16,14 @@ export const generateUserErrorInfo = (user) => {
     `;
 };
 
-export const errorMessagesProductosMocking = {
-  invalidFields: 'One or more fields are invalid.',
-  missingFields: 'One or more fields are required and were not provided.',
-  notFound: 'The requested resource was not found.',
-  internalServerError: 'Error server.',
-};
+export const generateProductErrorInfo = product => {
+  return `Uno o más properties están incompletos o no son válidos.
+  Lista de properties válidos:
+      - title: Must be a string (${product.title})
+      - description: Must be a string (${product.description})
+      - code: Must be a string (${product.code})
+      - price: Must be a number (${product.price})
+      - stock: Must be a number (${product.stock})
+      - category: Must be a string (${product.category})
+  `
+}

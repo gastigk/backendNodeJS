@@ -1,29 +1,35 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
-const ticketsCollection = "tickets"
+const ticketCollection = 'tickets';
 
-const ticketSchema = new mongoose.Schema({
+const ticketSchema = new mongoose.Schema(
+  {
     code: { type: String, required: true, unique: true },
     products: {
-        type: [{
-            _id: false,
-            product: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "products"
-            },
-            price: Number,
-            quantity: Number
-        }]
+      type: [
+        {
+          _id: false,
+          product: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'products',
+          },
+          price: Number,
+          quantity: Number,
+        },
+      ],
     },
     amount: { type: Number },
-    purchaser: { type: String, ref: "users" }
-}, {
+    purchaser: { type: String, ref: 'users' },
+  },
+  {
     timestamps: {
-        createdAt: 'purchase_datetime'
-    }
-})
+      createdAt: 'purchase_datetime',
+    },
+  }
+);
 
-mongoose.set("strictQuery", false)
-const ticketModel = mongoose.model(ticketsCollection, ticketSchema)
+mongoose.set('strictQuery', false);
 
-export default ticketModel
+const ticketModel = mongoose.model(ticketCollection, ticketSchema);
+
+export default ticketModel;
