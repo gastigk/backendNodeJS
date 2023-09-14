@@ -5,21 +5,16 @@ import jwt from 'jsonwebtoken';
 import userModel from '../models/user.model.js';
 import config from './config.js';
 import loggers from './loggers.config.js';
-
-const secret = config.jwt.privateKey;
-const cookieName = config.jwt.cookieName;
-const clientID = config.github.clientId;
-const clientSecret = config.github.clientSecret;
-const callbackURL = config.github.callbackUri;
+import customError from '../services/errors/log.error.js';
 
 const initializePassportGH = () => {
   passport.use(
     'github',
     new GitHubStrategy(
       {
-        clientID: clientID,
-        clientSecret: clientSecret,
-        callbackURL: callbackURL,
+        clientID: config.github.clientId,
+        clientSecret: config.github.clientSecret,
+        callbackURL: config.github.callbackUri,
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
@@ -31,8 +26,11 @@ const initializePassportGH = () => {
             email: profile._json.email,
             role: 'user',
           });
-          const token = jwt.sign({ userId: newUser._id }, secret);
-          res.cookie(cookieName, token, {
+          const token = jwt.sign(
+            { userId: newUser._id },
+            config.jwt.privateKey
+          );
+          res.cookie(config.jwt.cookieName, token, {
             httpOnly: true,
             secure: true,
           });

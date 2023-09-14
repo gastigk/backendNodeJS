@@ -9,7 +9,7 @@ import {
 import configureMulter from '../helpers/multer.helper.js';
 
 const router = Router();
-const upload = await configureMulter();
+const upload = configureMulter('img');
 
 router.get('/', getAllProductsController);
 router.post('/', upload.single('thumbnail'), createProductController);

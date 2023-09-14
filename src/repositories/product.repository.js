@@ -11,8 +11,8 @@ export default class ProductRepository {
   getByCategoryAll = async (data) => await this.dao.getByCategoryAll(data);
   getOne = async (Object) => await this.dao.getOne(Object);
   filter = async (filter) => await this.dao.filter(filter);
-  getAllPaginate = async (filter, options) =>
-    await this.dao.getAllPaginate(filter, options);
+  paginate = async (filter, options) =>
+    await this.dao.paginate(filter, options);
   setCategory = async (Array) => await this.dao.setCategory(Array);
   create = async (data) => await this.dao.create(data);
   update = async (id, data) => await this.dao.update(id, data);

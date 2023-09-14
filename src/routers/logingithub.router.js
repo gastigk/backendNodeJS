@@ -8,23 +8,20 @@ import customMessageSessions from '../services/sessions.log.js';
 import customError from '../services/errors/log.error.js';
 
 const router = Router();
-
-const cookieName = config.jwt.cookieName;
-const secret = config.jwt.privateKey;
-
+  
 router.get('/', passport.authenticate('github', { scope: ['user:email'] }));
 
 router.get(
   '/githubcallback',
-  passport.authenticate('github', { failureRedirect: '/login' }),
+  passport.authenticate('github', { failureRedirect: '/auth/login' }),
   async (req, res) => {
     try {
-      const token = jwt.sign({ user: req.user }, secret);
+      const token = jwt.sign({ user: req.user }, config.jwt.privateKey);
       const user = req.user;
       user.active = true;
       user.save();
 
-      res.cookie(cookieName, token, {
+      res.cookie(config.jwt.cookieName, token, {
         // cookie configuration with JWT token
         httpOnly: true,
         secure: true,
@@ -37,7 +34,7 @@ router.get(
     } catch (err) {
       customError(err);
       loggers.error('Failed to authenticate user');
-      res.redirect('/login', { style: 'login' });
+      res.redirect('/auth/login');
     }
   }
 );

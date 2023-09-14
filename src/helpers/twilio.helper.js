@@ -4,11 +4,7 @@ import config from '../config/config.js';
 import loggers from '../config/loggers.config.js';
 import customError from '../services/errors/log.error.js';
 
-const twilioNumberPhone = config.twilio.numberPhone;
-const twilioAccountSid = config.twilio.accountSid;
-const twilioAuthToken = config.twilio.authToken;
-
-const twilioClient = twilio(twilioAccountSid, twilioAuthToken);
+const twilioClient = twilio(config.twilio.accountSid, config.twilio.authToken);
 
 export const sendSMS = async (userPhone) => {
   try {
@@ -16,7 +12,7 @@ export const sendSMS = async (userPhone) => {
 
     await twilioClient.messages.create({
       body: message,
-      from: twilioNumberPhone,
+      from: config.twilio.numberPhone,
       to: config.twilio.myPhone,
     });
   } catch (err) {

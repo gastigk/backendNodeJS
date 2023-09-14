@@ -1,0 +1,29 @@
+<section class="noAutorizado">
+    <div class="container login nonono">
+        <h1 class="red bienvenido">Hola</h1>
+        <h1 class="red bienvenido">{{user.first_name}} {{user.last_name}} {{user.user.first_name}}</h1>
+        {{#if user.premium}}
+        <h2 class="premium-text">Usuario Premium</h2>
+        {{/if}}
+        <h1>¡Por ser Usuario Premium!</h1>
+        <h2 class="descuento">
+            Usted tiene:
+            <span>20%</span> de descuento en todos los productos
+        </h2>
+        <h1>Subir Documento</h1>
+        <form action="/user/profile/documents/{{user.userId}}" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="document" class="label">Selecciona un documento:</label>
+                <input type="file" class="form-control" name="document" id="document" accept=".pdf,.doc,.docx">
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary">Subir Documento</button>
+        </form>
+        {{#if user.premium}}
+        <a href="/user/documents" class="btn btn-success">Ver mis Documentos</a>
+        {{else}}
+        <a href="/user/premium/{{user.userId}}" class="btn btn-success">Verificar si soy Premium</a>
+        {{/if}}
+        <a href="/" class="btn btn-danger">Volver</a>
+    </div>
+</section>

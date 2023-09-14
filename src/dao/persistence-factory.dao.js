@@ -20,14 +20,14 @@ switch (config.app.persistence) {
 
   case 'FILE':
     const { default: ProductFileDAO } = await import(
-      './mongo/product.file.dao.js'
+      './file/product.file.dao.js'
     );
     Product = ProductMongoDAO;
 
-    // const { default: CartFileDAO } = await import('./mongo/cart.file.dao.js');
+    // const { default: CartFileDAO } = await import('./file/cart.file.dao.js');
     // Cart = CartFileDAO;
 
-    // const { default: UserFileDAO } = await import('./mongo/user.file.dao.js');
+    // const { default: UserFileDAO } = await import('./file/user.file.dao.js');
     // User = UserFileDAO;
     break;
   default:

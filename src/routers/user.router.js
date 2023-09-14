@@ -3,23 +3,51 @@ import { Router } from 'express';
 import isAdmin from '../middlewares/admin.middleware.js';
 import isLoggedIn from '../middlewares/login.middleware.js';
 import {
-  getAllUsersController,
-  getProfileUsersController,
-  getNewUserTest,
-  createNewUserTest,
-  getUserForEditByIdController,
-  editUserByIdController,
-  deleteUserByIdController,
+  getUsersController,
+  getProfileController,
+  getNewUserTestController,
+  createNewUserTestController,
+  getUserForEditController,
+  editUserController,
+  deleteUserController,
+  setProfileUsersController,
+  setPhotoProfileUsersController,
+  setUsersDocumentsController,
+  getUsersDocumentsController,
+  setUsersPremiumController,
 } from '../controllers/user.controller.js';
-
+import configureMulter from '../helpers/multer.helper.js';
 const router = Router();
 
-router.get('/', isAdmin, getAllUsersController);
-router.get('/profile', isLoggedIn, getProfileUsersController);
-router.get('/newUser', isAdmin, getNewUserTest);
-router.post('/newUser', isAdmin, createNewUserTest);
-router.get('/edit/:id', isAdmin, getUserForEditByIdController);
-router.post('/edit/:id', isAdmin, editUserByIdController);
-router.get('/delete/:id', isAdmin, deleteUserByIdController);
+const uploadProfilePhoto = configureMulter('/assets/images/users/');
+const uploadDocuments = configureMulter('documents');
+
+router.get('/', isAdmin, getUsersController);
+router.get('/profile', isLoggedIn, getProfileController);
+router.post(
+  '/profile/documents/:id',
+  isLoggedIn,
+  uploadDocuments.single('document'),
+  setUsersDocumentsController
+);
+router.get(
+  '/profile/set-profile-photo/:id',
+  isLoggedIn,
+  setProfileUsersController
+);
+router.post(
+  '/profile/set-profile-photo/:id',
+  isLoggedIn,
+  uploadProfilePhoto.single('photo'),
+  setPhotoProfileUsersController
+);
+router.get('/newUser', isAdmin, getNewUserTestController);
+router.post('/newUser', isAdmin, createNewUserTestController);
+router.get('/edit/:id', isAdmin, getUserForEditController);
+router.post('/edit/:id', isAdmin, editUserController);
+router.get('/delete/:id', isAdmin, deleteUserController);
+router.get('/documents', isLoggedIn, getUsersDocumentsController);
+router.get('/premium/:id', setUsersPremiumController);
+router.get('/delete-for-my-self/:id', deleteUserController);
 
 export default router;

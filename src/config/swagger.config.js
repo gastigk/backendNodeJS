@@ -1,10 +1,6 @@
 import config from '../config/config.js';
 import __dirname from '../server/utils.js';
 
-const url = config.apiserver.urlLocal;
-const ports = config.apiserver.prodPort;
-const email = config.nodemailer.user;
-
 export const swaggerOptions = {
   definition: {
     openapi: '3.1.0',
@@ -16,7 +12,7 @@ export const swaggerOptions = {
       termsOfService: 'https://www.coderhouse.com/legales',
       contact: {
         name: 'Gastón Guevara',
-        email: email,
+        email: config.nodemailer.user,
       },
       license: {
         name: 'MIT',
@@ -25,7 +21,7 @@ export const swaggerOptions = {
     },
     servers: [
       {
-        url: `${url}:${ports}`,
+        url: `${config.apiserver.urlLocal}:${config.apiserver.prodPort}`,
       },
     ],
     externalDocs: {

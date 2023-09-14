@@ -3,19 +3,20 @@ import { Router } from 'express';
 import {
   createCartController,
   addProductToCartController,
-  clearCartByid,
-  deleteCartById,
-  updateProductsToCartById,
-  deleteCartByIdController,
+  clearCartController,
+  deleteCartController,
+  updateCartProductsController,
+  removeProductFromCartController,
 } from '../controllers/cart.controller.js';
+import { checkPremiumUser } from '../middlewares/premium-user.middleware.js';
 
 const router = Router();
 
-router.get('/', createCartController);
+router.get('/', checkPremiumUser, createCartController);
 router.post('/:pid', addProductToCartController);
-router.post('/:cartId/clear', clearCartByid);
-router.post('/:cartId/delete', deleteCartById);
-router.put('/:cartId/:itemId', updateProductsToCartById);
-router.get('/:cartId/:itemId', deleteCartByIdController);
+router.post('/:cartId/clear', clearCartController);
+router.post('/:cartId/delete', deleteCartController);
+router.put('/:cartId/:itemId', updateCartProductsController);
+router.get('/:cartId/:itemId', removeProductFromCartController);
 
 export default router;

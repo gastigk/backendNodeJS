@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import shortid from 'shortid';
 
-const cartCollection = 'carts'
+const cartCollection = 'carts';
 
 const cartSchema = new mongoose.Schema(
   {

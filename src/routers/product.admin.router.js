@@ -1,25 +1,26 @@
 import { Router } from 'express';
 
 import {
-  deleteProductByIdController,
-  editProductByIdController,
-  editAndChargeProductByIdController,
+  deleteProductController,
+  editProductController,
+  editAndChargeProductController,
   adminPanelController,
 } from '../controllers/product.admin.controller.js';
 import isAdmin from '../middlewares/admin.middleware.js';
 import configureMulter from '../helpers/multer.helper.js';
 
 const router = Router();
-const upload = await configureMulter();
+
+const uploadProductThumbnail = configureMulter('img');
 
 router.get('/', isAdmin, adminPanelController);
-router.get('/delete/:id', isAdmin, deleteProductByIdController);
-router.get('/:pid', isAdmin, editProductByIdController);
+router.get('/delete/:id', isAdmin, deleteProductController);
+router.get('/:pid', isAdmin, editProductController);
 router.post(
   '/:id',
   isAdmin,
-  upload.single('thumbnail'),
-  editAndChargeProductByIdController
+  uploadProductThumbnail.single('thumbnail'),
+  editAndChargeProductController
 );
 
 export default router;

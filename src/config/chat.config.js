@@ -9,7 +9,7 @@ const chatApp = (socketServer) => {
 
   socketServer.on('connection', (socketClient) => {
     let queryUser = socketClient.handshake.query.user;
-    loggers.notice(`New client "${queryUser}" connected...`);
+    loggers.notice(`New client "${queryUser}" connected`);
 
     socketClient.on('message', (data) => {
       loggers.notice(`${data.user} sey: ${data.message}`);
@@ -17,16 +17,17 @@ const chatApp = (socketServer) => {
       socketClient.emit('history', log);
       socketClient.broadcast.emit('history', log);
 
-      messageModel.findOneAndUpdate(
-        { user: data.user },
-        { $push: { message: data.message } },
-        { upsert: true }
-      )
+      messageModel
+        .findOneAndUpdate(
+          { user: data.user },
+          { $push: { message: data.message } },
+          { upsert: true }
+        )
         .then(() => {
-          loggers.notice(`${data.user}'s message was saved in the model`);
+          loggers.notice(`${data.user}'s message was saved`);
         })
         .catch((err) => {
-          loggers.error('Eerror saving message in model:', err);
+          loggers.error('Error saving message in model:', err);
         });
     });
 

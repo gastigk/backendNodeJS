@@ -5,12 +5,12 @@ import { ProductService } from '../repositories/index.js';
 import { getUserFromToken } from '../middlewares/user.middleware.js';
 
 // no DAO applied
-export const getProductsInRealTimeController = async (req, res) => {
+export const getProductsRTController = async (req, res) => {
   const user = getUserFromToken(req);
-  res.render('realtimeproducts', { style:'realtimeproducts', user });
+  res.render('products-realtime', { user });
 };
 
-export const sendProductsInRealTimeController = async (req, res) => {
+export const sendProductsRTController = async (req, res) => {
   const { title, category, code, description, price, stock } = req.body;
   if (!title) {
     return res.status(400).render('The "title" field is required');
@@ -24,20 +24,21 @@ export const sendProductsInRealTimeController = async (req, res) => {
     description,
     price: parseInt(price),
     stock,
-    ...(req.file ? { thumbnail: `/img/${req.file.filename}` } : {}),
+    ...(req.file
+      ? { thumbnail: `/assets/images/products/${req.file.filename}` }
+      : {}),
   });
 
   try {
     await newProduct.save();
     const product = await ProductService.getAll();
-    res.render('realtimeproducts', {
-      style: 'realtimeproducts',
+    res.render('product-realtime', {
       product: product,
       user: req.user,
     });
   } catch (error) {
     customError(error);
     loggers.error('Product no found');
-    res.status(500).render('error/notProduct', { style: 'notProduct', user });
+    res.status(500).render('error/notProduct', { user });
   }
 };

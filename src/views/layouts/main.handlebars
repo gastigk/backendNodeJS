@@ -1,63 +1,104 @@
-<!DOCTYPE html>
-<html lang="es">
-
+<html class="loading semi-dark-layout" lang="en" data-layout="semi-dark-layout" data-textdirection="ltr">
+  
+    <!-- BEGIN: Head-->
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimal-ui">
-        <meta name="description" content="Los 7 Rayos is an esoteric virtual store that provides knowledge, workshops, history and accompanies anyone who is going through their personal spiritual self-knowledge.">
-        <meta name="keywords" content="Los 7 Rayos, estorerísmo, talleres de sueño, cursos de tarot, blog del uso de cristales, botánica oculta, magia defensiva, hongos sagrados, web app">
-        <meta name="author" content="Gastón Guevara">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimal-ui" />
+        <meta name="description" content="Los 7 Rayos is an esoteric virtual store that provides knowledge, workshops, history and accompanies anyone who is going through their personal spiritual self-knowledge."/>
+        <meta name="keywords" content="Los 7 Rayos, estorerísmo, talleres de sueño, cursos de tarot, blog del uso de cristales, botánica oculta, magia defensiva, hongos sagrados, web app"/>
+        <meta name="author" content="Gastón Guevara" />
 
         <title>Los Siete Rayos</title>
 
-        <link rel="rayo-icon" href="/assets/icons/lightning.svg">
-        <link rel="shortcut icon" type="image/x-icon" href="/assets/icons/lightning.png">
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
-        
-        <title>{{ title }}</title>
+        <link rel="rayo-icon" href="/assets/icons/lightning.svg" />
+        <link rel="shortcut icon" type="image/x-icon" href="/assets/icons/lightning.png"/>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet"/>
 
-        {{!-- Bootstrap connection --}}
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+        <!-- BEGIN: Vendor CSS-->
+        <link rel="stylesheet" type="text/css" href="/assets/vendors/vendors.min.css"/>
+        <!-- END: Vendor CSS-->
 
-        <link rel="stylesheet" href="/assets/styles/{{ style }}.css">
+        <!-- BEGIN: Theme CSS-->
+        <link rel="stylesheet" type="text/css" href="/assets/css/core/bootstrap.css" />
+        <link rel="stylesheet" type="text/css" href="/assets/css/core/bootstrap-extended.css"/>
+        <link rel="stylesheet" type="text/css" href="/assets/css/core/colors.css"/>
+        <link rel="stylesheet" type="text/css" href="/assets/css/core/components.css"/>
+        <link rel="stylesheet" type="text/css" href="/assets/css/core/dark-layout.css"/>
+        <link rel="stylesheet" type="text/css" href="/assets/css/core/bordered-layout.css"/>
+        <link rel="stylesheet" type="text/css" href="/assets/css/core/semi-dark-layout.css"/>
+
     </head>
+    <!-- END: Head-->
 
     <body>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
-            <div class="container-fluid">
-                <img src="/assets/icons/lightning.png" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
-                <a class="navbar-brand" href="/">Los Siete Rayos</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navba  r-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                    <div class="navbar-nav">
-                        <a class="nav-link active" aria-current="page" href="/products">Products</a>
-                        <a class="nav-link{{#ifEqual cart.length 0}} disabled{{/ifEqual}}" href="/carts">Cart</a>
-                        {{#if user.role}}
-                        {{#ifEqual user.role "admin"}}
-                        <a class="nav-link" href="/admin-panel">Administrator Dashboard</a>
-                        <a class="nav-link disabled" aria-disabled="true" href="/docs">Document API by Swagger</a>
-                        {{/ifEqual}}
-                        {{/if}}
-                        {{#if user}}
-                        <a class="nav-link red" href="/logout">Logout</a>
-                        {{else}}
-                        <a class="nav-link" href="/login">Login</a>
-                        {{/if}}
-                    </div>
-                </div>
-            </div>
-        </nav>
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/">Inicio</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/products">Productos</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link{{#ifEqual cart.length 0}} disabled{{/ifEqual}}" href="/cart">Carrito <i
+                    class="fa fa-cart-plus"></i></a>
+        </li>
+        {{#if user}}
+        <li class="nav-item ">
+            <a class="nav-link premium" href="/user/profile/documents">Premium</a>
+        </li>
+        {{/if}}
+        {{#if user.role}}
+        {{#ifEqual user.role "admin"}}
+        <li class="nav-item">
+            <a class="nav-link green" href="/admin-panel">Panel Administrador</a>
+        </li>
+        <li class="nav-item ">
+            <a class="nav-link violet" href="/docs-api">Documentar API con Swagger</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/mockingproducts">Crear 100 Productos con Mocking</a>
+        </li>
+        {{/ifEqual}}
+        {{/if}}
+
+        {{#if user}}
+        {{#if user.premium}}
+        <li class="nav-item">
+            <a class="nav-link premium">{{user.first_name}} {{user.last_name}} {{user.user.first_name}} </a>
+        </li>
+        {{else}}
+        <li class="nav-item">
+            <a class="nav-link green">{{user.first_name}} {{user.last_name}} {{user.user.first_name}}</a>
+        </li>
+        {{/if}}
+
+        <li class="nav-item ">
+            <a class="nav-link red" href="/logout">Logout <i class="fa fa-sign-out"></i> </a>
+        </li>
+        {{else}}
+        <li class="nav-item">
+            <a class="nav-link green" href="/auth/login">Login <i class="fa fa-sign-in"></i></a>
+        </li>
+        {{/if}}
 
         {{{ body }}}
 
+        <!-- BEGIN: Vendor JS-->
+        <script src="/assets/vendors/vendors.min.js"></script>
+        <!-- BEGIN Vendor JS-->
 
-        <div id="history"></div>
+        <!-- BEGIN: Theme JS-->
+        <script src="/assets/js/core/app-menu.js"></script>
+        <script src="/assets/js/core/app.js"></script>
+        <!-- END: Theme JS-->
 
-        {{!-- Bootstrap connection --}}
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+        <!-- BEGIN: Scripts de Bootstrap -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js" integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ" crossorigin="anonymous"></script>
+        <!-- END: Scripts de Bootstrap -->
 
         <script>
             document.addEventListener("DOMContentLoaded", function () {
@@ -67,6 +108,10 @@
                 spanAnio.textContent = anioActual;
             });
         </script>
+        <script>
+        $(window).on('load', function() { if (feather) { feather.replace({ width:
+        14, height: 14 }); } })
+        </script>
     </body>
-
+  <!-- END: Body-->
 </html>

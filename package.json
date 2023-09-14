@@ -5,8 +5,9 @@
   "main": "src/server/app.js",
   "type": "module",
   "scripts": {
-    "start": "node .",
-    "dev": "cd src/server && nodemon app.js"
+    "start": "cd src/server && node app.js",
+    "dev": "cd src/server && nodemon app.js",
+    "test": "mocha test/**/*.test.js"
   },
   "repository": {
     "type": "git",
@@ -14,7 +15,16 @@
   },
   "keywords": [
     "e-commerce",
-    "nodejs"
+    "NodeJS",
+    "Express",
+    "MongoDB",
+    "API",
+    "REST",
+    "JWT",
+    "Passport",
+    "Twilio",
+    "Nodemailer",
+    "Winston"
   ],
   "author": "Gastón Guevara <gastiguevarak@gmail.com>",
   "license": "MIT",
@@ -51,11 +61,16 @@
     "shortid": "^2.2.16",
     "socket.io": "^4.6.1",
     "socket.io-client": "^4.6.1",
+    "supertest": "^6.3.3",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
     "sweetalert2": "^11.7.5",
     "twilio": "^4.13.0",
     "uuid": "^9.0.0",
     "winston": "^3.10.0"
+  },
+  "devDependencies": {
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0"   
   }
 }

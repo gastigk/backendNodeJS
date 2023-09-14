@@ -24,4 +24,16 @@ export async function registerHandlebarsHelpers() {
       new Date(date).toLocaleTimeString('es-AR');
     return formattedDate;
   });
+
+  Handlebars.registerHelper(
+    'indexInArray',
+    function (array, value, plusOne, options) {
+      const index = array.indexOf(value) + (plusOne ? 1 : 0);
+      return index;
+    }
+  );
+
+  Handlebars.registerHelper('counter', function (index) {
+    return index + 1;
+  });
 }

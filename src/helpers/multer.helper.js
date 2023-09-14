@@ -6,11 +6,11 @@ import __dirname from '../server/utils.js';
 import customError from '../services/errors/log.error.js';
 
 // middleware third-party configuration: file upload to server with multer
-const configureMulter = async () => {
+const configureMulter = (destinationPath) => {
   try {
     const storage = multer.diskStorage({
       destination: (req, file, cb) => {
-        cb(null, path.join(__dirname, '..', 'public', 'assets', 'image'));
+        cb(null, path.join(__dirname, '..', 'public', destinationPath));
       },
       filename: (req, file, cb) => {
         const ext = path.extname(file.originalname);
@@ -24,8 +24,7 @@ const configureMulter = async () => {
     return upload;
   } catch (error) {
     customError(error);
-    loggers.error('Multer configuration error');
-    throw error;
+    loggers.error('Multer configuration error', error);
   }
 };
 

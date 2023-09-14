@@ -4,10 +4,11 @@ import {
   getPurchaseController,
   sendPurchaseController,
 } from '../controllers/product.controller.js';
+import { checkPremiumUser } from '../middlewares/premium-user.middleware.js';
 
 const router = Router();
 
-router.get('/', getPurchaseController);
-router.post('/', sendPurchaseController);
+router.get('/', checkPremiumUser, getPurchaseController);
+router.post('/', checkPremiumUser, sendPurchaseController);
 
 export default router;

@@ -8,11 +8,11 @@ export const getChatsController = async (req, res) => {
     let user = getUserFromToken(req);
     const messages = await chatModel.find();
 
-    res.render('chat', { style: 'chat', messages, user });
+    res.render('chat', { messages, user });
   } catch (error) {
     customError(error);
     loggers.error('Error getting messages');
-    res.status(500).render('error/error500', { style:'error500', user });
+    res.status(500).render('error/error500', { user });
   }
 };
 
@@ -35,6 +35,6 @@ export const sendChatController = async (req, res) => {
   } catch (error) {
     customError(error);
     loggers.error('Error saving message');
-    res.status(500).render('error/error500', { style:'error500', user });
+    res.status(500).render('error/error500', { user });
   }
 };

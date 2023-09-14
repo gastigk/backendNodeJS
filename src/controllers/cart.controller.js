@@ -8,11 +8,10 @@ import config from '../config/config.js';
 import loggers from '../config/loggers.config.js';
 import customError from '../services/errors/log.error.js';
 
-const cokieName = config.jwt.cookieName;
 let user = null;
 let userEmail = null;
 
-// defining functions
+// defining function
 export async function getOrCreateCart(userEmail = null) {
   if (userEmail) {
     const cart = await CartService.getOne({ 'user.email': userEmail });
@@ -44,15 +43,22 @@ export async function getOrCreateCart(userEmail = null) {
 
 // defining controllers
 export const createCartController = async (req, res) => {
-  user = getUserFromToken(req);
   try {
-    const { sortOption } = req.query;
-    const userToken = req.cookies[cokieName];
+    const user = getUserFromToken(req);
+    if (!user) {
+      return res.redirect('/auth/login');
+    }
 
-    if (userToken) {
-      userEmail = user.email || user.user.email;
-    } else {
-      return res.redirect('/login', { style: 'login' });
+    const { sortOption } = req.query;
+    const userToken = req.cookies[config.jwt.cookieName];
+
+    // if user is premium
+    const isPremium = user.premium || (user.user && user.user.premium) || false;
+    const discountMultiplier = isPremium ? 0.8 : 1;
+
+    let userEmail = user.email || (user.user && user.user.email) || '';
+    if (!userToken) {
+      return res.redirect('/auth/login');
     }
 
     let cart;
@@ -61,9 +67,8 @@ export const createCartController = async (req, res) => {
     } else {
       cart = await getOrCreateCart();
     }
-
     if (!cart || cart.items.length === 0 || (!userEmail && cart.user.email)) {
-      return res.render('error/notCart', { style:'notCart', user });
+      return res.render('error/notCart', { user });
     }
     const cartId = cart._id.toString();
 
@@ -97,11 +102,11 @@ export const createCartController = async (req, res) => {
       },
     ]);
 
-    const totalPrice =
+    const subTotal =
       totalPriceAggregate.length > 0 ? totalPriceAggregate[0].totalPrice : 0;
+    const totalPrice = (subTotal * discountMultiplier).toFixed(2);
 
-    res.render('carts', {
-      style: 'carts',
+    res.render('cart', {
       cart: { ...cart, items: sortedItems },
       totalPrice,
       cartId,
@@ -109,13 +114,14 @@ export const createCartController = async (req, res) => {
     });
   } catch (error) {
     customError(error);
-    loggers.error('The cart was not found');
-    res.status(500).render('error/notCart', { style:'notCart', user });
+    loggers.error('Cart not found');
+    res.status(500).render('error/notCart', { user });
   }
 };
 
-export const clearCartByid = async (req, res) => {
-  const userToken = req.cookies[cokieName];
+export const clearCartController = async (req, res) => {
+  // clear cart by ID
+  const userToken = req.cookies[config.jwt.cookieName];
 
   if (userToken) {
     user = getUserFromToken(req);
@@ -138,12 +144,13 @@ export const clearCartByid = async (req, res) => {
   } catch (error) {
     customError(error);
     loggers.error('Error when emptying the cart');
-    res.status(500).render('error/notCart', { style:'notCart', user });
+    res.status(500).render('error/notCart', { user });
   }
 };
 
-export const deleteCartById = async (req, res) => {
-  const userToken = req.cookies[cokieName];
+export const deleteCartController = async (req, res) => {
+  // eliminate cart by ID
+  const userToken = req.cookies[config.jwt.cookieName];
 
   if (userToken) {
     user = getUserFromToken(req);
@@ -165,48 +172,61 @@ export const deleteCartById = async (req, res) => {
   } catch (error) {
     customError(error);
     loggers.error('Error deleting cart');
-    res.status(500).render('error/notCart', { style:'notCart', user });
+    res.status(500).render('error/notCart', { user });
   }
 };
 
-export const updateProductsToCartById = async (req, res) => {
-  const userToken = req.cookies[cokieName];
+export const updateCartProductsController = async (req, res) => {
+  const userToken = req.cookies[config.jwt.cookieName];
+  const user = getUserFromToken(req);
+  const userEmail = user.email || user.user.email;
 
-  if (userToken) {
-    user = getUserFromToken(req);
-    userEmail = user.email || user.user.email;
+  if (!userToken) {
+    return res.redirect('/auth/login');
   }
 
   try {
-    const cartId = req.params.cartId;
-    const itemId = req.params.itemId;
+    const { cartId, itemId } = req.params;
     const { cantidad } = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(cartId)) {
       return res.redirect('/');
     }
 
-    const cart = await CartService.update(
-      { _id: cartId, 'user.email': userEmail, 'items._id': itemId },
-      { $set: { 'items.$.cantidad': cantidad } },
-      { new: true }
-    );
+    const cart = await CartService.getOnePopulate({
+      _id: cartId,
+      'user.email': userEmail,
+    });
 
     if (!cart) {
       return res.redirect('/');
     }
 
-    res.redirect('/carts');
+    const updatedItemsArray = cart.items.map((item) => {
+      if (item._id.toString() === itemId) {
+        return {
+          ...item,
+          cantidad: cantidad,
+        };
+      }
+      return item;
+    });
+
+    cart.items = updatedItemsArray;
+
+    await cart.save();
+
+    res.redirect('/cart');
   } catch (error) {
     customError(error);
     loggers.error('Error updating product quantity');
-    res.status(500).render('error/notCart', { style:'notCart', user });
+    res.status(500).render('error/notCart', { user });
   }
 };
 
 export const addProductToCartController = async (req, res) => {
   try {
-    const userToken = req.cookies[cokieName];
+    const userToken = req.cookies[config.jwt.cookieName];
 
     if (userToken) {
       user = getUserFromToken(req);
@@ -218,26 +238,34 @@ export const addProductToCartController = async (req, res) => {
 
     if (!userEmail) {
       loggers.error('You are not logged in, please log in');
-      return res.status(500).redirect('/login', { style: 'login' });
+      return res.status(500).redirect('/auth/login');
     }
 
     let cart = await getOrCreateCart(userEmail);
 
-    cart.items.push({ producto: producto, cantidad: cantidad });
+    const existingCartItem = cart.items.find(
+      (item) => item.producto._id.toString() === productId
+    );
+
+    if (existingCartItem) {
+      existingCartItem.cantidad += parseInt(cantidad);
+    } else {
+      cart.items.push({ producto: producto, cantidad: parseInt(cantidad) });
+    }
+
     cart.user.email = userEmail;
     cart.code = shortid.generate();
     cart.purchase_datetime = new Date();
-
     await cart.save();
     res.redirect('/');
   } catch (error) {
     customError(error);
     loggers.error('You are not logged in, please log in');
-    res.status(500).redirect('/login', { style: 'login' });
+    res.status(500).redirect('/auth/login');
   }
 };
 
-export const deleteCartByIdController = async (req, res) => {
+export const removeProductFromCartController = async (req, res) => {
   const user = getUserFromToken(req);
   const { cartId, itemId } = req.params;
   if (!mongoose.Types.ObjectId.isValid(cartId)) {
@@ -247,27 +275,28 @@ export const deleteCartByIdController = async (req, res) => {
   try {
     const cart = await CartService.getById(cartId);
     if (!cart) {
-      return res.status(404).render('error/error404', { style:'error404', user });
+      return res.status(404).render('error/error404', { user });
     }
 
     const itemIndex = cart.items.findIndex((item) => item._id.equals(itemId));
     if (itemIndex === -1) {
-      return res
-        .status(404)
-        .render('error/notCartProducts', { style:'notCartProducts', cartId, itemId, user });
+      return res.status(404).render('error/notCartProducts', {
+        cartId,
+        itemId,
+        user,
+      });
     }
 
     cart.items.splice(itemIndex, 1);
     await cart.save();
-    return res.render('cartsDeleteById', {
+    return res.render('cart-deleted', {
       cartId,
       itemId,
       user,
-      style: 'cartsDeleteById',
     });
   } catch (error) {
     customError(error);
     loggers.error('Error when removing a product from the cart');
-    return res.status(500).render('error/notCart', { style:'notCart', user });
+    return res.status(500).render('error/notCart', { user });
   }
 };

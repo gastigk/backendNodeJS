@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 import config from '../../config/config.js';
 import loggers from '../../config/loggers.config.js';
+import customError from '../../services/errors/log.error.js';
 
 // connected to the ODM (Object Document Mapping): mongoose
 export default class MongoClient {
@@ -12,12 +13,16 @@ export default class MongoClient {
 
   connect = async () => {
     try {
-      await this.client.connect(config.mongo.uri);
+      await this.client.connect(config.mongo.uri, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      });
       loggers.info(
-        `Successful connection to the DB "${config.mongo.dbname}" at Mongo Atlas`
+        `Successful connection to Mongo Atlas DB "${config.mongo.dbname}"`
       );
-    } catch (err) {
-      loggers.error('Cannot connect to DB');
+    } catch (error) {
+      customError(error);
+      loggers.fatal('Cannot connect to DB');
     }
   };
 }

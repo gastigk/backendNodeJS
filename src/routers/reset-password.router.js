@@ -1,13 +1,13 @@
 import { Router } from 'express';
 
 import {
-  getResetPassword,
-  setResetPassword,
-} from '../controllers/session.resetpass.controller.js';
+  getResetPasswordController,
+  setResetPasswordController,
+} from '../controllers/reset-password.controller.js';
 
 const router = Router();
 
-router.get('/:token', getResetPassword);
-router.post('/:token', setResetPassword);
+router.get('/:token', getResetPasswordController);
+router.post('/:token', setResetPasswordController);
 
 export default router;

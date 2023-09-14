@@ -3,18 +3,15 @@ import config from '../config/config.js';
 import loggers from '../config/loggers.config.js';
 import customError from '../services/errors/log.error.js';
 
-const secret = config.jwt.privateKey;
-const cookieName = config.jwt.cookieName;
-
 export function getUserFromToken(req) {
   try {
-    if (!req.cookies || !req.cookies[cookieName]) {
+    if (!req.cookies || !req.cookies[config.jwt.cookieName]) {
       const user = null;
       return user;
     }
 
-    const userToken = req.cookies[cookieName];
-    const credentials = jwt.verify(userToken, secret);
+    const userToken = req.cookies[config.jwt.cookieName];
+    const credentials = jwt.verify(userToken, config.jwt.privateKey);
     return credentials;
   } catch (error) {
     customError(error);
