@@ -8,38 +8,8 @@ import { getUserFromToken } from '../middlewares/user.middleware.js';
 import UsersDTO from '../dto/user.dto.js';
 import {
   sendCloseAccountEmail,
-  sendResetPasswordEmail,
-  sendPasswordChangedEmail,
   sendCloseInactivitiAccountEmail,
 } from '../helpers/nodemailer.helper.js';
-import { generateToken } from '../helpers/jwt.helper.js';
-
-// defining functions
-const sendResetPasswordEmailMethod = async (usermail, token) => {
-  try {
-    await sendResetPasswordEmail(usermail, token);
-  } catch (err) {
-    customError(err);
-    loggers.error('Failed to send email');
-  }
-};
-
-const resetPassword = async (userId, newPassword) => {
-  try {
-    const user = await UserService.getById(userId);
-    if (!user) {
-      throw new Error('Invalid or expired token');
-    }
-    user.password = newPassword;
-    await user.save();
-    const email = user.email;
-    await sendPasswordChangedEmail(email);
-  } catch (err) {
-    customError(err);
-    loggers.error('Password reset error');
-    throw err;
-  }
-};
 
 // defining controllers
 export const getUsersController = async (req, res) => {

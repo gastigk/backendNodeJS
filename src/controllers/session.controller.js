@@ -97,12 +97,12 @@ export const getLogoutController = async (req, res) => {
 
 // no DAO applied
 export const getSignupController = async (req, res) => {
-  res.render('signup');
+  res.render('auth/register');
 };
 
 // no DAO applied
 export const setSignupController = async (req, res, next) => {
-  passport.authenticate('signup', (err, user, info) => {
+  passport.authenticate('register', (err, user, info) => {
     if (err) {
       customError(err);
       loggers.error(err);
@@ -142,7 +142,7 @@ export const getSignupAdminController = (req, res) => {
 
 // no DAO applied
 export const setSignupAdminController = (req, res, next) => {
-  passport.authenticate('signup', (err, user, info) => {
+  passport.authenticate('register', (err, user, info) => {
     if (err) {
       customError(err);
       loggers.error('Error creating user');

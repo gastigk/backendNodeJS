@@ -7,7 +7,6 @@
 </head>
 <!-- END: Head-->
 
-
 <!-- BEGIN: Body-->
 
 <body class="vertical-layout vertical-menu-modern blank-page navbar-floating footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="blank-page">
@@ -50,37 +49,61 @@
                         <!-- /Brand logo-->
                         <!-- Left Text-->
                         <div class="d-none d-lg-flex col-lg-8 align-items-center p-5">
-                            <div class="w-100 d-lg-flex align-items-center justify-content-center px-5"><img class="img-fluid" src="/assets/images/reset-password-v2.svg" alt="Register V2" /></div>
+                            <div class="w-100 d-lg-flex align-items-center justify-content-center px-5"><img class="img-fluid" src="/assets/images/register-v2.svg" alt="Register V2" /></div>
                         </div>
                         <!-- /Left Text-->
-                        <!-- Reset password-->
+                        <!-- Register-->
                         <div class="d-flex col-lg-4 align-items-center auth-bg px-2 p-lg-5">
                             <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto">
-                                <h2 class="card-title fw-bold mb-1">Reset Password 🔒</h2>
-                                <p class="card-text mb-2">Your new password must be different from previously used passwords</p>
-                                <form class="auth-reset-password-form mt-2" action="/auth/password-reset/{{token}}" method="POST">
+                                <h2 class="card-title fw-bold mb-1">Adventure starts here 🚀</h2>
+                                <p class="card-text mb-2">Make your app management easy and fun!</p>
+                                <form class="auth-register-form mt-2" action="/auth/register" method="POST">
                                     <div class="mb-1">
-                                        <div class="d-flex justify-content-between">
-                                            <label class="form-label" for="password">New Password</label>
-                                        </div>
+                                        <label class="form-label" for="first_name">First Name</label>
+                                        <input class="form-control" id="first_name" type="text" name="first_name" placeholder="John" aria-describedby="register-username" autofocus="" tabindex="1" required/>
+                                    </div>
+                                    <div class="mb-1">
+                                        <label class="form-label" for="last_name">Last Name</label>
+                                        <input class="form-control" id="last_name" type="text" name="last_name" placeholder="Sánchez" aria-describedby="register-username" autofocus="" tabindex="2" required/>
+                                    </div>
+                                    <div class="mb-1">
+                                        <label class="form-label" for="email">Email</label>
+                                        <input class="form-control" id="email" type="text" name="email" placeholder="johnsanchez@example.com" aria-describedby="register-email" tabindex="3" required/>
+                                    </div>
+                                    <div class="mb-1">
+                                        <label class="form-label" for="phone">Phone</label>
+                                        <input class="form-control" id="phone" type="number" name="phone" placeholder="114567890" aria-describedby="register-email" tabindex="4" required/>
+                                    </div>
+                                    <div class="mb-1">
+                                        <label class="form-label" for="age">Age</label>
+                                        <input class="form-control" id="age" type="number" name="age" placeholder="33" aria-describedby="register-email" tabindex="5" required/>
+                                    </div>
+                                    <div class="mb-1">
+                                        <input class="form-control" id="role" value="user" type="hidden" name="role" aria-describedby="register-email" tabindex="6" required/>
+                                    </div>
+                                    <div class="mb-1">
+                                        <label class="form-label" for="password">Password</label>
                                         <div class="input-group input-group-merge form-password-toggle">
-                                            <input class="form-control form-control-merge" id="password" type="password" name="password" placeholder="············" aria-describedby="reset-password-new" autofocus="" tabindex="1" /><span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
-                                        </div>
-                                        <div class="mb-1">
-                                            <div class="d-flex justify-content-between">
-                                                <label class="form-label" for="reset-password-confirm">Confirm Password</label>
-                                            </div>
-                                            <div class="input-group input-group-merge form-password-toggle">
-                                                <input class="form-control form-control-merge" id="reset-password-confirm" type="password" name="reset-password-confirm" placeholder="············" aria-describedby="reset-password-confirm" tabindex="2" /><span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
-                                            </div>
+                                            <input class="form-control form-control-merge" id="password" type="password" name="password" placeholder="············" aria-describedby="register-password" tabindex="7" required/>
+                                            <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn btn-primary w-100" tabindex="3">Set New Password</button>
+                                    <div class="mb-1">
+                                        <div class="form-check">
+                                            <input class="form-check-input" id="register-privacy-policy" type="checkbox" tabindex="9" required/>
+                                            <label class="form-check-label" for="register-privacy-policy">I agree to<a href="/assets/docs/PRIVACY POLICY.pdf" target="_blank">&nbsp;privacy policy & terms</a></label>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100" tabindex="10">Sign up</button>
                                 </form>
-                                <p class="text-center mt-2"><a href="/auth/login"><i data-feather="chevron-left"></i> Back to login</a></p>
+                                <p class="text-center mt-2"><span>Already have an account?</span><a href="/auth/login"><span>&nbsp;Sign in instead</span></a></p>
+                                <div class="divider my-2">
+                                    <div class="divider-text">or</div>
+                                </div>
+                                <div class="auth-footer-btn d-flex justify-content-center"><a class="btn btn-facebook" href="#"><i data-feather="facebook"></i></a><a class="btn btn-twitter white" href="#"><i data-feather="twitter"></i></a><a class="btn btn-google" href="#"><i data-feather="mail"></i></a><a class="btn btn-github" href="/auth/github"><i data-feather="github"></i></a></div>
                             </div>
                         </div>
-                        <!-- /Reset password-->
+                        <!-- /Register-->
                     </div>
                 </div>
             </div>
@@ -89,7 +112,7 @@
     <!-- END: Content-->
 
     <!-- BEGIN: Page JS-->
-    <script src="/assets/js/scripts/auth-reset-password.js"></script>
+    <script src="/assets/js/scripts/auth-register.js"></script>
     <!-- END: Page JS-->
 
 </body>

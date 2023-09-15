@@ -7,7 +7,7 @@ import loggers from './loggers.config.js';
 import customError from '../services/errors/log.error.js';
 
 passport.use(
-  'signup',
+  'register',
   new LocalStrategy(
     {
       usernameField: 'email',

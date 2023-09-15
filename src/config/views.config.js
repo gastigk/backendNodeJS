@@ -39,7 +39,7 @@ const views = [
   { path: '/products-realtime', router: productInRealTimeRouter },
   { path: '/products-table', router: productTableRouter },
   { path: '/mockingproduct', router: mockingProductRouter },
-  { path: '/signup', router: singupRouter },
+  { path: '/auth/register', router: singupRouter },
   { path: '/signup-admin', router: signupAdminRouter },
   { path: '/github', router: loginGithubRouter },
   { path: '/logout', router: logoutRouter },
