@@ -2,11 +2,12 @@ import cartRouter from '../routers/cart.router.js';
 import chatRouter from '../routers/chat.router.js';
 import checkoutRouter from '../routers/checkout.router.js';
 import documentRouter from '../routers/docs.router.js';
-import forgotPassword from '../routers/forgot-password.js';
 import indexRouter from '../routers/index.router.js';
 import loginRouter from '../routers/login.router.js';
 import loginGithubRouter from '../routers/logingithub.router.js';
 import logoutRouter from '../routers/logout.router.js';
+import forgotPassword from '../routers/password-forgot.router.js';
+import resetPassword from '../routers/password-reset.router.js';
 import productEditByIdRouter from '../routers/product-edit.admin.router.js';
 import mockingProductRouter from '../routers/product-mocking.router.js';
 import productEditRouter from '../routers/product-edit.admin.router.js';
@@ -15,7 +16,6 @@ import productTableRouter from '../routers/product-table.router.js';
 import adminPanelRouter from '../routers/product.admin.router.js';
 import productInRealTimeRouter from '../routers/product.realtime.router.js';
 import productRouter from '../routers/product.router.js';
-import resetPassword from '../routers/reset-password.router.js';
 import signupAdminRouter from '../routers/signup.admin.router.js';
 import singupRouter from '../routers/signup.router.js';
 import usersPremiumRouter from '../routers/user.premium.router.js';
@@ -29,8 +29,8 @@ const views = [
   { path: '/chat', router: chatRouter },
   { path: '/checkout', router: checkoutRouter },
   { path: '/auth/login', router: loginRouter },
-  { path: '/password-new', router: resetPassword },
-  { path: '/password-reset', router: forgotPassword },
+  { path: '/auth/password-forgot', router: forgotPassword },
+  { path: '/auth/password-reset', router: resetPassword },   
   { path: '/products', router: productRouter },
   { path: '/product-deleted', router: productDeletedRouter },
   { path: '/product-edit', router: productEditRouter },

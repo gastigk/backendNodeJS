@@ -4,12 +4,15 @@ import jwt from 'jsonwebtoken';
 import config from '../config/config.js';
 import loggers from '../config/loggers.config.js';
 import customError from '../services/errors/log.error.js';
-import { sendResetPasswordEmail } from '../helpers/nodemailer.helper.js';
+import {
+  sendResetPasswordEmail,
+  sendPasswordChangedEmail,
+} from '../helpers/nodemailer.helper.js';
 import { generateToken } from '../helpers/jwt.helper.js';
 import { UserService } from '../repositories/index.js';
 
 // defining functions
-export const sendResetPasswordEmailMethod = async (usermail, token) => {
+const sendResetPasswordEmailMethod = async (usermail, token) => {
   try {
     await sendResetPasswordEmail(usermail, token);
   } catch (err) {
@@ -18,10 +21,26 @@ export const sendResetPasswordEmailMethod = async (usermail, token) => {
   }
 };
 
+const resetPassword = async (userId, newPassword) => {
+  try {
+    const user = await UserService.getById(userId);
+    if (!user) {
+      throw new Error('Invalid or expired token');
+    }
+    user.password = newPassword;
+    await user.save();
+    const email = user.email;
+    await sendPasswordChangedEmail(email);
+  } catch (err) {
+    customError(err);
+    loggers.error('Password reset error');
+    throw err;
+  }
+};
+
+// defining controllers
 export const getForgotPasswordController = async (req, res) => {
-  res.render('password-reset', {
-    title: 'Forgot your password',
-  });
+  res.render('auth/password-forgot');
 };
 
 export const sendForgotPasswordController = async (req, res) => {
@@ -29,13 +48,11 @@ export const sendForgotPasswordController = async (req, res) => {
   try {
     const user = await UserService.getOne({ email });
     if (!user) {
-      return res
-        .status(404)
-        .render('error/userNotFound', { email });
+      return res.status(404).render('error/userNotFound', { email });
     }
     const resetToken = generateToken(user._id);
     await sendResetPasswordEmailMethod(email, resetToken);
-    res.redirect('/');
+    res.redirect('/'); // aquí agregar page aclarando que llegó un mail
   } catch (err) {
     customError(err);
     loggers.error('Error sending password reset email', err);
@@ -46,7 +63,7 @@ export const sendForgotPasswordController = async (req, res) => {
 export const getResetPasswordController = async (req, res) => {
   const { token } = req.params;
   try {
-    res.render('password-new', { token });
+    res.render('auth/password-reset', { token });
   } catch (err) {
     customError(err);
     loggers.error('Invalid or expired token');
@@ -55,18 +72,18 @@ export const getResetPasswordController = async (req, res) => {
 };
 
 export const setResetPasswordController = async (req, res) => {
-  const token = req.params.token;
+  const { token } = req.params;
   const { password } = req.body;
 
   const userToken = token;
   const credentials = jwt.verify(userToken, config.jwt.privateKey);
   const userId = credentials.userId;
-  const pass = await bcrypt.hash(password, 10);
+  const newPassword = await bcrypt.hash(password, 10);
 
   try {
-    await sendResetPasswordEmail(userId, pass);
+    await resetPassword(userId, newPassword);
 
-    res.render('password-successful', {
+    res.render('auth/new-password', {
       user: req.user,
     });
   } catch (err) {

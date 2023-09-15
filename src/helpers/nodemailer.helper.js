@@ -179,7 +179,7 @@ export const sendCloseAccountEmail = async (usermail) => {
 
     const emailContent = {
       body: {
-        greeting: `Hi ${user.email || user.user.email}`,
+        greeting: `Hola ${usermail}`,
         intro:
           'We are sorry to inform you that your Los Siete Rayos account has been closed.',
         outro: [
@@ -223,7 +223,7 @@ export const sendCloseInactivitiAccountEmail = async (usermail) => {
 
     const emailContent = {
       body: {
-        greeting: `Hi ${user.email || user.user.email}`,
+        greeting: `Hola ${usermail}`,
         intro:
           'We are sorry to inform you that your Los Siete Rayos account has been closed due to inactivity.',
         outro: [
@@ -249,7 +249,6 @@ export const sendCloseInactivitiAccountEmail = async (usermail) => {
   }
 };
 
-// Cierre voluntario de la cuenta
 export const sendCloseAccountForUserEmail = async (usermail) => {
   try {
     const mailGenerator = new Mailgen({
@@ -267,7 +266,7 @@ export const sendCloseAccountForUserEmail = async (usermail) => {
 
     const emailContent = {
       body: {
-        greeting: `Hi ${user.email || user.user.email}`,
+        greeting: `Hola ${usermail}`,
         intro:
           'We are sorry to inform you that your Los Siete Rayos account has been closed.',
         outro: [
@@ -293,6 +292,7 @@ export const sendCloseAccountForUserEmail = async (usermail) => {
   }
 };
 
+// password reset notification
 export const sendResetPasswordEmail = async (usermail, token) => {
   try {
     const mailGenerator = new Mailgen({
@@ -308,11 +308,11 @@ export const sendResetPasswordEmail = async (usermail, token) => {
       },
     });
 
-    const resetLink = `${config.apiserver.urlLocal}reset-password/${token}`;
+    const resetLink = `${config.apiserver.urlLocal}:${config.apiserver.prodPort}/auth/password-reset/${token}`;
 
     const emailContent = {
       body: {
-        greeting: `Hi ${user.email || user.user.email}`,
+        greeting: `Hola ${usermail}`,
         intro:
           'We received a request to reset your account password at Los Siete Rayos. If you did not make this request, you can ignore this email.',
         action: {
@@ -343,11 +343,10 @@ export const sendResetPasswordEmail = async (usermail, token) => {
     await transporter.sendMail(mailOptions);
   } catch (err) {
     customError(err);
-    loggers.error('Failed to send email', err);
+    loggers.error('Failed to send email');
   }
 };
 
-// password reset notification
 export const sendPasswordChangedEmail = async (usermail) => {
   try {
     const mailGenerator = new Mailgen({
@@ -365,7 +364,7 @@ export const sendPasswordChangedEmail = async (usermail) => {
 
     const emailContent = {
       body: {
-        greeting: `Hi ${user.email || user.user.email}`,
+        greeting: `Hi ${usermail}`,
         intro:
           'We inform you that your password has been successfully reset at Los Siete Rayos.',
 
@@ -409,7 +408,7 @@ export const sendPremiumUpgradeUser = async (usermail) => {
 
     const emailContent = {
       body: {
-        greeting: `Hi ${user.email || user.user.email}`,
+        greeting: `Hi ${usermail}`,
         intro: [
           'You are now a Premium User!',
           'You will be able to access important discounts and benefits',

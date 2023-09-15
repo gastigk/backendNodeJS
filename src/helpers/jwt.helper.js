@@ -12,7 +12,10 @@ export const generateToken = (user) => {
     age: user.age,
     phone: user.phone,
     active: user.active,
+    premium: user.premium,        
     updatedAt: user.updatedAt,
+    document: user.document,
+    photo: user.photo,
   };
 
   const token = jwt.sign(payload, config.jwt.privateKey, {

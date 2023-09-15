@@ -15,7 +15,7 @@ import {
 import { generateToken } from '../helpers/jwt.helper.js';
 
 // defining functions
-export const sendResetPasswordEmailMethod = async (usermail, token) => {
+const sendResetPasswordEmailMethod = async (usermail, token) => {
   try {
     await sendResetPasswordEmail(usermail, token);
   } catch (err) {
@@ -24,7 +24,7 @@ export const sendResetPasswordEmailMethod = async (usermail, token) => {
   }
 };
 
-export const resetPassword = async (userId, newPassword) => {
+const resetPassword = async (userId, newPassword) => {
   try {
     const user = await UserService.getById(userId);
     if (!user) {
@@ -230,49 +230,6 @@ export const deleteInactiveUsersController = async (req, res) => {
     customError(err);
     loggers.error('Error server', err);
     res.status(500).loggers('Server error when deleting inactive users');
-  }
-};
-
-export const getForgotPasswordController = async (req, res) => {
-  res.render('password-reset');
-};
-
-export const sendForgotPasswordController = async (req, res) => {
-  const { email } = req.body;
-  try {
-    const resetToken = generateToken();
-    await sendResetPasswordEmailMethod(email, resetToken);
-    res.render('password-reset', { email });
-  } catch (err) {
-    customError(err);
-    loggers.error('Error sending password reset email.');
-    return res.status(500).render('error/error500', { user });
-  }
-};
-
-export const getResetPasswordController = async (req, res) => {
-  const { token } = req.params;
-  try {
-    res.render('password-new', { token });
-  } catch (err) {
-    customError(err);
-    loggers.error('Invalid or expired token');
-    return res.status(500).render('error/error500', { user });
-  }
-};
-
-export const setResetPasswordController = async (req, res) => {
-  const { token } = req.params;
-  const { password } = req.body;
-  try {
-    await resetPassword(token, password);
-    res.render('password-seccessful', {
-      user: req.user,
-    });
-  } catch (err) {
-    customError(err);
-    loggers.error('Failed to reset password');
-    return res.status(500).render('error/error500', { user });
   }
 };
 
