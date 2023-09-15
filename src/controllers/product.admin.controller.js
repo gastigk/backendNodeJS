@@ -158,7 +158,7 @@ export const adminPanelController = async (req, res) => {
   const user = getUserFromToken(req);
   try {
     if (user.role !== 'admin') {
-      return res.status(403).render('error/notAuthorized');
+      return res.status(403).render('error/error403');
     }
     const products = await ProductService.getAll();
     res.status(200).render('admin-panel', { products, user });

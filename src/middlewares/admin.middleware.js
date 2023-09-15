@@ -8,7 +8,7 @@ const isAdmin = (req, res, next) => {
   const userToken = req.cookies[config.jwt.cookieName];
 
   if (!userToken) {
-    res.render('error/notAuthorized');
+    res.render('error/error403');
     return;
   }
 
@@ -20,12 +20,12 @@ const isAdmin = (req, res, next) => {
       req.user = user;
       next();
     } else {
-      res.render('error/notAuthorized');
+      res.render('error/error403');
     }
   } catch (error) {
     customError(error);
     loggers.error('Token verification failed');
-    res.render('error/notAuthorized');
+    res.render('error/error403');
   }
 };
 

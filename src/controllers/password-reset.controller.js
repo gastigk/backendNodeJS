@@ -48,11 +48,10 @@ export const sendForgotPasswordController = async (req, res) => {
   try {
     const user = await UserService.getOne({ email });
     if (!user) {
-      return res.status(404).render('error/userNotFound', { email });
     }
     const resetToken = generateToken(user._id);
     await sendResetPasswordEmailMethod(email, resetToken);
-    res.redirect('/'); // aquí agregar page aclarando que llegó un mail
+    res.redirect('/');
   } catch (err) {
     customError(err);
     loggers.error('Error sending password reset email', err);
@@ -83,7 +82,7 @@ export const setResetPasswordController = async (req, res) => {
   try {
     await resetPassword(userId, newPassword);
 
-    res.render('auth/new-password', { user });
+    res.render('auth/new-password', { user: req.user });
   } catch (err) {
     customError(err);
     loggers.error('Failed to reset password');
