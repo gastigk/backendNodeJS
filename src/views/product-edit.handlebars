@@ -7,7 +7,7 @@
 <section class="products">
     <div id="product-container" class="container products">
         <div class="card" style="width: 18rem;">
-            <form method="post" action="/product-edit-admin/{{ producto._id }}" enctype="multipart/form-data">
+            <form method="post" action="/notifications/edited-product/{{ producto._id }}" enctype="multipart/form-data">
                 <input type="hidden" name="_method" value="PUT">
                 <div class="card-body">
                     <div class="form-group">

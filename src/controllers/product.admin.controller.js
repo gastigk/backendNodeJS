@@ -116,7 +116,7 @@ export const editProductController = async (req, res) => {
     const productId = req.params.pid;
     const producto = await ProductService.getById(productId);
     if (producto) {
-      res.status(200).render('product-edit-admin', {
+      res.status(200).render('notifications/edited-product', {
         producto,
         user,
       });
@@ -146,7 +146,7 @@ export const editAndChargeProductController = async (req, res) => {
         : {}),
     });
 
-    res.redirect(`/product-edit-admin/${productId}`);
+    res.redirect(`/notifications/edited-product/${productId}`);
   } catch (error) {
     customError(error);
     loggers.error('Product not found');
