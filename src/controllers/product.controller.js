@@ -56,7 +56,7 @@ export const getProductsController = async (req, res) => {
   } catch (error) {
     customError(error);
     loggers.error('Products not found');
-    res.status(500).render('error/notProduct', { user });
+    res.status(500).render('notifications/not-product', { user });
   }
 };
 
@@ -103,7 +103,7 @@ export const getAllProductsController = async (req, res, next) => {
   } catch (error) {
     customError(error);
     loggers.error('Products not found');
-    res.status(500).render('error/notProduct', { user });
+    res.status(500).render('notifications/not-product', { user });
   }
 };
 
@@ -147,7 +147,7 @@ export const createProductController = async (req, res) => {
   } catch (error) {
     customError(error);
     loggers.error('Error saving the product in the database');
-    res.status(500).render('error/notProduct', { user });
+    res.status(500).render('notifications/not-product', { user });
   }
 };
 
@@ -190,7 +190,7 @@ export const getProductByCategoryController = async (req, res, next) => {
   } catch (error) {
     customError(error);
     loggers.error('Products not found');
-    res.status(500).render('error/notProduct', { user });
+    res.status(500).render('notifications/not-product', { user });
   }
 };
 
@@ -210,7 +210,7 @@ export const getProductByIdController = async (req, res) => {
   } catch (error) {
     customError(error);
     loggers.error('Error getting product by ID');
-    res.status(500).render('error/notProduct', { user });
+    res.status(500).render('notifications/not-product', { user });
   }
 };
 
@@ -318,7 +318,7 @@ export const sendPurchaseController = async (req, res) => {
     cart.items = productsWithSufficientStock;
 
     if (cart.items.length === 0) {
-      res.render('error/notStock', {
+      res.render('notifications/not-stock', {
         user,
         products: cart.items.map((item) => item.producto),
       });
@@ -375,6 +375,6 @@ export const getProductForEditByIdController = async (req, res) => {
   } catch (error) {
     customError(error);
     loggers.error('Product not found');
-    res.status(500).render('error/notProduct', { user });
+    res.status(500).render('notifications/not-product', { user });
   }
 };

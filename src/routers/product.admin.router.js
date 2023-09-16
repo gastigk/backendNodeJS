@@ -14,7 +14,7 @@ const router = Router();
 const uploadProductThumbnail = configureMulter('img');
 
 router.get('/', isAdmin, adminPanelController);
-router.get('/delete/:id', isAdmin, deleteProductController);
+router.get('/:id', isAdmin, deleteProductController);
 router.get('/:pid', isAdmin, editProductController);
 router.post(
   '/:id',

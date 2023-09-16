@@ -68,7 +68,7 @@ export const createCartController = async (req, res) => {
       cart = await getOrCreateCart();
     }
     if (!cart || cart.items.length === 0 || (!userEmail && cart.user.email)) {
-      return res.render('error/notCart', { user });
+      return res.render('notifications/not-cart', { user });
     }
     const cartId = cart._id.toString();
 
@@ -115,7 +115,7 @@ export const createCartController = async (req, res) => {
   } catch (error) {
     customError(error);
     loggers.error('Cart not found');
-    res.status(500).render('error/notCart', { user });
+    res.status(500).render('notifications/not-cart', { user });
   }
 };
 
@@ -144,7 +144,7 @@ export const clearCartController = async (req, res) => {
   } catch (error) {
     customError(error);
     loggers.error('Error when emptying the cart');
-    res.status(500).render('error/notCart', { user });
+    res.status(500).render('notifications/not-cart', { user });
   }
 };
 
@@ -172,7 +172,7 @@ export const deleteCartController = async (req, res) => {
   } catch (error) {
     customError(error);
     loggers.error('Error deleting cart');
-    res.status(500).render('error/notCart', { user });
+    res.status(500).render('notifications/not-cart', { user });
   }
 };
 
@@ -220,7 +220,7 @@ export const updateCartProductsController = async (req, res) => {
   } catch (error) {
     customError(error);
     loggers.error('Error updating product quantity');
-    res.status(500).render('error/notCart', { user });
+    res.status(500).render('notifications/not-cart', { user });
   }
 };
 
@@ -280,7 +280,7 @@ export const removeProductFromCartController = async (req, res) => {
 
     const itemIndex = cart.items.findIndex((item) => item._id.equals(itemId));
     if (itemIndex === -1) {
-      return res.status(404).render('error/notCartProducts', {
+      return res.status(404).render('notifications/not-cart-product', {
         cartId,
         itemId,
         user,
@@ -289,7 +289,7 @@ export const removeProductFromCartController = async (req, res) => {
 
     cart.items.splice(itemIndex, 1);
     await cart.save();
-    return res.render('cart-deleted', {
+    return res.render('notifications/deleted-cart', {
       cartId,
       itemId,
       user,
@@ -297,6 +297,6 @@ export const removeProductFromCartController = async (req, res) => {
   } catch (error) {
     customError(error);
     loggers.error('Error when removing a product from the cart');
-    return res.status(500).render('error/notCart', { user });
+    return res.status(500).render('notifications/not-cart', { user });
   }
 };

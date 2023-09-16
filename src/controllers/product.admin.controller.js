@@ -79,7 +79,7 @@ export const getTableProductsController = async (req, res) => {
   } catch (error) {
     customError(error);
     loggers.error('Product not found');
-    res.status(500).render('error/notProduct', { user });
+    res.status(500).render('notifications/not-product', { user });
   }
 };
 
@@ -96,7 +96,7 @@ export const deleteProductController = async (req, res) => {
     }
 
     if (product) {
-      res.render('product-deleted', {
+      res.render('notifications/deleted-product', {
         product,
         user,
       });
@@ -106,7 +106,7 @@ export const deleteProductController = async (req, res) => {
   } catch (error) {
     customError(error);
     loggers.error('Product not found');
-    res.status(500).render('error/notProduct', { user });
+    res.status(500).render('notifications/not-product', { user });
   }
 };
 
@@ -126,7 +126,7 @@ export const editProductController = async (req, res) => {
   } catch (error) {
     customError(error);
     loggers.error('Product not found');
-    res.status(500).render('error/notProduct', { user });
+    res.status(500).render('notifications/not-product', { user });
   }
 };
 
@@ -150,7 +150,7 @@ export const editAndChargeProductController = async (req, res) => {
   } catch (error) {
     customError(error);
     loggers.error('Product not found');
-    res.status(500).render('error/notProduct', { user });
+    res.status(500).render('notifications/not-product', { user });
   }
 };
 

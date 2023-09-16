@@ -82,7 +82,7 @@ export const setResetPasswordController = async (req, res) => {
   try {
     await resetPassword(userId, newPassword);
 
-    res.render('auth/new-password', { user: req.user });
+    res.render('notifications/new-password', { user: req.user });
   } catch (err) {
     customError(err);
     loggers.error('Failed to reset password');

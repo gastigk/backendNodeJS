@@ -15,7 +15,7 @@ export const getUserFromCookiesController = async (req, res) => {
   const userToken = req.cookies[config.jwt.cookieName];
 
   if (!userToken) {
-    return res.status(401).render('error/notLoggedIn');
+    return res.status(401).render('notifications/not-loggedin');
   }
 
   try {
@@ -46,7 +46,7 @@ export const sendLogginController = async (req, res) => {
     const user = await UserService.getOne({ email: email });
 
     if (!user) {
-      return res.status(401).render('error/notLoggedIn');
+      return res.status(401).render('notifications/not-loggedin');
     }
 
     bcrypt.compare(password, user.password).then((result) => {
@@ -63,7 +63,7 @@ export const sendLogginController = async (req, res) => {
         res.cookie(config.jwt.cookieName, userToken).redirect('/');
       } else {
         loggers.error('Error to login user');
-        return res.status(401).render('error/notLoggedIn');
+        return res.status(401).render('notifications/not-loggedin');
       }
     });
   } catch (err) {
@@ -111,9 +111,9 @@ export const setSignupController = async (req, res, next) => {
 
     if (!user) {
       if (info.message === 'Email already exists.') {
-        return res.render('error/notSignupByEmail');
+        return res.render('notifications/unregistered-email');
       } else if (info.message === 'Phone already exists.') {
-        return res.render('error/notSignupByPhone');
+        return res.render('notifications/unregistered-phone');
       }
     }
 
@@ -151,9 +151,9 @@ export const setSignupAdminController = (req, res, next) => {
 
     if (!user) {
       if (info.message === 'Email already exists.') {
-        return res.render('error/notSignupByEmail');
+        return res.render('notifications/unregistered-email');
       } else if (info.message === 'Phone already exists.') {
-        return res.render('error/notSignupByPhone');
+        return res.render('notifications/unregistered-phone');
       }
     }
 

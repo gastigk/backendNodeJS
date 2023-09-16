@@ -1,7 +1,7 @@
 import cartRouter from '../routers/cart.router.js';
 import chatRouter from '../routers/chat.router.js';
 import checkoutRouter from '../routers/checkout.router.js';
-import documentRouter from '../routers/docs.router.js';
+import documentRouter from '../routers/documentation.router.js';
 import indexRouter from '../routers/index.router.js';
 import loginRouter from '../routers/login.router.js';
 import loginGithubRouter from '../routers/logingithub.router.js';
@@ -25,14 +25,14 @@ const views = [
   { path: '/', router: indexRouter },
   { path: '/admin-panel', router: adminPanelRouter },
   { path: '/cart', router: cartRouter },
-  { path: '/cart-deleted', router: cartRouter },
+  { path: '/notifications/deleted-cart', router: cartRouter },
   { path: '/chat', router: chatRouter },
   { path: '/checkout', router: checkoutRouter },
   { path: '/auth/login', router: loginRouter },
   { path: '/auth/password-forgot', router: forgotPassword },
   { path: '/auth/password-reset', router: resetPassword },   
   { path: '/products', router: productRouter },
-  { path: '/product-deleted', router: productDeletedRouter },
+  { path: '/notifications/deleted-product', router: productDeletedRouter },
   { path: '/product-edit', router: productEditRouter },
   { path: '/product-edit-admin', router: productEditByIdRouter },
   { path: '/product', router: productRouter },

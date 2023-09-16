@@ -39,6 +39,6 @@ export const sendProductsRTController = async (req, res) => {
   } catch (error) {
     customError(error);
     loggers.error('Product no found');
-    res.status(500).render('error/notProduct', { user });
+    res.status(500).render('notifications/not-product', { user });
   }
 };

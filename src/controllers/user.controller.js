@@ -165,7 +165,7 @@ export const deleteUserController = async (req, res) => {
       customError(err);
       loggers.error('Error sending close account email');
     }
-    res.render('user-eliminated', { user });
+    res.render('notifications/eliminated-user', { user });
   } catch (err) {
     customError(err);
     loggers.error('Error server');
@@ -249,13 +249,13 @@ export const setUsersPremiumController = async (req, res) => {
   try {
     const user = await UserService.getById(userId);
     if (!user) {
-      return res.status(404).render('error/userNotFound', { userId });
+      return res.status(404).render('notifications/not-user', { userId });
     }
     if (user.document.length > 0 && user.photo.length > 0) {
       await UserService.update(userId, { premium: true });
       const usermail = user.email;
       sendPremiumUpgradeUser(usermail);
-      res.status(200).render('user-premium-validate', { user });
+      res.status(200).render('notifications/new-premium-user', { user });
     } else {
       res.status(200).render('error/notPremium', { user });
     }
