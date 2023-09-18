@@ -24,23 +24,9 @@ const uploadDocuments = configureMulter('documents');
 
 router.get('/', isAdmin, getUsersController);
 router.get('/profile', isLoggedIn, getProfileController);
-router.post(
-  '/profile/documents/:id',
-  isLoggedIn,
-  uploadDocuments.single('document'),
-  setUsersDocumentsController
-);
-router.get(
-  '/profile/set-profile-photo/:id',
-  isLoggedIn,
-  setProfileUsersController
-);
-router.post(
-  '/profile/set-profile-photo/:id',
-  isLoggedIn,
-  uploadProfilePhoto.single('photo'),
-  setPhotoProfileUsersController
-);
+router.post('/profile/documents/:id', isLoggedIn, uploadDocuments.single('document'), setUsersDocumentsController);
+router.get('/profile/set-profile-photo/:id', isLoggedIn, setProfileUsersController);
+router.post('/profile/set-profile-photo/:id', isLoggedIn, uploadProfilePhoto.single('photo'), setPhotoProfileUsersController);
 router.get('/newUser', isAdmin, getNewUserTestController);
 router.post('/newUser', isAdmin, createNewUserTestController);
 router.get('/edit/:id', isAdmin, getUserForEditController);

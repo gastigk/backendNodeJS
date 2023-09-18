@@ -34,7 +34,7 @@ export const getUsersController = async (req, res) => {
 export const getProfileController = async (req, res) => {
   const user = getUserFromToken(req);
 
-  res.render('user-profile', { user });
+  res.render('profile', { user });
 };
 
 export const setProfileUsersController = async (req, res) => {
@@ -212,7 +212,7 @@ export const getUsersDocumentsController = async (req, res) => {
   const user = getUserFromToken(req);
   try {
     if (user.document.length === 0) {
-      return res.render('error/notDocuments', { user });
+      return res.render('notifications/not-documents', { user });
     } else {
       res.status(200).render('documents', { user, document: user.document });
     }
@@ -257,7 +257,7 @@ export const setUsersPremiumController = async (req, res) => {
       sendPremiumUpgradeUser(usermail);
       res.status(200).render('notifications/new-premium-user', { user });
     } else {
-      res.status(200).render('error/notPremium', { user });
+      res.status(200).render('notifications/not-premium', { user });
     }
   } catch (error) {
     customError(error);
