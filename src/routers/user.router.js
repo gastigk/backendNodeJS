@@ -27,13 +27,13 @@ router.get('/profile', isLoggedIn, getProfileController);
 router.post('/profile/documents/:id', isLoggedIn, uploadDocuments.single('document'), setUsersDocumentsController);
 router.get('/profile/set-profile-photo/:id', isLoggedIn, setProfileUsersController);
 router.post('/profile/set-profile-photo/:id', isLoggedIn, uploadProfilePhoto.single('photo'), setPhotoProfileUsersController);
-router.get('/newUser', isAdmin, getNewUserTestController);
-router.post('/newUser', isAdmin, createNewUserTestController);
+router.get('/user-new', isAdmin, getNewUserTestController);
+router.post('/user-new', isAdmin, createNewUserTestController);
 router.get('/edit/:id', isAdmin, getUserForEditController);
 router.post('/edit/:id', isAdmin, editUserController);
 router.get('/delete/:id', isAdmin, deleteUserController);
 router.get('/documents', isLoggedIn, getUsersDocumentsController);
 router.get('/premium/:id', setUsersPremiumController);
-router.get('/delete-for-my-self/:id', deleteUserController);
+router.get('/eliminated/:id', deleteUserController);
 
 export default router;

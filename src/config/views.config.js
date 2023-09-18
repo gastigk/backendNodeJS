@@ -43,13 +43,13 @@ const views = [
   { path: '/mockingproduct', router: mockingProductRouter },
   { path: '/github', router: loginGithubRouter },
   { path: '/logout', router: logoutRouter },
-  { path: '/user', router: usersRouter },
-  { path: '/user/user-new', router: usersRouter },
-  { path: '/user/profile', router: usersRouter },
+  { path: '/users', router: usersRouter },
+  { path: '/users/user-new', router: usersRouter },
+  { path: '/users/profile', router: usersRouter },
   { path: '/docs-api', router: documentRouter },
-  { path: '/user/profile/documents', router: usersPremiumRouter },
-  { path: '/user/documents', router: usersRouter },
-  { path: '/user/premium', router: usersRouter },
+  { path: '/users/profile/documents', router: usersPremiumRouter },
+  { path: '/users/documents', router: usersRouter },
+  { path: '/users/premium', router: usersRouter },
 ];
 
 export default views;

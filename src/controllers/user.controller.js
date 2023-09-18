@@ -18,7 +18,7 @@ export const getUsersController = async (req, res) => {
     const users = await UserService.getAll();
     let resultsDTO = users.map((user) => new UsersDTO(user));
     const userObjects = users.map((user) => user.toObject());
-    res.render('user', {
+    res.render('users', {
       users: userObjects,
       user,
       resultsDTO,
@@ -41,7 +41,7 @@ export const setProfileUsersController = async (req, res) => {
   const user = new UsersDTO(getUserFromToken(req));
   const userId = req.params.id;
 
-  res.render('user-profile-photo', { user, userId });
+  res.render('profile', { user, userId });
 };
 
 export const setPhotoProfileUsersController = async (req, res) => {
@@ -64,7 +64,7 @@ export const setPhotoProfileUsersController = async (req, res) => {
 
     await newUserPhoto.save();
     let photo = `/assets/images/users/${file.filename}`;
-    res.render('user-profile-edit', { user, photo, userId });
+    res.render('profile', { user, photo, userId });
   } catch (err) {
     customError(err);
     loggers.error('Error server', err);
@@ -75,7 +75,7 @@ export const setPhotoProfileUsersController = async (req, res) => {
 // no DAO applied
 export const getNewUserTestController = async (req, res) => {
   const user = getUserFromToken(req);
-  res.render('newUser', { user });
+  res.render('user-new', { user });
 };
 
 // no DAO applied
@@ -96,11 +96,11 @@ export const createNewUserTestController = async (req, res) => {
       loggers.error(`User creation error: ${error.message}`);
       loggers.error(`Additional error information: ${error.cause}`);
 
-      return res.redirect('/user/newUser');
+      return res.redirect('/users/user-new');
     }
   }
   users.push(user);
-  res.redirect('/user');
+  res.redirect('/users');
 };
 
 export const getUserForEditController = async (req, res) => {
@@ -112,7 +112,7 @@ export const getUserForEditController = async (req, res) => {
       user = getUserFromToken(req);
       return res.status(404).render('error/error404', { user });
     }
-    res.render('user-profile-edit', { user });
+    res.render('profile', { user });
   } catch (err) {
     customError(err);
     loggers.error('Error server');
@@ -140,7 +140,7 @@ export const editUserController = async (req, res) => {
       return res.status(404).render('error/error404', { user });
     }
 
-    res.redirect('/user');
+    res.redirect('/users');
   } catch (err) {
     customError(err);
     loggers.error('Error server');
