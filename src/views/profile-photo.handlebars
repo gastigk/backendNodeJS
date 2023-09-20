@@ -241,7 +241,7 @@
             </div>
             <div class="content-body">
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-6">
 
                         <!-- profile -->
                         <div class="card">
@@ -251,14 +251,20 @@
                             <div class="card-body py-2 my-25">
                                 <!-- header section -->
                                 <div class="d-flex">
-                                    <a href="#" class="me-25">
-                                        <img src="{{ user.photo }} {{user.user.photo}}" id="account-upload-img" class="uploadedAvatar rounded me-50" alt="profile image" height="100" width="100" />
-                                    </a>
+                                        <div class="d-flex align-items-center flex-column">
+                                            <div class="card-body py-2 my-25">
+                                                <div class="d-flex">
+                                                    <a href="/users/profile/set-photo/{{ user.userId }}" class="me-25">
+                                                        <img src="{{ photo }}" id="account-upload-img" class="uploadedAvatar rounded me-50" alt="profile image" height="100" width="100" />
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
                                     <!-- upload and reset button -->
                                     <div class="d-flex align-items-end mt-75 ms-1">
                                         <form action="/users/profile/set-photo/{{ user._id }}" method="POST" enctype="multipart/form-data">
                                             <div>
-                                                <label for="photo" class="btn btn-sm btn-primary mb-75 me-75" >Choose file</label>
+                                                <label for="photo" class="btn btn-sm btn-secondary mb-75 me-75" >Choose file</label>
                                                 <input type="file" name="photo" id="photo" hidden accept=".png,.jpg,.jpeg"/>
                                                 <p class="mb-0">Allowed file types: png, jpg, jpeg.</p>
                                             </div>

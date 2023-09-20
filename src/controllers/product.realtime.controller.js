@@ -25,7 +25,7 @@ export const sendProductsRTController = async (req, res) => {
     price: parseInt(price),
     stock,
     ...(req.file
-      ? { thumbnail: `/assets/images/products/${req.file.filename}` }
+      ? { thumbnail: ` /images/products/${req.file.filename}` }
       : {}),
   });
 

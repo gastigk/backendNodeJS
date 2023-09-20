@@ -142,7 +142,7 @@ export const editAndChargeProductController = async (req, res) => {
       price: price,
       stock: stock,
       ...(req.file
-        ? { thumbnail: `/assets/images/users/${req.file.filename}` }
+        ? { thumbnail: `/images/products/${req.file.filename}` }
         : {}),
     });
 

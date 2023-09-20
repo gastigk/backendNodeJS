@@ -6,7 +6,7 @@ import __dirname from '../server/utils.js';
 import customError from '../services/errors/log.error.js';
 
 // middleware third-party configuration: file upload to server with multer
-const configureMulter = (destinationPath) => {
+const configurationMulter = (destinationPath) => {
   try {
     const storage = multer.diskStorage({
       destination: (req, file, cb) => {
@@ -28,4 +28,4 @@ const configureMulter = (destinationPath) => {
   }
 };
 
-export default configureMulter;
+export default configurationMulter;

@@ -16,11 +16,11 @@ import {
   getUsersDocumentsController,
   setUsersPremiumController,
 } from '../controllers/user.controller.js';
-import configureMulter from '../helpers/multer.helper.js';
+import configurationMulter from '../helpers/multer.helper.js';
 const router = Router();
 
-const uploadProfilePhoto = configureMulter('/assets/images/users/');
-const uploadDocuments = configureMulter('documents');
+const uploadProfilePhoto = configurationMulter('images/users');
+const uploadDocuments = configurationMulter('documents');
 
 router.get('/', isAdmin, getUsersController);
 router.get('/profile', isLoggedIn, getProfileController);

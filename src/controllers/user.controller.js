@@ -55,7 +55,7 @@ export const setPhotoProfileUsersController = async (req, res) => {
       return res.status(404).render('error/error404', { user });
     }
     const newUserPhoto = await UserService.update(userId, {
-      photo: `/assets/images/users/${file.filename}`,
+      photo: `/images/users/${file.filename}`,
     });
 
     if (!newUserPhoto) {
@@ -63,8 +63,8 @@ export const setPhotoProfileUsersController = async (req, res) => {
     }
 
     await newUserPhoto.save();
-    let photo = `/assets/images/users/${file.filename}`;
-    res.render('profile', { user, photo, userId });
+    let photo = `/images/users/${file.filename}`;
+    res.render('profile-changed', { user, photo, userId });
   } catch (err) {
     customError(err);
     loggers.error('Error server', err);

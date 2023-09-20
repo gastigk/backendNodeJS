@@ -8,7 +8,7 @@ productForm.addEventListener('submit', (evt) => {
   let newProduct = {
     title: productForm.title.value,
     category: productForm.category.value,
-    thumbnail: '/assets/images/' + productForm.thumbnail.value.replace(/^.*\\/, ''),
+    thumbnail: '/images/' + productForm.thumbnail.value.replace(/^.*\\/, ''),
     code: productForm.code.value,
     description: productForm.description.value,
     price: productForm.price.value,

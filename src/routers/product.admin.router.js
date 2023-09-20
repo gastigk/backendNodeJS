@@ -7,11 +7,11 @@ import {
   adminPanelController,
 } from '../controllers/product.admin.controller.js';
 import isAdmin from '../middlewares/admin.middleware.js';
-import configureMulter from '../helpers/multer.helper.js';
+import configurationMulter from '../helpers/multer.helper.js';
 
 const router = Router();
 
-const uploadProductThumbnail = configureMulter('/assets/images/products/');
+const uploadProductThumbnail = configurationMulter('images/products');
 
 router.get('/', isAdmin, adminPanelController);
 router.get('/:id', isAdmin, deleteProductController);

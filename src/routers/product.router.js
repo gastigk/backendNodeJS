@@ -6,10 +6,10 @@ import {
   createProductController,
   getProductByIdController,
 } from '../controllers/product.controller.js';
-import configureMulter from '../helpers/multer.helper.js';
+import configurationMulter from '../helpers/multer.helper.js';
 
 const router = Router();
-const upload = configureMulter('/assets/images/products/');
+const upload = configurationMulter('images/products');
 
 router.get('/', getAllProductsController);
 router.post('/', upload.single('thumbnail'), createProductController);

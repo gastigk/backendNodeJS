@@ -121,7 +121,7 @@ export const createProductController = async (req, res) => {
     description,
     price: parseInt(price),
     stock,
-    thumbnail: `/assets/images/products/${req.file.filename}`, // commented to pass the test
+    thumbnail: `/images/products/${req.file.filename}`, // commented to pass the test
   });
 
   try {
