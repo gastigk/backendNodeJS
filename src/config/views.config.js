@@ -8,7 +8,7 @@ import loginGithubRouter from '../routers/logingithub.router.js';
 import logoutRouter from '../routers/logout.router.js';
 import forgotPassword from '../routers/password-forgot.router.js';
 import resetPassword from '../routers/password-reset.router.js';
-import productEditByIdRouter from '../routers/product-edit.admin.router.js';
+import productEditByIdRouter from '../routers/product.admin.router.js';
 import mockingProductRouter from '../routers/product-mocking.router.js';
 import productEditRouter from '../routers/product-edit.admin.router.js';
 import productDeletedRouter from '../routers/product.admin.router.js';
@@ -19,7 +19,7 @@ import productRouter from '../routers/product.router.js';
 import signupAdminRouter from '../routers/signup.admin.router.js';
 import singupRouter from '../routers/signup.router.js';
 import usersPremiumRouter from '../routers/user.premium.router.js';
-import usersRouter from '../routers/user.router.js';
+import usersRouter from '../routers/users.router.js';
 
 const views = [
   { path: '/', router: indexRouter },

@@ -8,7 +8,7 @@ import {
 } from '../controllers/product.realtime.controller.js';
 
 const router = Router();
-const upload = await configureMulter();
+const upload = await configureMulter('/assets/images/products/');
 
 router.get('/', isAdmin, getProductsRTController);
 router.post('/', upload.single('thumbnail'), sendProductsRTController);

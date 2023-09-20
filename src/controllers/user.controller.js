@@ -41,7 +41,7 @@ export const setProfileUsersController = async (req, res) => {
   const user = new UsersDTO(getUserFromToken(req));
   const userId = req.params.id;
 
-  res.render('profile', { user, userId });
+  res.render('profile-photo', { user, userId });
 };
 
 export const setPhotoProfileUsersController = async (req, res) => {
@@ -112,7 +112,7 @@ export const getUserForEditController = async (req, res) => {
       user = getUserFromToken(req);
       return res.status(404).render('error/error404', { user });
     }
-    res.render('profile', { user });
+    res.render('user-edit', { user });
   } catch (err) {
     customError(err);
     loggers.error('Error server');
@@ -165,7 +165,7 @@ export const deleteUserController = async (req, res) => {
       customError(err);
       loggers.error('Error sending close account email');
     }
-    res.render('notifications/eliminated-user', { user });
+    res.render('notifications/deleted-user', { user });
   } catch (err) {
     customError(err);
     loggers.error('Error server');

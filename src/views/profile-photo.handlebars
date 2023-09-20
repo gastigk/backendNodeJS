@@ -1,5 +1,12 @@
+    <!-- BEGIN: Vendor CSS-->
+    <link rel="stylesheet" type="text/css" href="/assets/vendors/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/vendors/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/vendors/sweetalert2.min.css">
+    <!-- END: Vendor CSS-->
+
     <!-- BEGIN: Page CSS-->
-    <link rel="stylesheet" type="text/css" href="/assets/css/pages/page-knowledge-base.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/plugins/ext-component-sweet-alerts.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/plugins/form-validation.css">
     <!-- END: Page CSS-->
 
 <!-- BEGIN: Body-->
@@ -161,7 +168,7 @@
                 </li>
                 {{#if user}}
                 <li class=" nav-item">
-                    <a class="d-flex align-items-center" href="/user/profile/documents">
+                    <a class="d-flex align-items-center" href="/users/profile/documents">
                         <i data-feather='gift'></i>
                         <span class="menu-title text-truncate" data-i18n="Typography">Beneficios</span>
                     </a>
@@ -206,7 +213,7 @@
         </div>
     </div>
     <!-- END: Main Menu-->
-
+    
     <!-- BEGIN: Content-->
     <div class="app-content content ">
         <div class="content-overlay"></div>
@@ -216,12 +223,15 @@
                 <div class="content-header-left col-md-9 col-12 mb-2">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
-                            <h2 class="content-header-title float-start mb-0">Administrator panel</h2>
+                            <h2 class="content-header-title float-start mb-0">Account</h2>
                             <div class="breadcrumb-wrapper">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="/">Home</a>
+                                    <li class="breadcrumb-item">
+                                        <a href="/">Home</a>
                                     </li>
-                                    <li class="breadcrumb-item"><a href="/admin-panel">Administrator panel</a>
+                                    <li class="breadcrumb-item active"><a href="/users/profile">Profile</a>
+                                    </li>
+                                    <li class="breadcrumb-item active"> Photo
                                     </li>
                                 </ol>
                             </div>
@@ -230,80 +240,42 @@
                 </div>
             </div>
             <div class="content-body">
-                <!-- Knowledge base Jumbotron -->
-                <section id="knowledge-base-search">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card knowledge-base-bg text-center" style="background-image: url('../../../app-assets/images/banner/banner.png')">
-                                <div class="card-body">
-                                    <h2 class="text-primary">E-commerce administration panel</h2>
-                                    <form class="kb-search-input">
-                                        <div class="input-group input-group-merge">
-                                            <span class="input-group-text"><i data-feather="search"></i></span>
-                                            <input type="text" class="form-control" id="searchbar" placeholder="Ask a question..." />
+                <div class="row">
+                    <div class="col-12">
+
+                        <!-- profile -->
+                        <div class="card">
+                            <div class="card-header border-bottom">
+                                <h4 class="card-title">Profile Photo</h4>
+                            </div>
+                            <div class="card-body py-2 my-25">
+                                <!-- header section -->
+                                <div class="d-flex">
+                                    <a href="#" class="me-25">
+                                        <img src="{{ user.photo }} {{user.user.photo}}" id="account-upload-img" class="uploadedAvatar rounded me-50" alt="profile image" height="100" width="100" />
+                                    </a>
+                                    <!-- upload and reset button -->
+                                    <div class="d-flex align-items-end mt-75 ms-1">
+                                        <form action="/users/profile/set-photo/{{ user._id }}" method="POST" enctype="multipart/form-data">
+                                            <div>
+                                                <label for="photo" class="btn btn-sm btn-primary mb-75 me-75" >Choose file</label>
+                                                <input type="file" name="photo" id="photo" hidden accept=".png,.jpg,.jpeg"/>
+                                                <p class="mb-0">Allowed file types: png, jpg, jpeg.</p>
+                                            </div>
+
+                                            <div class="col-12">
+                                                <button type="submit" class="btn btn-primary mt-1 me-1">Save photo</button>
+                                                <button href="/users/profile" type="reset" class="btn btn-outline-secondary mt-1">Go back</button>
+                                            </div>
+                                        </form>
                                         </div>
-                                    </form>
-                                </div>
+                                    </div>
+                                <!--/ form -->
                             </div>
                         </div>
+
                     </div>
-                </section>
-                <!--/ Knowledge base Jumbotron -->
-
-                <!-- Knowledge base -->
-                <section id="knowledge-base-content">
-                    <div class="row kb-search-content-info match-height">
-                        <!-- users -->
-                        <div class="col-md-4 col-sm-6 col-12 kb-search-content">
-                            <div class="card">
-                                <a href="/users">
-                                    <img src="/assets/images/sales.svg" class="card-img-top" alt="knowledge-base-image" />
-
-                                    <div class="card-body text-center">
-                                        <h4>Users Manager</h4>
-                                        <p class="text-body mt-1 mb-0">
-                                            In this section you can manage the users of the app.
-                                        </p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- products -->
-                        <div class="col-md-4 col-sm-6 col-12 kb-search-content">
-                            <div class="card">
-                                <a href="/products-table">
-                                    <img src="/assets/images/marketing.svg" class="card-img-top" alt="knowledge-base-image" />
-                                    <div class="card-body text-center">
-                                        <h4>Products Manager</h4>
-                                        <p class="text-body mt-1 mb-0">
-                                            Section where you can manage the products of the application.
-                                        </p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- websocket -->
-                        <div class="col-md-4 col-sm-6 col-12 kb-search-content">
-                            <div class="card">
-                                <a href="/products-realtime">
-                                    <img src="/assets/images/api.svg" class="card-img-top" alt="knowledge-base-image" />
-                                    <div class="card-body text-center">
-                                        <h4>Products Manager in Real Time</h4>
-                                        <p class="text-body mt-1 mb-0">In this section you can manage the products and review in real time.</p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- no result -->
-                        <div class="col-12 text-center no-result no-items">
-                            <h4 class="mt-4">Search result not found!!</h4>
-                        </div>
-                    </div>
-                </section>
-                <!-- Knowledge base ends -->
+                </div>
 
             </div>
         </div>
@@ -324,9 +296,17 @@
     </footer>
     <button class="btn btn-primary btn-icon scroll-top" type="button"><i data-feather="arrow-up"></i></button>
     <!-- END: Footer-->
+        
+    <!-- BEGIN: Page Vendor JS-->
+    <script src="/assets/vendors/select2.full.min.js"></script>
+    <script src="/assets/vendors/sweetalert2.all.min.js"></script>
+    <script src="/assets/vendors/jquery.validate.min.js"></script>
+    <script src="/assets/vendors/cleave.min.js"></script>
+    <script src="/assets/vendors/cleave-phone.ar.js"></script>
+    <!-- END: Page Vendor JS-->
 
     <!-- BEGIN: Page JS-->
-    <script src="/assets/js/scripts/page-knowledge-base.js"></script>
+    <script src="/assets/js/scripts/page-account-settings-account.js"></script>
     <!-- END: Page JS-->
 
 </body>

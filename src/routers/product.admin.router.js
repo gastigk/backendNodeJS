@@ -11,7 +11,7 @@ import configureMulter from '../helpers/multer.helper.js';
 
 const router = Router();
 
-const uploadProductThumbnail = configureMulter('img');
+const uploadProductThumbnail = configureMulter('/assets/images/products/');
 
 router.get('/', isAdmin, adminPanelController);
 router.get('/:id', isAdmin, deleteProductController);

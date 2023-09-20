@@ -220,14 +220,14 @@
                 <div class="content-header-left col-md-9 col-12 mb-2">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
-                            <h2 class="content-header-title float-start mb-0">DataTables</h2>
+                            <h2 class="content-header-title float-start mb-0">Users</h2>
                             <div class="breadcrumb-wrapper">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="/">Home</a>
                                     </li>
-                                    <li class="breadcrumb-item"><a href="#">Users</a>
+                                    <li class="breadcrumb-item"><a href="/admin-panel">Administrator panel</a>
                                     </li>
-                                    <li class="breadcrumb-item active">Database
+                                    <li class="breadcrumb-item active">Users
                                     </li>
                                 </ol>
                             </div>
@@ -238,9 +238,10 @@
             <div class="content-body">
                 <div class="row">
                     <div class="col-12">
-                        <p>Read full documnetation <a href="/docs-api" target="_blank">here</a></p>
+                        <p>Read full documentation <a href="/docs-api" target="_blank">here</a></p>
                     </div>
                 </div>
+
                 <!-- Basic table -->
                 <section id="basic-datatable">
                     <div class="row">
@@ -272,22 +273,22 @@
                                             <td>{{this.role}}</td>
                                             <td>
                                                 {{#if this.premium}}
-                                                <span style="color: blue;">Premium</span>
+                                                <span class="badge rounded-pill badge-light-info">Premium</span>
                                                 {{else}}
-                                                <span style="color: black;">Basic</span>
+                                                <span class="badge rounded-pill badge-light-warning">User</span>
                                                 {{/if}}
                                             </td>
                                             <td>
                                                 {{#if this.active}}
-                                                <span style="color: green;">Conected</span>
+                                                <span class="badge rounded-pill badge-light-primary">Connected</span>
                                                 {{else}}
-                                                <span style="color: red;">Disconected</span>
+                                                <span class="badge rounded-pill badge-light-success">Disconnected</span>
                                                 {{/if}}
                                             </td>
                                             <td>{{formatDate this.updatedAt}}</td>
-                                            <td class="grid text-center">
-                                                <a href="/users/edit/{{this._id}}" class="btn btn-primary btn-sm g-col-6">Editar</a>
-                                                <a href="/users/delete/{{this._id}}" class="btn btn-danger btn-sm mt-1 g-col-6">Eliminar</a>
+                                            <td class="col-12">
+                                                <a href="/users/edit/{{this._id}}" class="btn btn-primary mt-1">Editar</a>
+                                                <a href="/users/delete/{{this._id}}" class="btn btn-outline-secondary mt-1">Eliminar</a>
                                             </td>
                                         </tr>
                                         {{/each}}
@@ -336,7 +337,6 @@
 
     <!-- BEGIN: Page JS-->
     <script src="/assets/js/scripts/table-datatables-basic.js"></script>
-    <script src="/assets/js/scripts/customizer.min.js"></script>
     <!-- END: Page JS-->
 
 </body>
