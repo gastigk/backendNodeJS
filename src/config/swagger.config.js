@@ -1,7 +1,7 @@
 import config from '../config/config.js';
 import __dirname from '../server/utils.js';
 
-export const swaggerOptions = {
+export const configurationSwagger = {
   definition: {
     openapi: '3.1.0',
     info: {

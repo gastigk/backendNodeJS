@@ -60,22 +60,58 @@ export async function removeProductFromCarts(carts, productId) {
 }
 
 // defining controllers
-export const getTableProductsController = async (req, res) => {
+export const adminPanelController = async (req, res) => {
   const user = getUserFromToken(req);
-  const sortOption = req.query.sortOption;
-  const sortQuery = {};
-
-  if (sortOption === 'desc') {
-    sortQuery.price = -1;
-  } else if (sortOption === 'unorder') {
-    sortQuery.price = null;
-  } else {
-    sortQuery.price = 1;
-  }
-
   try {
-    const products = await ProductService.getAllQuery(sortQuery);
-    res.render('products-table', { products, user });
+    if (user.role !== 'admin') {
+      return res.status(403).render('error/error403');
+    }
+    const products = await ProductService.getAll();
+    res.status(200).render('admin-panel', { products, user });
+  } catch (error) {
+    customError(error);
+    loggers.error(`Error getting the requested data from the database`);
+    res.status(500).render('error/error500', { user });
+  }
+};
+
+export const editAndChargeProductController = async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const { title, category, code, description, price, stock } = req.body;
+    const updatedProduct = await ProductService.update(productId, {
+      title: title,
+      category: category,
+      code: code,
+      description: description,
+      price: price,
+      stock: stock,
+      ...(req.file
+        ? { thumbnail: `/images/products/${req.file.filename}` }
+        : {}),
+    });
+
+    res.redirect(`/notifications/edited-product/${productId}`);
+  } catch (error) {
+    customError(error);
+    loggers.error('Product not found');
+    res.status(500).render('notifications/not-product', { user });
+  }
+};
+
+export const editProductController = async (req, res) => {
+  const user = getUserFromToken(req);
+  try {
+    const productId = req.params.pid;
+    const producto = await ProductService.getById(productId);
+    if (producto) {
+      res.status(200).render('notifications/edited-product', {
+        producto,
+        user,
+      });
+    } else {
+      res.status(404).render('error/error404', { user });
+    }
   } catch (error) {
     customError(error);
     loggers.error('Product not found');
@@ -110,61 +146,25 @@ export const deleteProductController = async (req, res) => {
   }
 };
 
-export const editProductController = async (req, res) => {
+export const getTableProductsController = async (req, res) => {
   const user = getUserFromToken(req);
+  const sortOption = req.query.sortOption;
+  const sortQuery = {};
+
+  if (sortOption === 'desc') {
+    sortQuery.price = -1;
+  } else if (sortOption === 'unorder') {
+    sortQuery.price = null;
+  } else {
+    sortQuery.price = 1;
+  }
+
   try {
-    const productId = req.params.pid;
-    const producto = await ProductService.getById(productId);
-    if (producto) {
-      res.status(200).render('notifications/edited-product', {
-        producto,
-        user,
-      });
-    } else {
-      res.status(404).render('error/error404', { user });
-    }
+    const products = await ProductService.getAllQuery(sortQuery);
+    res.render('products-table', { products, user });
   } catch (error) {
     customError(error);
     loggers.error('Product not found');
     res.status(500).render('notifications/not-product', { user });
-  }
-};
-
-export const editAndChargeProductController = async (req, res) => {
-  try {
-    const productId = req.params.id;
-    const { title, category, code, description, price, stock } = req.body;
-    const updatedProduct = await ProductService.update(productId, {
-      title: title,
-      category: category,
-      code: code,
-      description: description,
-      price: price,
-      stock: stock,
-      ...(req.file
-        ? { thumbnail: `/images/products/${req.file.filename}` }
-        : {}),
-    });
-
-    res.redirect(`/notifications/edited-product/${productId}`);
-  } catch (error) {
-    customError(error);
-    loggers.error('Product not found');
-    res.status(500).render('notifications/not-product', { user });
-  }
-};
-
-export const adminPanelController = async (req, res) => {
-  const user = getUserFromToken(req);
-  try {
-    if (user.role !== 'admin') {
-      return res.status(403).render('error/error403');
-    }
-    const products = await ProductService.getAll();
-    res.status(200).render('admin-panel', { products, user });
-  } catch (error) {
-    customError(error);
-    loggers.error(`Error getting the requested data from the database`);
-    res.status(500).render('error/error500', { user });
   }
 };

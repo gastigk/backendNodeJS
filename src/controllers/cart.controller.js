@@ -42,6 +42,76 @@ export async function getOrCreateCart(userEmail = null) {
 }
 
 // defining controllers
+export const addProductToCartController = async (req, res) => {
+  try {
+    const userToken = req.cookies[config.jwt.cookieName];
+
+    if (userToken) {
+      user = getUserFromToken(req);
+      userEmail = user.email || user.user.email;
+    }
+    const { cantidad } = req.body;
+    const productId = req.params.pid;
+    const producto = await ProductService.getOne({ _id: productId });
+
+    if (!userEmail) {
+      loggers.error('You are not logged in, please log in');
+      return res.status(500).redirect('/auth/login');
+    }
+
+    let cart = await getOrCreateCart(userEmail);
+
+    const existingCartItem = cart.items.find(
+      (item) => item.producto._id.toString() === productId
+    );
+
+    if (existingCartItem) {
+      existingCartItem.cantidad += parseInt(cantidad);
+    } else {
+      cart.items.push({ producto: producto, cantidad: parseInt(cantidad) });
+    }
+
+    cart.user.email = userEmail;
+    cart.code = shortid.generate();
+    cart.purchase_datetime = new Date();
+    await cart.save();
+    res.redirect('/cart');
+  } catch (error) {
+    customError(error);
+    loggers.error('You are not logged in, please log in');
+    res.status(500).redirect('/auth/login');
+  }
+};
+
+export const clearCartController = async (req, res) => {
+  // clear cart by ID
+  const userToken = req.cookies[config.jwt.cookieName];
+
+  if (userToken) {
+    user = getUserFromToken(req);
+    userEmail = user.email || user.user.email;
+  }
+  try {
+    const cid = req.params.cid;
+    const cart = await CartService.update(
+      { _id: cid, 'user.email': userEmail },
+      { items: [] }
+    );
+
+    if (!cart) {
+      return res.redirect('/');
+    }
+
+    cart.items = [];
+    await cart.save();
+    res.redirect('/');
+  } catch (error) {
+    customError(error);
+    loggers.error('Error when emptying the cart');
+    res.status(500).render('notifications/not-cart', { user });
+  }
+};
+
 export const createCartController = async (req, res) => {
   try {
     const user = getUserFromToken(req);
@@ -119,35 +189,6 @@ export const createCartController = async (req, res) => {
   }
 };
 
-export const clearCartController = async (req, res) => {
-  // clear cart by ID
-  const userToken = req.cookies[config.jwt.cookieName];
-
-  if (userToken) {
-    user = getUserFromToken(req);
-    userEmail = user.email || user.user.email;
-  }
-  try {
-    const cid = req.params.cid;
-    const cart = await CartService.update(
-      { _id: cid, 'user.email': userEmail },
-      { items: [] }
-    );
-
-    if (!cart) {
-      return res.redirect('/');
-    }
-
-    cart.items = [];
-    await cart.save();
-    res.redirect('/');
-  } catch (error) {
-    customError(error);
-    loggers.error('Error when emptying the cart');
-    res.status(500).render('notifications/not-cart', { user });
-  }
-};
-
 export const deleteCartController = async (req, res) => {
   // eliminate cart by ID
   const userToken = req.cookies[config.jwt.cookieName];
@@ -173,6 +214,42 @@ export const deleteCartController = async (req, res) => {
     customError(error);
     loggers.error('Error deleting cart');
     res.status(500).render('notifications/not-cart', { user });
+  }
+};
+
+export const removeProductFromCartController = async (req, res) => {
+  const user = getUserFromToken(req);
+  const { cid, itemId } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(cid)) {
+    return res.status(400).json({ error: 'invalid cart id' });
+  }
+
+  try {
+    const cart = await CartService.getById(cid);
+    if (!cart) {
+      return res.status(404).render('error/error404', { user });
+    }
+
+    const itemIndex = cart.items.findIndex((item) => item._id.equals(itemId));
+    if (itemIndex === -1) {
+      return res.status(404).render('notifications/not-cart-product', {
+        cid,
+        itemId,
+        user,
+      });
+    }
+
+    cart.items.splice(itemIndex, 1);
+    await cart.save();
+    return res.render('notifications/deleted-cart', {
+      cid,
+      itemId,
+      user,
+    });
+  } catch (error) {
+    customError(error);
+    loggers.error('Error when removing a product from the cart');
+    return res.status(500).render('notifications/not-cart', { user });
   }
 };
 
@@ -221,82 +298,5 @@ export const updateCartProductsController = async (req, res) => {
     customError(error);
     loggers.error('Error updating product quantity');
     res.status(500).render('notifications/not-cart', { user });
-  }
-};
-
-export const addProductToCartController = async (req, res) => {
-  try {
-    const userToken = req.cookies[config.jwt.cookieName];
-
-    if (userToken) {
-      user = getUserFromToken(req);
-      userEmail = user.email || user.user.email;
-    }
-    const { cantidad } = req.body;
-    const productId = req.params.pid;
-    const producto = await ProductService.getOne({ _id: productId });
-
-    if (!userEmail) {
-      loggers.error('You are not logged in, please log in');
-      return res.status(500).redirect('/auth/login');
-    }
-
-    let cart = await getOrCreateCart(userEmail);
-
-    const existingCartItem = cart.items.find(
-      (item) => item.producto._id.toString() === productId
-    );
-
-    if (existingCartItem) {
-      existingCartItem.cantidad += parseInt(cantidad);
-    } else {
-      cart.items.push({ producto: producto, cantidad: parseInt(cantidad) });
-    }
-
-    cart.user.email = userEmail;
-    cart.code = shortid.generate();
-    cart.purchase_datetime = new Date();
-    await cart.save();
-    res.redirect('/cart');
-  } catch (error) {
-    customError(error);
-    loggers.error('You are not logged in, please log in');
-    res.status(500).redirect('/auth/login');
-  }
-};
-
-export const removeProductFromCartController = async (req, res) => {
-  const user = getUserFromToken(req);
-  const { cid, itemId } = req.params;
-  if (!mongoose.Types.ObjectId.isValid(cid)) {
-    return res.status(400).json({ error: 'invalid cart id' });
-  }
-
-  try {
-    const cart = await CartService.getById(cid);
-    if (!cart) {
-      return res.status(404).render('error/error404', { user });
-    }
-
-    const itemIndex = cart.items.findIndex((item) => item._id.equals(itemId));
-    if (itemIndex === -1) {
-      return res.status(404).render('notifications/not-cart-product', {
-        cid,
-        itemId,
-        user,
-      });
-    }
-
-    cart.items.splice(itemIndex, 1);
-    await cart.save();
-    return res.render('notifications/deleted-cart', {
-      cid,
-      itemId,
-      user,
-    });
-  } catch (error) {
-    customError(error);
-    loggers.error('Error when removing a product from the cart');
-    return res.status(500).render('notifications/not-cart', { user });
   }
 };

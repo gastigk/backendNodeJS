@@ -8,6 +8,8 @@ import { generateMockProducts } from '../services/mocking.service.js';
 import { sendPurchaseConfirmationEmail } from '../helpers/nodemailer.helper.js';
 import { sendSMS } from '../helpers/twilio.helper.js';
 
+let user = null;
+
 // defining functions
 export async function removeProductFromCart(cart, productId) {
   try {
@@ -26,87 +28,6 @@ export async function removeProductFromCart(cart, productId) {
 }
 
 // defining controllers
-export const getProductsController = async (req, res) => {
-  try {
-    const limit = parseInt(req.query.limit);
-    const products = await ProductService.getAll();
-    const userToken = req.cookies[config.jwt.cookieName];
-    const user = getUserFromToken(req);
-    if (!userToken || !user) {
-      res.status(200).render('index', {
-        products: products.slice(0, 4),
-        productLength: products.length,
-        user: null,
-      });
-      return;
-    }
-    if (isNaN(limit)) {
-      res.status(200).render('index', {
-        products: products.slice(0, 4),
-        productLength: products.length,
-        user,
-      });
-    } else {
-      res.status(200).render('index', {
-        products: products.slice(0, limit),
-        productLength: products.length,
-        user,
-      });
-    }
-  } catch (error) {
-    customError(error);
-    loggers.error('Products not found');
-    res.status(500).render('notifications/not-product', { user });
-  }
-};
-
-let user = null;
-
-export const getAllProductsController = async (req, res, next) => {
-  try {
-    user = getUserFromToken(req);
-    const userToken = req.cookies[config.jwt.cookieName];
-    const page = parseInt(req.query.page) || 1;
-    const limit = 8;
-    const category = req.query.category;
-    const filter = category ? { category } : {};
-
-    const result = await ProductService.setCategory([
-      { $match: filter },
-      { $skip: (page - 1) * limit },
-      { $limit: limit },
-    ]);
-
-    const productos = result;
-    const prevLink = page > 1 ? `/products?page=${page - 1}` : '';
-    const nextLink =
-      productos.length === limit ? `/products?page=${page + 1}` : '';
-
-    const allCategories = await ProductService.getByCategory('category');
-    if (!userToken || !user) {
-      res.render('products', {
-        productos,
-        prevLink,
-        nextLink,
-        allCategories,
-        user: null,
-      });
-    } else {
-      res.render('products', {
-        productos,
-        prevLink,
-        nextLink,
-        allCategories,
-        user,
-      });
-    }
-  } catch (error) {
-    customError(error);
-    loggers.error('Products not found');
-    res.status(500).render('notifications/not-product', { user });
-  }
-};
-
 export const createProductController = async (req, res) => {
   const { title, category, code, description, price, stock } = req.body;
   user = getUserFromToken(req);
@@ -151,6 +72,85 @@ export const createProductController = async (req, res) => {
   }
 };
 
+export const getAllProductsController = async (req, res, next) => {
+  try {
+    user = getUserFromToken(req);
+    const userToken = req.cookies[config.jwt.cookieName];
+    const page = parseInt(req.query.page) || 1;
+    const limit = 18;
+    const category = req.query.category;
+    const filter = category ? { category } : {};
+
+    const result = await ProductService.setCategory([
+      { $match: filter },
+      { $skip: (page - 1) * limit },
+      { $limit: limit },
+    ]);
+
+    const productos = result;
+    const prevLink = page > 1 ? `/products?page=${page - 1}` : '';
+    const nextLink =
+      productos.length === limit ? `/products?page=${page + 1}` : '';
+
+    const allCategories = await ProductService.getByCategory('category');
+    if (!userToken || !user) {
+      res.render('products', {
+        productos,
+        prevLink,
+        nextLink,
+        allCategories,
+        user: null,
+      });
+    } else {
+      res.render('products', {
+        productos,
+        prevLink,
+        nextLink,
+        allCategories,
+        user,
+      });
+    }
+  } catch (error) {
+    customError(error);
+    loggers.error('Products not found');
+    res.status(500).render('notifications/not-product', { user });
+  }
+};
+
+export const getProductsController = async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit);
+    const products = await ProductService.getAll();
+    const userToken = req.cookies[config.jwt.cookieName];
+    const user = getUserFromToken(req);
+    if (!userToken || !user) {
+      res.status(200).render('index', {
+        products: products.slice(0, 4),
+        productLength: products.length,
+        user: null,
+      });
+      return;
+    }
+    if (isNaN(limit)) {
+      res.status(200).render('index', {
+        products: products.slice(0, 4),
+        productLength: products.length,
+        user,
+      });
+    } else {
+      res.status(200).render('index', {
+        products: products.slice(0, limit),
+        productLength: products.length,
+        user,
+      });
+    }
+  } catch (error) {
+    customError(error);
+    loggers.error('Products not found');
+    res.status(500).render('notifications/not-product', { user });
+  }
+};
+
 export const getProductByCategoryController = async (req, res, next) => {
   try {
     const userToken = req.cookies[config.jwt.cookieName];
@@ -159,7 +159,7 @@ export const getProductByCategoryController = async (req, res, next) => {
     }
 
     const page = parseInt(req.query.page) || 1;
-    const limit = 8;
+    const limit = 18;
     const category = req.params.category;
     const filter = category ? { category } : {};
 
@@ -211,6 +211,38 @@ export const getProductByIdController = async (req, res) => {
     customError(error);
     loggers.error('Error getting product by ID');
     res.status(500).render('notifications/not-product', { user });
+  }
+};
+
+export const getProductForEditByIdController = async (req, res) => {
+  const productId = req.params.pid;
+  const user = getUserFromToken(req);
+  try {
+    const producto = await ProductService.getById(productId);
+    if (producto) {
+      res.render('product-edit', { producto, user });
+    } else {
+      res.status(404).render('error/error404', { user });
+    }
+  } catch (error) {
+    customError(error);
+    loggers.error('Product not found');
+    res.status(500).render('notifications/not-product', { user });
+  }
+};
+
+export const getMockingProductsController = async (req, res, next) => {
+  let user = getUserFromToken(req);
+  try {
+    await generateMockProducts();
+    const limit = 10;
+    const products = await ProductService.getAllLimit(limit);
+
+    res.status(200).render('index', { products, user });
+  } catch (error) {
+    customError(error);
+    loggers.error('Error generating mocking products');
+    res.status(500).render('error/error500', { user });
   }
 };
 
@@ -344,37 +376,5 @@ export const sendPurchaseController = async (req, res) => {
     customError(error);
     loggers.error('Error processing the purchase');
     res.status(500).render('error/error500', { user });
-  }
-};
-
-export const getMockingProductsController = async (req, res, next) => {
-  let user = getUserFromToken(req);
-  try {
-    await generateMockProducts();
-    const limit = 10;
-    const products = await ProductService.getAllLimit(limit);
-
-    res.status(200).render('index', { products, user });
-  } catch (error) {
-    customError(error);
-    loggers.error('Error generating mocking products');
-    res.status(500).render('error/error500', { user });
-  }
-};
-
-export const getProductForEditByIdController = async (req, res) => {
-  const productId = req.params.pid;
-  const user = getUserFromToken(req);
-  try {
-    const producto = await ProductService.getById(productId);
-    if (producto) {
-      res.render('product-edit', { producto, user });
-    } else {
-      res.status(404).render('error/error404', { user });
-    }
-  } catch (error) {
-    customError(error);
-    loggers.error('Product not found');
-    res.status(500).render('notifications/not-product', { user });
   }
 };

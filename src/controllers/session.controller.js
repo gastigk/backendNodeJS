@@ -11,6 +11,43 @@ import customMessageSessions from '../services/sessions.log.js';
 import { UserService } from '../repositories/index.js';
 import { sendWelcomeUser } from '../helpers/nodemailer.helper.js';
 
+export const getLogginController = async (req, res) => {
+  res.render('auth/login');
+};
+
+// no DAO applied
+export const getLogoutController = async (req, res) => {
+  const user = getUserFromToken(req);
+
+  const firstName = user?.first_name || user?.user?.first_name;
+  const lastName = user?.last_name || user?.user?.last_name;
+  const userId = user?.userId || user?.user?._id;
+
+  const message = `User ${firstName} ${lastName} with ID #${userId} has been logged out successfully`;
+  customMessageSessions(message);
+
+  try {
+    await UserService.update(userId, { active: false });
+    res.clearCookie(config.jwt.cookieName);
+    res.redirect('/');
+  } catch (err) {
+    customError(err);
+    loggers.error('Error to update user status to inactive');
+    return res.status(500).render('error/error500');
+  }
+};
+
+// no DAO applied
+export const getSignupController = async (req, res) => {
+  res.render('auth/register');
+};
+
+// no DAO applied
+export const getSignupAdminController = (req, res) => {
+  const user = getUserFromToken(req);
+  res.render('signupadmin', { user });
+};
+
 export const getUserFromCookiesController = async (req, res) => {
   const userToken = req.cookies[config.jwt.cookieName];
 
@@ -33,10 +70,6 @@ export const getUserFromCookiesController = async (req, res) => {
     loggers.error('Error to get user from cookies');
     return res.status(500).render('error/error500');
   }
-};
-
-export const getLogginController = async (req, res) => {
-  res.render('auth/login');
 };
 
 export const sendLogginController = async (req, res) => {
@@ -74,33 +107,6 @@ export const sendLogginController = async (req, res) => {
 };
 
 // no DAO applied
-export const getLogoutController = async (req, res) => {
-  const user = getUserFromToken(req);
-
-  const firstName = user?.first_name || user?.user?.first_name;
-  const lastName = user?.last_name || user?.user?.last_name;
-  const userId = user?.userId || user?.user?._id;
-
-  const message = `User ${firstName} ${lastName} with ID #${userId} has been logged out successfully`;
-  customMessageSessions(message);
-
-  try {
-    await UserService.update(userId, { active: false });
-    res.clearCookie(config.jwt.cookieName);
-    res.redirect('/');
-  } catch (err) {
-    customError(err);
-    loggers.error('Error to update user status to inactive');
-    return res.status(500).render('error/error500');
-  }
-};
-
-// no DAO applied
-export const getSignupController = async (req, res) => {
-  res.render('auth/register');
-};
-
-// no DAO applied
 export const setSignupController = async (req, res, next) => {
   passport.authenticate('register', (err, user, info) => {
     if (err) {
@@ -132,12 +138,6 @@ export const setSignupController = async (req, res, next) => {
       res.redirect('/auth/login');
     });
   })(req, res, next);
-};
-
-// no DAO applied
-export const getSignupAdminController = (req, res) => {
-  const user = getUserFromToken(req);
-  res.render('signupadmin', { user });
 };
 
 // no DAO applied

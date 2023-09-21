@@ -365,16 +365,16 @@
                                     <h6 class="filter-title">Categories</h6>
                                     <ul class="list-unstyled categories-list">
                                         <form action="/products" method="GET">
-                                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="category">
+                                            <select class="form-select" name="category">
+                                                <option>Select</option>
                                                 {{#each allCategories}}
                                                 <option value="{{ this }}">{{ this }}</option>
                                                 {{/each}}
                                             </select>
                                             <div class="container botones-filtro">
-                                                <button type="submit" class="btn btn-secondary">Filtrar</button>
+                                                <button type="submit" class="btn btn-secondary mt-1">Filter</button>
                                             </div>
                                         </form>
-                                       
                                     </ul>
                                 </div>
                                 <!-- Categories Ends -->

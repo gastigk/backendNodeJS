@@ -1,4 +1,19 @@
-<!-- BEGIN: Main Menu-->
+    <!-- BEGIN: Vendor CSS-->
+    <link rel="stylesheet" type="text/css" href="/assets/vendors/nouislider.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/vendors/toastr.min.css">
+    <!-- END: Vendor CSS-->
+
+    <!-- BEGIN: Page CSS-->
+    <link rel="stylesheet" type="text/css" href="/assets/css/plugins/ext-component-sliders.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/pages/app-ecommerce.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/plugins/ext-component-toastr.css">
+    <!-- END: Page CSS-->
+
+<!-- BEGIN: Body-->
+
+<body class="vertical-layout vertical-menu-modern  navbar-floating footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="">
+
+    <!-- BEGIN: Main Menu-->
     <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow" data-scroll-to-active="true">
         <div class="navbar-header">
             <ul class="nav navbar-nav flex-row">
@@ -50,19 +65,19 @@
                     </a>
                     <ul class="menu-content">
                         <li>
-                            <a class="d-flex align-items-center" href="#">
+                            <a class="d-flex align-items-center" href="/">
                                 <i data-feather='corner-down-right'></i>
                                 <span class="menu-item text-truncate" >¿quiénes somos?</span>
                             </a>
                         </li>
                         <li>
-                            <a class="d-flex align-items-center" href="#">
+                            <a class="d-flex align-items-center" href="/">
                                 <i data-feather='corner-down-right'></i>
                                 <span class="menu-item text-truncate" >¿para qué?</span>
                             </a>
                         </li>
                         <li>
-                            <a class="d-flex align-items-center" href="#">
+                            <a class="d-flex align-items-center" href="/">
                                 <i data-feather='corner-down-right'></i>
                                 <span class="menu-item text-truncate" >¿cómo?</span>
                             </a>
@@ -80,19 +95,19 @@
                     </a>
                     <ul class="menu-content">
                         <li>
-                            <a class="d-flex align-items-center" href="/products">
+                            <a class="d-flex align-items-center" href="/products?category=Aceite+escencial">
                                 <i data-feather='corner-down-right'></i>
                                 <span class="menu-item text-truncate" >Aceites esenciales</span>
                             </a>
                         </li>
                         <li>
-                            <a class="d-flex align-items-center" href="/products">
+                            <a class="d-flex align-items-center" href="/products?category=Brumas">
                                 <i data-feather='corner-down-right'></i>
                                 <span class="menu-item text-truncate" >Brumas</span>
                             </a>
                         </li>
                         <li>
-                            <a class="d-flex align-items-center" href="/products">
+                            <a class="d-flex align-items-center" href="/products?category=Sahumos">
                                 <i data-feather='corner-down-right'></i>
                                 <span class="menu-item text-truncate" >Sáhumos</span>
                             </a>
@@ -106,19 +121,19 @@
                     </a>
                     <ul class="menu-content">
                         <li>
-                            <a class="d-flex align-items-center" href="/products">
+                            <a class="d-flex align-items-center" href="/products?category=Aceite+escencial">
                                 <i data-feather='corner-down-right'></i>
                                 <span class="menu-item text-truncate" >Aceites esenciales</span>
                             </a>
                         </li>
                         <li>
-                            <a class="d-flex align-items-center" href="/products">
+                            <a class="d-flex align-items-center" href="/products?category=Brumas">
                                 <i data-feather='corner-down-right'></i>
                                 <span class="menu-item text-truncate" >Brumas</span>
                             </a>
                         </li>
                         <li>
-                            <a class="d-flex align-items-center" href="/products">
+                            <a class="d-flex align-items-center" href="/products?category=Sahumos">
                                 <i data-feather='corner-down-right'></i>
                                 <span class="menu-item text-truncate" >Sáhumos</span>
                             </a>
@@ -130,19 +145,19 @@
                     <i data-feather="more-horizontal"></i>
                 </li>
                 <li class=" nav-item">
-                    <a class="d-flex align-items-center" href="/products">     <!-- Aquí va filtro por categoría -->
+                    <a class="d-flex align-items-center" href="/products?category=Aceite+escencial">
                         <i data-feather='droplet'></i>
                         <span class="menu-title text-truncate" data-i18n="Typography">Aceites esenciales</span>
                     </a>
                 </li>
                 <li class=" nav-item">
-                    <a class="d-flex align-items-center" href="/products">     <!-- Aquí va filtro por categoría -->
+                    <a class="d-flex align-items-center" href="/products?category=Brumas">
                         <i data-feather='activity'></i>
                         <span class="menu-title text-truncate" data-i18n="Typography">Brumas</span>
                     </a>
                 </li>
                 <li class=" nav-item">
-                    <a class="d-flex align-items-center" href="/products">     <!-- Aquí va filtro por categoría -->
+                    <a class="d-flex align-items-center" href="/products?category=Sahumos">
                         <i data-feather='loader'></i>
                         <span class="menu-title text-truncate" data-i18n="Typography">Sáhumos</span>
                     </a>
@@ -197,77 +212,195 @@
             </ul>
         </div>
     </div>
-    <!-- END: Main Menu-->
+    <!-- END: Main Menu-->  
 
-<div class="container text-center index_div">
-    <section class="bienvenida">
-        {{#if user}}
-        <h1>Welcome <a href="/users/profile"> {{user.first_name}} {{user.last_name}} {{user.user.first_name }} </a> </span></h1>
-        {{else}}
-        <h1>Welcome</h1>
-        {{/if}}
-    </section>
-
-    <h2>Favorite Products</h2>
-    {{#if user}}
-    <h3>Select the quantity of products to display</h3>
-    <div class="input-group group-limit">
-        <input type="number" name="cantidad" class="form-control" value="1" min="1" max="{{ productLength }}">
-        <div class="input-group-append">
-            <a href="/?limit=" class="btn-filter btn-primary" id="verBtn">Show</a>
-        </div>
-    </div>
-    {{/if}}
-</div>
-
-
-<section class="products container-fluid">
-    <div id="product-container" class="container products">
-        {{#each products}}
-        <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="{{ this.thumbnail }}" alt="Card image cap">
-            <div class="card-body">
-                <h4 class="card-title">{{ this.title }}</h4>
-                <p class="card-text">{{ this.description }} </p>
-                <h5 class="card-text">${{ this.price }}.- </h5>
-                <div class="buttons_pay container-fluid">
-                    <form action="/carts/{{this._id}}" method="POST">
-                        <div class="input-group group-comprar">
-                            {{#if this.stock}}
-                            <div class="input-group mb-1">
-                                <span class="input-group-text">Cantidad</span>
-                                <input type="number" name="cantidad" class="form-control" value="1" min="1" max={{this.stock}} aria-label="Quantity">
-                            </div> 
-                            <div class="input-group mb-1">
-                                <button type="submit" class="cssbuttons-io-button">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"></path><path fill="currentColor" d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z"></path></svg>
-                                <span>Add to cart</span>
-                                </button>                                
+    <!-- BEGIN: Content-->
+    <div class="app-content content ecommerce-application">
+        <div class="content-overlay"></div>
+        <div class="header-navbar-shadow"></div>
+        <div class="content-wrapper container-xxl p-0">
+            <div class="content-header row">
+                <div class="content-header-left col-md-9 col-12 mb-2">
+                    <div class="row breadcrumbs-top">
+                        <div class="col-12">
+                            <h2 class="content-header-title float-start mb-0">Shop</h2>
+                            <div class="breadcrumb-wrapper">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="/">Home</a>
+                                    </li>
+                                    <li class="breadcrumb-item active">Products
+                                    </li>
+                                </ol>
                             </div>
-                            {{else}}
-                            <h1 class="NoHayStock">¡No stock!</h1>
-                            {{/if}}
                         </div>
-                    </form>
-
-                    <button class="beautiful-button">
-                        <a href="/productsid/{{this._id}}" >
-                            Details
-                        </a>
-                    </button>
+                    </div>
                 </div>
+            </div>
+            <div class="content-detached content-right">
+                <div class="content-body">
 
+                    <!-- background Overlay when sidebar is shown  starts-->
+                    <div class="body-content-overlay"></div>
+                    <!-- background Overlay when sidebar is shown  ends-->
+
+                    <!-- E-commerce Search Bar Starts -->
+                    <section id="ecommerce-searchbar" class="ecommerce-searchbar">
+                        <div class="row mt-1">
+                            <div class="col-sm-12">
+                                <div class="input-group input-group-merge">
+                                    <input type="text" class="form-control search-product" id="shop-search" placeholder="Search Product" aria-label="Search..." aria-describedby="shop-search" />
+                                    <span class="input-group-text"><i data-feather="search" class="text-muted"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- E-commerce Search Bar Ends -->
+
+                    <!-- E-commerce Products Starts -->
+                    <section id="ecommerce-products" class="grid-view">
+                        {{#products}}
+                        <div class="card ecommerce-card">
+                            <div class="item-img text-center">
+                                <a href="/product/{{this._id}}">
+                                    <img class="img-fluid card-img-top" src="{{ this.thumbnail }}" alt="img-placeholder" /></a>
+                            </div>
+                            <div class="card-body">
+                                <div class="item-wrapper">
+                                    <div class="item-rating">
+                                        <ul class="unstyled-list list-inline">
+                                            <li class="ratings-list-item"><i data-feather="star" class="filled-star"></i></li>
+                                            <li class="ratings-list-item"><i data-feather="star" class="filled-star"></i></li>
+                                            <li class="ratings-list-item"><i data-feather="star" class="filled-star"></i></li>
+                                            <li class="ratings-list-item"><i data-feather="star" class="filled-star"></i></li>
+                                            <li class="ratings-list-item"><i data-feather="star" class="unfilled-star"></i></li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h6 class="item-price">${{ this.price }}</h6>
+                                    </div>
+                                </div>
+                                <h6 class="item-name">
+                                    <a class="text-body" href="/product/{{this._id}}">{{ this.title }}</a>
+                                    <span class="card-text item-company"> Category:
+                                        <a href="#" class="company-name">{{ this.category }}</a>
+                                    </span>
+                                </h6>
+                                <p class="card-text item-description"> {{ this.description }} </p>
+                            </div>
+                            <div class="item-options text-center">
+                                <div class="item-wrapper">
+                                    <div class="item-cost">
+                                        <h4 class="item-price">${{ this.price }}</h4>
+                                    </div>
+                                </div>
+                                <div class="item-options text-center">
+                                    <form action="/cart/{{this._id}}" method="POST">
+                                        <div class="">
+                                            {{#if this.stock}}
+                                            <input type="number" name="cantidad" class="form-control" value="1" min="1" max={{this.stock}}>
+                                            <div class="">
+                                                <button type="submit" class="btn btn-primary btn-cart">                                    
+                                                    <i data-feather="shopping-cart"></i>
+                                                    <span class="add-to-cart">Add to cart</span>
+                                                </button>
+                                            </div>
+                                            {{else}}
+                                            <h1 class="">¡No stock!</h1>
+                                            {{/if}}
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {{/products}}
+                    </section>
+                    <!-- E-commerce Products Ends -->
+
+                    <!-- E-commerce Pagination Starts -->
+                    <section id="ecommerce-pagination">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <nav aria-label="Page navigation example">
+                                    <ul class="pagination justify-content-center mt-2">
+                                        {{#if prevLink}}
+                                        <li class="page-item">
+                                            <a class="page-link" href="{{prevLink}}" aria-label="Prev">
+                                                <span aria-hidden="true">&laquo; Prev</span>
+                                            </a>
+                                        </li>
+                                        {{/if}}
+                                        {{#each pages}}
+                                        <li class="page-item{{#if current}} active{{/if}}">
+                                            <a class="page-link" href="{{this.link}}">{{this.page}}</a>
+                                        </li>
+                                        {{/each}}
+                                        {{#if nextLink}}
+                                        <li class="page-item">
+                                            <a class="page-link" href="{{nextLink}}" aria-label="Next">
+                                                <span aria-hidden="true">Next &raquo;</span>
+                                            </a>
+                                        </li>
+                                        {{/if}}
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- E-commerce Pagination Ends -->
+                </div>
+            </div>
+            <div class="sidebar-detached sidebar-left">
+                <div class="sidebar">
+                    <!-- Ecommerce Sidebar Starts -->
+                    <div class="sidebar-shop">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h6 class="filter-heading d-none d-lg-block">Filters</h6>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <!-- Categories Starts -->
+                                <div id="product-categories">
+                                    <h6 class="filter-title">Categories</h6>
+                                    <ul class="list-unstyled categories-list">
+                                        <form action="/products" method="GET">
+                                            <select class="form-select" name="category">
+                                                <option>Select</option>
+                                                {{#each allCategories}}
+                                                <option value="{{ this }}">{{ this }}</option>
+                                                {{/each}}
+                                            </select>
+                                            <div class="container botones-filtro">
+                                                <button type="submit" class="btn btn-secondary mt-1">Filter</button>
+                                            </div>
+                                        </form>
+                                    </ul>
+                                </div>
+                                <!-- Categories Ends -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Ecommerce Sidebar Ends -->
+
+                </div>
             </div>
         </div>
-        {{/each}}
     </div>
-</section>
+    <!-- END: Content-->
 
+    <div class="sidenav-overlay"></div>
+    <div class="drag-target"></div>
 
-<script>
-    document.getElementById("verBtn").addEventListener("click", function () {
-        let cantidad = document.getElementsByName("cantidad")[0].value;
-        let verBtn = document.getElementById("verBtn");
-        verBtn.href = "/?limit=" + cantidad;
-    });
-</script>
+    <!-- BEGIN: Page Vendor JS-->
+    <script src="/assets/vendors/wNumb.min.js"></script>
+    <script src="/assets/vendors/nouislider.min.js"></script>
+    <script src="/assets/vendors/toastr.min.js"></script>
+    <!-- END: Page Vendor JS-->
+
+    <!-- BEGIN: Page JS-->
+    <script src="/assets/js/scripts/pages/app-ecommerce.js"></script>
+    <!-- END: Page JS-->
+
+</body>
+<!-- END: Body-->

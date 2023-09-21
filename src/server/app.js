@@ -71,7 +71,7 @@ import chatApp from '../config/chat.config.js';
 import views from '../config/views.config.js';
 import swaggerUiExpress from 'swagger-ui-express';
 import swaggerJsdoc from 'swagger-jsdoc';
-import { swaggerOptions } from '../config/swagger.config.js';
+import { configurationSwagger } from '../config/swagger.config.js';
 
 try {
   // database connection
@@ -106,10 +106,10 @@ try {
   setupRoutes(app, views);
 
   // swagger configuration
-  const specs = swaggerJsdoc(swaggerOptions);
+  const specs = swaggerJsdoc(configurationSwagger);
   console.log('\n '); // line break in console
   loggers.http(
-    'Swagger running on: ' + swaggerOptions.definition.servers[0].url + '/docs'
+    'Swagger running on: ' + configurationSwagger.definition.servers[0].url + '/docs'
   );
   app.use('/docs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 } catch (err) {

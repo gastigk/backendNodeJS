@@ -6,7 +6,7 @@ import loggers from '../config/loggers.config.js';
 import { ProductService } from '../repositories/index.js';
 import customError from '../services/errors/log.error.js';
 
-// trasnporter configuration
+// transporter configuration
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -16,7 +16,226 @@ const transporter = nodemailer.createTransport({
   tls: { rejectUnauthorized: false },
 });
 
-// purchase notification
+// emails notifications configuration
+export const sendCloseAccountEmail = async (usermail) => {
+  try {
+    const mailGenerator = new Mailgen({
+      theme: 'default',
+      product: {
+        name: 'Los Siete Rayos',
+        link: {
+          href: 'https://www.lossieterayos.com/',
+          image: 'cid:logo@lossieterayos.com',
+          width: 60,
+          alt: 'Los Siete Rayos Logo',
+        },
+      },
+    });
+
+    const emailContent = {
+      body: {
+        greeting: `Hola ${usermail}`,
+        intro:
+          'We are sorry to inform you that your Los Siete Rayos account has been closed.',
+        outro: [
+          'If you think this was a mistake or need more information, please contact us.',
+          `Contact email: hi@lossieterayos.com`,
+        ],
+      },
+    };
+
+    const emailBody = mailGenerator.generate(emailContent);
+
+    const mailOptions = {
+      from: 'Los Siete Rayos <tickets@lossieterayos.com>',
+      to: usermail,
+      subject: 'Account closure at Los Siete Rayos',
+      html: emailBody,
+    };
+
+    await transporter.sendMail(mailOptions);
+  } catch (err) {
+    customError(err);
+    loggers.error('Failed to send email', err);
+  }
+};
+
+export const sendCloseAccountForUserEmail = async (usermail) => {
+  try {
+    const mailGenerator = new Mailgen({
+      theme: 'default',
+      product: {
+        name: 'Los Siete Rayos',
+        link: {
+          href: 'https://www.lonneopen.com/',
+          image: 'cid:logo@lonneopen.com',
+          width: 60,
+          alt: 'Los Siete Rayos Logo',
+        },
+      },
+    });
+
+    const emailContent = {
+      body: {
+        greeting: `Hola ${usermail}`,
+        intro:
+          'We are sorry to inform you that your Los Siete Rayos account has been closed.',
+        outro: [
+          'If you think this was a mistake or need more information, please contact us.',
+          `Contact email: hi@lossieterayos.com`,
+        ],
+      },
+    };
+
+    const emailBody = mailGenerator.generate(emailContent);
+
+    const mailOptions = {
+      from: 'Los Siete Rayos <tickets@lossieterayos.com>',
+      to: usermail,
+      subject: 'Account closure at Los Siete Rayos',
+      html: emailBody,
+    };
+
+    await transporter.sendMail(mailOptions);
+  } catch (err) {
+    customError(err);
+    loggers.error('Failed to send email', err);
+  }
+};
+
+export const sendCloseInactivitiAccountEmail = async (usermail) => {
+  try {
+    const mailGenerator = new Mailgen({
+      theme: 'default',
+      product: {
+        name: 'Los Siete Rayos',
+        link: {
+          href: 'https://www.lonneopen.com/',
+          image: 'cid:logo@lossieterayos.com',
+          width: 60,
+          alt: 'Los Siete Rayos Logo',
+        },
+      },
+    });
+
+    const emailContent = {
+      body: {
+        greeting: `Hola ${usermail}`,
+        intro:
+          'We are sorry to inform you that your Los Siete Rayos account has been closed due to inactivity.',
+        outro: [
+          'If you think this was a mistake or need more information, please contact us.',
+          `Contact email: hi@lossieterayos.com`,
+        ],
+      },
+    };
+
+    const emailBody = mailGenerator.generate(emailContent);
+
+    const mailOptions = {
+      from: 'Los Siete Rayos <tickets@lossieterayos.com>',
+      to: usermail,
+      subject: 'Account closure at Los Siete Rayos',
+      html: emailBody,
+    };
+
+    await transporter.sendMail(mailOptions);
+  } catch (err) {
+    customError(err);
+    loggers.error('Failed to send email', err);
+  }
+};
+
+export const sendPasswordChangedEmail = async (usermail) => {
+  try {
+    const mailGenerator = new Mailgen({
+      theme: 'default',
+      product: {
+        name: 'Los Siete Rayos',
+        link: {
+          href: 'https://www.lossieterayos.com/',
+          image: 'cid:logo@lossieterayos.com',
+          width: 60,
+          alt: 'Los Siete Rayos Logo',
+        },
+      },
+    });
+
+    const emailContent = {
+      body: {
+        greeting: `Hi ${usermail}`,
+        intro:
+          'We inform you that your password has been successfully reset at Los Siete Rayos.',
+
+        outro: [
+          'If you did not take this action or need more information, please contact us.',
+          `Contact email: hi@lossieterayos.com`,
+        ],
+      },
+    };
+
+    const emailBody = mailGenerator.generate(emailContent);
+
+    const mailOptions = {
+      from: 'Los Siete Rayos <tickets@lossieterayos.com>',
+      to: usermail,
+      subject: 'Password reset at Los Siete Rayos',
+      html: emailBody,
+    };
+
+    await transporter.sendMail(mailOptions);
+  } catch (err) {
+    customError(err);
+    loggers.error('Failed to send email');
+  }
+};
+
+export const sendPremiumUpgradeUser = async (usermail) => {
+  try {
+    const mailGenerator = new Mailgen({
+      theme: 'default',
+      product: {
+        name: 'Los Siete Rayos',
+        link: {
+          href: 'https://www.lossieterayos.com/',
+          image: 'cid:logo@lossieterayos.com',
+          width: 60,
+          alt: 'Los Siete Rayos Logo',
+        },
+      },
+    });
+
+    const emailContent = {
+      body: {
+        greeting: `Hi ${usermail}`,
+        intro: [
+          'You are now a Premium User!',
+          'You will be able to access important discounts and benefits',
+        ],
+
+        outro: [
+          'If you did not take this action or need more information, please contact us.',
+          `Contact email: hi@lossieterayos.com`,
+        ],
+      },
+    };
+
+    const emailBody = mailGenerator.generate(emailContent);
+
+    const mailOptions = {
+      from: 'Los Siete Rayos <tickets@lossieterayos.com>',
+      to: usermail,
+      subject: 'Hi again to Los Siete Rayos',
+      html: emailBody,
+    };
+
+    await transporter.sendMail(mailOptions);
+  } catch (err) {
+    customError(err);
+    loggers.error('Failed to send email', err);
+  }
+};
+
 export const sendPurchaseConfirmationEmail = async (userEmail, cart, user) => {
   try {
     const mailGenerator = new Mailgen({
@@ -117,182 +336,6 @@ export const sendPurchaseConfirmationEmail = async (userEmail, cart, user) => {
   }
 };
 
-// welcome notification
-export const sendWelcomeUser = async (usermail) => {
-  try {
-    const mailGenerator = new Mailgen({
-      theme: 'default',
-      product: {
-        name: 'Los Siete Rayos',
-        link: {
-          href: 'https://www.lossieterayos.com/',
-          image: 'cid:logo@lossieterayos.com',
-          width: 60,
-          alt: 'Los Siete Rayos Logo',
-        },
-      },
-    });
-
-    const emailContent = {
-      body: {
-        greeting: `¡Welcome  ${usermail} toLos Siete Rayos!`,
-        intro:
-          'Thank you for joining our community. At Los Siete Rayos you will find a wide variety of products and special offers. We hope you enjoy your shopping experience with us!',
-        outro: [
-          'If you have any questions or need help, feel free to contact us.',
-          `Contact email: hi@lossieterayos.com`,
-        ],
-      },
-    };
-
-    const emailBody = mailGenerator.generate(emailContent);
-
-    const mailOptions = {
-      from: 'Los Siete Rayos <tickets@lossieterayos.com>',
-      to: usermail,
-      subject: '¡Welcome to Los Siete Rayos!',
-      html: emailBody,
-    };
-
-    await transporter.sendMail(mailOptions);
-  } catch (err) {
-    customError(err);
-    loggers.error('Failed to send email', err);
-  }
-};
-
-// Notify account closed
-export const sendCloseAccountEmail = async (usermail) => {
-  try {
-    const mailGenerator = new Mailgen({
-      theme: 'default',
-      product: {
-        name: 'Los Siete Rayos',
-        link: {
-          href: 'https://www.lossieterayos.com/',
-          image: 'cid:logo@lossieterayos.com',
-          width: 60,
-          alt: 'Los Siete Rayos Logo',
-        },
-      },
-    });
-
-    const emailContent = {
-      body: {
-        greeting: `Hola ${usermail}`,
-        intro:
-          'We are sorry to inform you that your Los Siete Rayos account has been closed.',
-        outro: [
-          'If you think this was a mistake or need more information, please contact us.',
-          `Contact email: hi@lossieterayos.com`,
-        ],
-      },
-    };
-
-    const emailBody = mailGenerator.generate(emailContent);
-
-    const mailOptions = {
-      from: 'Los Siete Rayos <tickets@lossieterayos.com>',
-      to: usermail,
-      subject: 'Account closure at Los Siete Rayos',
-      html: emailBody,
-    };
-
-    await transporter.sendMail(mailOptions);
-  } catch (err) {
-    customError(err);
-    loggers.error('Failed to send email', err);
-  }
-};
-
-// notify account was closed due to inactivity
-export const sendCloseInactivitiAccountEmail = async (usermail) => {
-  try {
-    const mailGenerator = new Mailgen({
-      theme: 'default',
-      product: {
-        name: 'Los Siete Rayos',
-        link: {
-          href: 'https://www.lonneopen.com/',
-          image: 'cid:logo@lossieterayos.com',
-          width: 60,
-          alt: 'Los Siete Rayos Logo',
-        },
-      },
-    });
-
-    const emailContent = {
-      body: {
-        greeting: `Hola ${usermail}`,
-        intro:
-          'We are sorry to inform you that your Los Siete Rayos account has been closed due to inactivity.',
-        outro: [
-          'If you think this was a mistake or need more information, please contact us.',
-          `Contact email: hi@lossieterayos.com`,
-        ],
-      },
-    };
-
-    const emailBody = mailGenerator.generate(emailContent);
-
-    const mailOptions = {
-      from: 'Los Siete Rayos <tickets@lossieterayos.com>',
-      to: usermail,
-      subject: 'Account closure at Los Siete Rayos',
-      html: emailBody,
-    };
-
-    await transporter.sendMail(mailOptions);
-  } catch (err) {
-    customError(err);
-    loggers.error('Failed to send email', err);
-  }
-};
-
-export const sendCloseAccountForUserEmail = async (usermail) => {
-  try {
-    const mailGenerator = new Mailgen({
-      theme: 'default',
-      product: {
-        name: 'Los Siete Rayos',
-        link: {
-          href: 'https://www.lonneopen.com/',
-          image: 'cid:logo@lonneopen.com',
-          width: 60,
-          alt: 'Los Siete Rayos Logo',
-        },
-      },
-    });
-
-    const emailContent = {
-      body: {
-        greeting: `Hola ${usermail}`,
-        intro:
-          'We are sorry to inform you that your Los Siete Rayos account has been closed.',
-        outro: [
-          'If you think this was a mistake or need more information, please contact us.',
-          `Contact email: hi@lossieterayos.com`,
-        ],
-      },
-    };
-
-    const emailBody = mailGenerator.generate(emailContent);
-
-    const mailOptions = {
-      from: 'Los Siete Rayos <tickets@lossieterayos.com>',
-      to: usermail,
-      subject: 'Account closure at Los Siete Rayos',
-      html: emailBody,
-    };
-
-    await transporter.sendMail(mailOptions);
-  } catch (err) {
-    customError(err);
-    loggers.error('Failed to send email', err);
-  }
-};
-
-// password reset notification
 export const sendResetPasswordEmail = async (usermail, token) => {
   try {
     const mailGenerator = new Mailgen({
@@ -347,7 +390,7 @@ export const sendResetPasswordEmail = async (usermail, token) => {
   }
 };
 
-export const sendPasswordChangedEmail = async (usermail) => {
+export const sendWelcomeUser = async (usermail) => {
   try {
     const mailGenerator = new Mailgen({
       theme: 'default',
@@ -364,12 +407,11 @@ export const sendPasswordChangedEmail = async (usermail) => {
 
     const emailContent = {
       body: {
-        greeting: `Hi ${usermail}`,
+        greeting: `¡Welcome  ${usermail} toLos Siete Rayos!`,
         intro:
-          'We inform you that your password has been successfully reset at Los Siete Rayos.',
-
+          'Thank you for joining our community. At Los Siete Rayos you will find a wide variety of products and special offers. We hope you enjoy your shopping experience with us!',
         outro: [
-          'If you did not take this action or need more information, please contact us.',
+          'If you have any questions or need help, feel free to contact us.',
           `Contact email: hi@lossieterayos.com`,
         ],
       },
@@ -380,53 +422,7 @@ export const sendPasswordChangedEmail = async (usermail) => {
     const mailOptions = {
       from: 'Los Siete Rayos <tickets@lossieterayos.com>',
       to: usermail,
-      subject: 'Password reset at Los Siete Rayos',
-      html: emailBody,
-    };
-
-    await transporter.sendMail(mailOptions);
-  } catch (err) {
-    customError(err);
-    loggers.error('Failed to send email');
-  }
-};
-
-export const sendPremiumUpgradeUser = async (usermail) => {
-  try {
-    const mailGenerator = new Mailgen({
-      theme: 'default',
-      product: {
-        name: 'Los Siete Rayos',
-        link: {
-          href: 'https://www.lossieterayos.com/',
-          image: 'cid:logo@lossieterayos.com',
-          width: 60,
-          alt: 'Los Siete Rayos Logo',
-        },
-      },
-    });
-
-    const emailContent = {
-      body: {
-        greeting: `Hi ${usermail}`,
-        intro: [
-          'You are now a Premium User!',
-          'You will be able to access important discounts and benefits',
-        ],
-
-        outro: [
-          'If you did not take this action or need more information, please contact us.',
-          `Contact email: hi@lossieterayos.com`,
-        ],
-      },
-    };
-
-    const emailBody = mailGenerator.generate(emailContent);
-
-    const mailOptions = {
-      from: 'Los Siete Rayos <tickets@lossieterayos.com>',
-      to: usermail,
-      subject: 'Hi again to Los Siete Rayos',
+      subject: '¡Welcome to Los Siete Rayos!',
       html: emailBody,
     };
 

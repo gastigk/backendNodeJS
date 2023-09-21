@@ -3,6 +3,8 @@ import { ProductManager } from '../../manager/productManager.js';
 const productManager = new ProductManager('./data/products.json');
 
 export default class ProductFileDAO {
+  create = async (data) => await productManager.addProduct(data);
+  delete = async (id) => await productManager.deleteProduct(+id);
   getAll = async () => await productManager.getProducts();
   getById = async (id) => await productManager.getProductById(+id);
   getAllPaginate = async (req, PORT) => {
@@ -20,7 +22,5 @@ export default class ProductFileDAO {
       response: { payload: result.slice(0, limit) },
     };
   };
-  create = async (data) => await productManager.addProduct(data);
   update = async (id, data) => await productManager.updateProduct(+id, data);
-  delete = async (id) => await productManager.deleteProduct(+id);
 }

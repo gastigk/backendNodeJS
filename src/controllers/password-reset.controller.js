@@ -12,15 +12,6 @@ import { generateToken } from '../helpers/jwt.helper.js';
 import { UserService } from '../repositories/index.js';
 
 // defining functions
-const sendResetPasswordEmailMethod = async (usermail, token) => {
-  try {
-    await sendResetPasswordEmail(usermail, token);
-  } catch (err) {
-    customError(err);
-    loggers.error('Failed to send email');
-  }
-};
-
 const resetPassword = async (userId, newPassword) => {
   try {
     const user = await UserService.getById(userId);
@@ -38,9 +29,29 @@ const resetPassword = async (userId, newPassword) => {
   }
 };
 
+const sendResetPasswordEmailMethod = async (usermail, token) => {
+  try {
+    await sendResetPasswordEmail(usermail, token);
+  } catch (err) {
+    customError(err);
+    loggers.error('Failed to send email');
+  }
+};
+
 // defining controllers
 export const getForgotPasswordController = async (req, res) => {
   res.render('auth/password-forgot');
+};
+
+export const getResetPasswordController = async (req, res) => {
+  const { token } = req.params;
+  try {
+    res.render('auth/password-reset', { token });
+  } catch (err) {
+    customError(err);
+    loggers.error('Invalid or expired token');
+    return res.status(500).render('error/error500');
+  }
 };
 
 export const sendForgotPasswordController = async (req, res) => {
@@ -55,17 +66,6 @@ export const sendForgotPasswordController = async (req, res) => {
   } catch (err) {
     customError(err);
     loggers.error('Error sending password reset email', err);
-    return res.status(500).render('error/error500');
-  }
-};
-
-export const getResetPasswordController = async (req, res) => {
-  const { token } = req.params;
-  try {
-    res.render('auth/password-reset', { token });
-  } catch (err) {
-    customError(err);
-    loggers.error('Invalid or expired token');
     return res.status(500).render('error/error500');
   }
 };

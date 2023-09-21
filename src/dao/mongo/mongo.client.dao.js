@@ -18,7 +18,7 @@ export default class MongoClient {
         useUnifiedTopology: true,
       });
       loggers.info(
-        `Successful connection to Mongo Atlas DB "${config.mongo.dbname}"`
+        `Successful connection to "${config.mongo.dbname}" DB`
       );
     } catch (error) {
       customError(error);

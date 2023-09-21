@@ -11,73 +11,6 @@ import {
   sendCloseInactivitiAccountEmail,
 } from '../helpers/nodemailer.helper.js';
 
-// defining controllers
-export const getUsersController = async (req, res) => {
-  try {
-    const user = getUserFromToken(req);
-    const users = await UserService.getAll();
-    let resultsDTO = users.map((user) => new UsersDTO(user));
-    const userObjects = users.map((user) => user.toObject());
-    res.render('users', {
-      users: userObjects,
-      user,
-      resultsDTO,
-    });
-  } catch (err) {
-    customError(err);
-    loggers.error('Error server');
-    res.status(500).send('Error server', { user });
-  }
-};
-
-// no DAO applied
-export const getProfileController = async (req, res) => {
-  const user = getUserFromToken(req);
-
-  res.render('profile', { user });
-};
-
-export const setProfileUsersController = async (req, res) => {
-  const user = new UsersDTO(getUserFromToken(req));
-  const userId = req.params.id;
-
-  res.render('profile-photo', { user, userId });
-};
-
-export const setPhotoProfileUsersController = async (req, res) => {
-  let user = getUserFromToken(req);
-  try {
-    const userId = req.params.id;
-    const { file } = req;
-    if (file) {
-      user.photo = file.filename;
-    } else {
-      return res.status(404).render('error/error404', { user });
-    }
-    const newUserPhoto = await UserService.update(userId, {
-      photo: `/images/users/${file.filename}`,
-    });
-
-    if (!newUserPhoto) {
-      return res.status(404).render('error/error404', { user });
-    }
-
-    await newUserPhoto.save();
-    let photo = `/images/users/${file.filename}`;
-    res.render('profile-changed', { user, photo, userId });
-  } catch (err) {
-    customError(err);
-    loggers.error('Error server', err);
-    res.status(500).render('error/error500', { user });
-  }
-};
-
-// no DAO applied
-export const getNewUserTestController = async (req, res) => {
-  const user = getUserFromToken(req);
-  res.render('user-new', { user });
-};
-
 // no DAO applied
 export const createNewUserTestController = async (req, res) => {
   const users = [];
@@ -103,23 +36,6 @@ export const createNewUserTestController = async (req, res) => {
   res.redirect('/users');
 };
 
-export const getUserForEditController = async (req, res) => {
-  try {
-    const userId = req.params.id;
-    let user = await UserService.getById(userId);
-
-    if (!user) {
-      user = getUserFromToken(req);
-      return res.status(404).render('error/error404', { user });
-    }
-    res.render('user-edit', { user });
-  } catch (err) {
-    customError(err);
-    loggers.error('Error server');
-    res.status(500).render('error/error500', { user });
-  }
-};
-
 export const editUserController = async (req, res) => {
   try {
     const userId = req.params.id;
@@ -141,31 +57,6 @@ export const editUserController = async (req, res) => {
     }
 
     res.redirect('/users');
-  } catch (err) {
-    customError(err);
-    loggers.error('Error server');
-    res.status(500).render('error/error500', { user });
-  }
-};
-
-export const deleteUserController = async (req, res) => {
-  try {
-    const userId = req.params.id;
-    const user = await UserService.getById(userId);
-
-    if (!user) {
-      return res.status(404).render('error/error404', { user });
-    }
-
-    await UserService.delete(userId);
-
-    try {
-      await sendCloseAccountEmail(user.email);
-    } catch (err) {
-      customError(err);
-      loggers.error('Error sending close account email');
-    }
-    res.render('notifications/deleted-user', { user });
   } catch (err) {
     customError(err);
     loggers.error('Error server');
@@ -203,9 +94,60 @@ export const deleteInactiveUsersController = async (req, res) => {
   }
 };
 
-export const getUsersPremiumController = async (req, res) => {
+export const deleteUserController = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const user = await UserService.getById(userId);
+
+    if (!user) {
+      return res.status(404).render('error/error404', { user });
+    }
+
+    await UserService.delete(userId);
+
+    try {
+      await sendCloseAccountEmail(user.email);
+    } catch (err) {
+      customError(err);
+      loggers.error('Error sending close account email');
+    }
+    res.render('notifications/deleted-user', { user });
+  } catch (err) {
+    customError(err);
+    loggers.error('Error server');
+    res.status(500).render('error/error500', { user });
+  }
+};
+
+// no DAO applied
+export const getProfileController = async (req, res) => {
   const user = getUserFromToken(req);
-  res.render('user-premium', { user });
+
+  res.render('profile', { user });
+};
+
+// no DAO applied
+export const getNewUserTestController = async (req, res) => {
+  const user = getUserFromToken(req);
+  res.render('user-new', { user });
+};
+
+export const getUsersController = async (req, res) => {
+  try {
+    const user = getUserFromToken(req);
+    const users = await UserService.getAll();
+    let resultsDTO = users.map((user) => new UsersDTO(user));
+    const userObjects = users.map((user) => user.toObject());
+    res.render('users', {
+      users: userObjects,
+      user,
+      resultsDTO,
+    });
+  } catch (err) {
+    customError(err);
+    loggers.error('Error server');
+    res.status(500).send('Error server', { user });
+  }
 };
 
 export const getUsersDocumentsController = async (req, res) => {
@@ -221,6 +163,63 @@ export const getUsersDocumentsController = async (req, res) => {
     loggers.error('An error occurred while processing the request');
     return res.status(500).render('error/error500');
   }
+};
+
+export const getUserForEditController = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    let user = await UserService.getById(userId);
+
+    if (!user) {
+      user = getUserFromToken(req);
+      return res.status(404).render('error/error404', { user });
+    }
+    res.render('user-edit', { user });
+  } catch (err) {
+    customError(err);
+    loggers.error('Error server');
+    res.status(500).render('error/error500', { user });
+  }
+};
+
+export const getUsersPremiumController = async (req, res) => {
+  const user = getUserFromToken(req);
+  res.render('user-premium', { user });
+};
+
+export const setPhotoProfileUsersController = async (req, res) => {
+  let user = getUserFromToken(req);
+  try {
+    const userId = req.params.id;
+    const { file } = req;
+    if (file) {
+      user.photo = file.filename;
+    } else {
+      return res.status(404).render('error/error404', { user });
+    }
+    const newUserPhoto = await UserService.update(userId, {
+      photo: `/images/users/${file.filename}`,
+    });
+
+    if (!newUserPhoto) {
+      return res.status(404).render('error/error404', { user });
+    }
+
+    await newUserPhoto.save();
+    let photo = `/images/users/${file.filename}`;
+    res.render('profile-changed', { user, photo, userId });
+  } catch (err) {
+    customError(err);
+    loggers.error('Error server', err);
+    res.status(500).render('error/error500', { user });
+  }
+};
+
+export const setProfileUsersController = async (req, res) => {
+  const user = new UsersDTO(getUserFromToken(req));
+  const userId = req.params.id;
+
+  res.render('profile-photo', { user, userId });
 };
 
 export const setUsersDocumentsController = async (req, res) => {

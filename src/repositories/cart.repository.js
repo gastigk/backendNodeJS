@@ -3,13 +3,13 @@ export default class CartRepository {
     this.dao = dao;
   }
 
-  getOne = async (Object) => await this.dao.getOne(Object);
-  getOnePopulate = async (Object) => await this.dao.getOnePopulate(Object);
+  create = async (data) => await this.dao.create(data);
+  delete = async (id) => await this.dao.delete(id);
   getAll = async () => await this.dao.getAll();
   getById = async (id) => await this.dao.getById(id);
-  setCart = async (Array) => await this.dao.setCart(Array);
-  create = async (data) => await this.dao.create(data);
-  update = async (id, data) => await this.dao.update(id, data);
-  delete = async (id) => await this.dao.delete(id);
+  getOne = async (Object) => await this.dao.getOne(Object);
+  getOnePopulate = async (Object) => await this.dao.getOnePopulate(Object);
   save = async () => await this.dao.save();
+  setCart = async (Array) => await this.dao.setCart(Array);
+  update = async (id, data) => await this.dao.update(id, data);
 }
