@@ -230,7 +230,7 @@
     <h5 class="card-text">Total price: $ {{totalPrice}}.-</h5>
     <h3>Purchase code: {{cart.code}}</h3>
     <h3>Date and time of purchase: {{cart.purchase_datetime}}</h3>
-    <form action="/carts/{{cart._id}}/delete" method="POST">
+    <form action="/cart/{{cart._id}}/delete" method="POST">
       <input type="hidden" name="cid" value="{{cart._id}}" />
       <div class="input-group group-comprar">
         <button type="submit" class="btn btn-danger">

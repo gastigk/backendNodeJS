@@ -1,12 +1,3 @@
-/*
- *  Bootstrap TouchSpin - v4.3.0
- *  A mobile and touch friendly input spinner component for Bootstrap 3 & 4.
- *  http://www.virtuosoft.eu/code/bootstrap-touchspin/
- *
- *  Made by István Ujj-Mészáros
- *  Under Apache License v2.0 License
- */
-
 !(function (o) {
   'function' == typeof define && define.amd
     ? define(['jquery'], o)
