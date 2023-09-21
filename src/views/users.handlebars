@@ -163,6 +163,22 @@
                     <span data-i18n="Apps &amp; Pages">Club 7 Rayos</span>
                     <i data-feather="more-horizontal"></i>
                 </li>
+                {{#if user.role}}
+                {{#ifEqual user.role "admin"}}
+                <li class=" nav-item">
+                    <a class="d-flex align-items-center" href="/admin-panel">
+                        <i data-feather='award'></i>
+                        <span class="menu-title text-truncate" data-i18n="Typography">Panel Administrador</span>
+                    </a>
+                </li>
+                <li class=" nav-item">
+                    <a class="d-flex align-items-center" href="/docs-api">
+                        <i data-feather="folder"></i>
+                        <span class="menu-title text-truncate" data-i18n="Typography">Documentation</span>
+                    </a>
+                </li>
+                {{/ifEqual}}
+                {{/if}}
                 {{#if user}}
                 <li class=" nav-item">
                     <a class="d-flex align-items-center" href="/user/profile/documents">
@@ -189,22 +205,6 @@
                         <span class="menu-title text-truncate" data-i18n="Typography">Login</span>
                     </a>
                 </li>
-                {{/if}}
-                {{#if user.role}}
-                {{#ifEqual user.role "admin"}}
-                <li class=" nav-item">
-                    <a class="d-flex align-items-center" href="/admin-panel">
-                        <i data-feather='award'></i>
-                        <span class="menu-title text-truncate" data-i18n="Typography">Panel Administrador</span>
-                    </a>
-                </li>
-                <li class=" nav-item">
-                    <a class="d-flex align-items-center" href="/docs-api">
-                        <i data-feather="folder"></i>
-                        <span class="menu-title text-truncate" data-i18n="Typography">Documentation</span>
-                    </a>
-                </li>
-                {{/ifEqual}}
                 {{/if}}
             </ul>
         </div>

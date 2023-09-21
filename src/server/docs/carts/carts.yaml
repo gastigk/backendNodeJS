@@ -62,11 +62,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/Cart"
 
-  /carts/{cartId}:
+  /cart/{cid}:
     get:
       summary: Get a cart by ID
       parameters:
-        - name: cartId
+        - name: cid
           in: path
           required: true
           description: ID of the cart
@@ -82,7 +82,7 @@ paths:
     put:
       summary: Update a cart by ID
       parameters:
-        - name: cartId
+        - name: cid
           in: path
           required: true
           description: ID of the cart
@@ -130,7 +130,7 @@ paths:
     delete:
       summary: Delete a cart by ID
       parameters:
-        - name: cartId
+        - name: cid
           in: path
           required: true
           description: ID of the cart
@@ -144,11 +144,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/Cart"
 
-  /carts/{cartId}/items/{itemId}:
+  /cart/{cid}/items/{itemId}:
     delete:
       summary: Delete an item from the cart
       parameters:
-        - name: cartId
+        - name: cid
           in: path
           required: true
           description: ID of the cart

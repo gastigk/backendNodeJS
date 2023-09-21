@@ -14,9 +14,9 @@ const router = Router();
 
 router.get('/', checkPremiumUser, createCartController);
 router.post('/:pid', addProductToCartController);
-router.post('/:cartId/clear', clearCartController);
-router.post('/:cartId/delete', deleteCartController);
-router.put('/:cartId/:itemId', updateCartProductsController);
-router.get('/:cartId/:itemId', removeProductFromCartController);
+router.post('/:cid/clear', clearCartController);
+router.post('/:cid/delete', deleteCartController);
+router.put('/:cid/:itemId', updateCartProductsController);
+router.get('/:cid/:itemId', removeProductFromCartController);
 
 export default router;

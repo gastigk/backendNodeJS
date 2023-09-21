@@ -70,7 +70,7 @@ export const createCartController = async (req, res) => {
     if (!cart || cart.items.length === 0 || (!userEmail && cart.user.email)) {
       return res.render('notifications/not-cart', { user });
     }
-    const cartId = cart._id.toString();
+    const cid = cart._id.toString();
 
     let sortedItems = [...cart.items];
 
@@ -109,7 +109,7 @@ export const createCartController = async (req, res) => {
     res.render('cart', {
       cart: { ...cart, items: sortedItems },
       totalPrice,
-      cartId,
+      cid,
       user,
     });
   } catch (error) {
@@ -128,9 +128,9 @@ export const clearCartController = async (req, res) => {
     userEmail = user.email || user.user.email;
   }
   try {
-    const cartId = req.params.cartId;
+    const cid = req.params.cid;
     const cart = await CartService.update(
-      { _id: cartId, 'user.email': userEmail },
+      { _id: cid, 'user.email': userEmail },
       { items: [] }
     );
 
@@ -158,9 +158,9 @@ export const deleteCartController = async (req, res) => {
   }
 
   try {
-    const cartId = req.params.cartId;
+    const cid = req.params.cid;
     const result = await CartService.delete({
-      _id: cartId,
+      _id: cid,
       'user.email': userEmail,
     });
 
@@ -186,15 +186,15 @@ export const updateCartProductsController = async (req, res) => {
   }
 
   try {
-    const { cartId, itemId } = req.params;
+    const { cid, itemId } = req.params;
     const { cantidad } = req.body;
 
-    if (!mongoose.Types.ObjectId.isValid(cartId)) {
+    if (!mongoose.Types.ObjectId.isValid(cid)) {
       return res.redirect('/');
     }
 
     const cart = await CartService.getOnePopulate({
-      _id: cartId,
+      _id: cid,
       'user.email': userEmail,
     });
 
@@ -257,7 +257,7 @@ export const addProductToCartController = async (req, res) => {
     cart.code = shortid.generate();
     cart.purchase_datetime = new Date();
     await cart.save();
-    res.redirect('/');
+    res.redirect('/cart');
   } catch (error) {
     customError(error);
     loggers.error('You are not logged in, please log in');
@@ -267,13 +267,13 @@ export const addProductToCartController = async (req, res) => {
 
 export const removeProductFromCartController = async (req, res) => {
   const user = getUserFromToken(req);
-  const { cartId, itemId } = req.params;
-  if (!mongoose.Types.ObjectId.isValid(cartId)) {
+  const { cid, itemId } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(cid)) {
     return res.status(400).json({ error: 'invalid cart id' });
   }
 
   try {
-    const cart = await CartService.getById(cartId);
+    const cart = await CartService.getById(cid);
     if (!cart) {
       return res.status(404).render('error/error404', { user });
     }
@@ -281,7 +281,7 @@ export const removeProductFromCartController = async (req, res) => {
     const itemIndex = cart.items.findIndex((item) => item._id.equals(itemId));
     if (itemIndex === -1) {
       return res.status(404).render('notifications/not-cart-product', {
-        cartId,
+        cid,
         itemId,
         user,
       });
@@ -290,7 +290,7 @@ export const removeProductFromCartController = async (req, res) => {
     cart.items.splice(itemIndex, 1);
     await cart.save();
     return res.render('notifications/deleted-cart', {
-      cartId,
+      cid,
       itemId,
       user,
     });
