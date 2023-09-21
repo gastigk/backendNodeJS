@@ -39,7 +39,7 @@ export const createNewUserTestController = async (req, res) => {
 export const editUserController = async (req, res) => {
   try {
     const userId = req.params.id;
-    const { first_name, last_name, email, phone, age, role } = req.body;
+    const { first_name, last_name, email, phone, age, role, premium, photo } = req.body;
     let user = getUserFromToken(req);
     const updatedUser = await UserService.update(userId, {
       first_name,

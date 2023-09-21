@@ -15,6 +15,7 @@
 <!-- BEGIN: Body-->
 
 <body class="vertical-layout vertical-menu-modern  navbar-floating footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="">
+    
     <!-- BEGIN: Main Menu-->
     <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow" data-scroll-to-active="true">
         <div class="navbar-header">
@@ -67,19 +68,19 @@
                     </a>
                     <ul class="menu-content">
                         <li>
-                            <a class="d-flex align-items-center" href="#">
+                            <a class="d-flex align-items-center" href="/">
                                 <i data-feather='corner-down-right'></i>
                                 <span class="menu-item text-truncate" >¿quiénes somos?</span>
                             </a>
                         </li>
                         <li>
-                            <a class="d-flex align-items-center" href="#">
+                            <a class="d-flex align-items-center" href="/">
                                 <i data-feather='corner-down-right'></i>
                                 <span class="menu-item text-truncate" >¿para qué?</span>
                             </a>
                         </li>
                         <li>
-                            <a class="d-flex align-items-center" href="#">
+                            <a class="d-flex align-items-center" href="/">
                                 <i data-feather='corner-down-right'></i>
                                 <span class="menu-item text-truncate" >¿cómo?</span>
                             </a>
@@ -186,7 +187,7 @@
                 {{/if}}
                 {{#if user}}
                 <li class=" nav-item">
-                    <a class="d-flex align-items-center" href="/user/profile/documents">
+                    <a class="d-flex align-items-center" href="/users/premium/{{user.userId}}">
                         <i data-feather='gift'></i>
                         <span class="menu-title text-truncate" data-i18n="Typography">Beneficios</span>
                     </a>

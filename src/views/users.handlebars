@@ -62,19 +62,19 @@
                     </a>
                     <ul class="menu-content">
                         <li>
-                            <a class="d-flex align-items-center" href="#">
+                            <a class="d-flex align-items-center" href="/">
                                 <i data-feather='corner-down-right'></i>
                                 <span class="menu-item text-truncate" >¿quiénes somos?</span>
                             </a>
                         </li>
                         <li>
-                            <a class="d-flex align-items-center" href="#">
+                            <a class="d-flex align-items-center" href="/">
                                 <i data-feather='corner-down-right'></i>
                                 <span class="menu-item text-truncate" >¿para qué?</span>
                             </a>
                         </li>
                         <li>
-                            <a class="d-flex align-items-center" href="#">
+                            <a class="d-flex align-items-center" href="/">
                                 <i data-feather='corner-down-right'></i>
                                 <span class="menu-item text-truncate" >¿cómo?</span>
                             </a>
@@ -181,7 +181,7 @@
                 {{/if}}
                 {{#if user}}
                 <li class=" nav-item">
-                    <a class="d-flex align-items-center" href="/user/profile/documents">
+                    <a class="d-flex align-items-center" href="/users/premium/{{user.userId}}">
                         <i data-feather='gift'></i>
                         <span class="menu-title text-truncate" data-i18n="Typography">Beneficios</span>
                     </a>
@@ -210,7 +210,7 @@
         </div>
     </div>
     <!-- END: Main Menu-->  
-
+    
     <!-- BEGIN: Content-->
     <div class="app-content content ">
         <div class="content-overlay"></div>
@@ -250,12 +250,11 @@
                                 <table class="datatables-basic table">
                                     <thead>
                                         <tr>
+                                            <th>Role</th>
                                             <th>First name</th>
                                             <th>Last name</th>
                                             <th>Email</th>
                                             <th>Phone</th>
-                                            <th>Age</th>
-                                            <th>Role</th>
                                             <th>Category</th>
                                             <th>Status</th>
                                             <th>Last connection</th>                                            
@@ -265,17 +264,16 @@
                                     <tbody>
                                         {{#each users}}
                                         <tr>
+                                            <td>{{this.role}}</td>
                                             <td>{{this.first_name}}</td>
                                             <td>{{this.last_name}}</td>
                                             <td>{{this.email}}</td>
                                             <td>{{this.phone}}</td>
-                                            <td>{{this.age}}</td>
-                                            <td>{{this.role}}</td>
                                             <td>
                                                 {{#if this.premium}}
                                                 <span class="badge rounded-pill badge-light-info">Premium</span>
                                                 {{else}}
-                                                <span class="badge rounded-pill badge-light-warning">User</span>
+                                                <span class="badge rounded-pill badge-light-warning">Basic</span>
                                                 {{/if}}
                                             </td>
                                             <td>

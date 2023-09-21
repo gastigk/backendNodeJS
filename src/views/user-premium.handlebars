@@ -1,4 +1,4 @@
-<!-- BEGIN: Main Menu-->
+    <!-- BEGIN: Main Menu-->
     <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow" data-scroll-to-active="true">
         <div class="navbar-header">
             <ul class="nav navbar-nav flex-row">
@@ -50,19 +50,19 @@
                     </a>
                     <ul class="menu-content">
                         <li>
-                            <a class="d-flex align-items-center" href="#">
+                            <a class="d-flex align-items-center" href="/">
                                 <i data-feather='corner-down-right'></i>
                                 <span class="menu-item text-truncate" >¿quiénes somos?</span>
                             </a>
                         </li>
                         <li>
-                            <a class="d-flex align-items-center" href="#">
+                            <a class="d-flex align-items-center" href="/">
                                 <i data-feather='corner-down-right'></i>
                                 <span class="menu-item text-truncate" >¿para qué?</span>
                             </a>
                         </li>
                         <li>
-                            <a class="d-flex align-items-center" href="#">
+                            <a class="d-flex align-items-center" href="/">
                                 <i data-feather='corner-down-right'></i>
                                 <span class="menu-item text-truncate" >¿cómo?</span>
                             </a>
@@ -80,19 +80,19 @@
                     </a>
                     <ul class="menu-content">
                         <li>
-                            <a class="d-flex align-items-center" href="/products">
+                            <a class="d-flex align-items-center" href="/products?category=Aceite+escencial">
                                 <i data-feather='corner-down-right'></i>
                                 <span class="menu-item text-truncate" >Aceites esenciales</span>
                             </a>
                         </li>
                         <li>
-                            <a class="d-flex align-items-center" href="/products">
+                            <a class="d-flex align-items-center" href="/products?category=Brumas">
                                 <i data-feather='corner-down-right'></i>
                                 <span class="menu-item text-truncate" >Brumas</span>
                             </a>
                         </li>
                         <li>
-                            <a class="d-flex align-items-center" href="/products">
+                            <a class="d-flex align-items-center" href="/products?category=Sahumos">
                                 <i data-feather='corner-down-right'></i>
                                 <span class="menu-item text-truncate" >Sáhumos</span>
                             </a>
@@ -106,19 +106,19 @@
                     </a>
                     <ul class="menu-content">
                         <li>
-                            <a class="d-flex align-items-center" href="/products">
+                            <a class="d-flex align-items-center" href="/products?category=Aceite+escencial">
                                 <i data-feather='corner-down-right'></i>
                                 <span class="menu-item text-truncate" >Aceites esenciales</span>
                             </a>
                         </li>
                         <li>
-                            <a class="d-flex align-items-center" href="/products">
+                            <a class="d-flex align-items-center" href="/products?category=Brumas">
                                 <i data-feather='corner-down-right'></i>
                                 <span class="menu-item text-truncate" >Brumas</span>
                             </a>
                         </li>
                         <li>
-                            <a class="d-flex align-items-center" href="/products">
+                            <a class="d-flex align-items-center" href="/products?category=Sahumos">
                                 <i data-feather='corner-down-right'></i>
                                 <span class="menu-item text-truncate" >Sáhumos</span>
                             </a>
@@ -130,19 +130,19 @@
                     <i data-feather="more-horizontal"></i>
                 </li>
                 <li class=" nav-item">
-                    <a class="d-flex align-items-center" href="/products">     <!-- Aquí va filtro por categoría -->
+                    <a class="d-flex align-items-center" href="/products?category=Aceite+escencial">
                         <i data-feather='droplet'></i>
                         <span class="menu-title text-truncate" data-i18n="Typography">Aceites esenciales</span>
                     </a>
                 </li>
                 <li class=" nav-item">
-                    <a class="d-flex align-items-center" href="/products">     <!-- Aquí va filtro por categoría -->
+                    <a class="d-flex align-items-center" href="/products?category=Brumas">
                         <i data-feather='activity'></i>
                         <span class="menu-title text-truncate" data-i18n="Typography">Brumas</span>
                     </a>
                 </li>
                 <li class=" nav-item">
-                    <a class="d-flex align-items-center" href="/products">     <!-- Aquí va filtro por categoría -->
+                    <a class="d-flex align-items-center" href="/products?category=Sahumos">
                         <i data-feather='loader'></i>
                         <span class="menu-title text-truncate" data-i18n="Typography">Sáhumos</span>
                     </a>
@@ -169,7 +169,7 @@
                 {{/if}}
                 {{#if user}}
                 <li class=" nav-item">
-                    <a class="d-flex align-items-center" href="/user/profile/documents">
+                    <a class="d-flex align-items-center" href="/users/premium/{{user.userId}}">
                         <i data-feather='gift'></i>
                         <span class="menu-title text-truncate" data-i18n="Typography">Beneficios</span>
                     </a>
@@ -197,7 +197,8 @@
             </ul>
         </div>
     </div>
-    <!-- END: Main Menu-->
+    <!-- END: Main Menu-->  
+
 
 <section class="noAutorizado">
     <div class="container login nonono">
@@ -212,7 +213,7 @@
             <span>20%</span> de descuento en todos los productos
         </h2>
         <h1>Subir Documento</h1>
-        <form action="/users/profile/documents/{{user.userId}}" method="post" enctype="multipart/form-data">
+        <form action="/users/profile/documents/{{user.userId}}" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="document" class="label">Selecciona un documento:</label>
                 <input type="file" class="form-control" name="document" id="document" accept=".pdf,.doc,.docx">
@@ -223,7 +224,7 @@
         {{#if user.premium}}
         <a href="/users/documents" class="btn btn-success">Ver mis Documentos</a>
         {{else}}
-        <a href="/users /premium/{{user.userId}}" class="btn btn-success">Verificar si soy Premium</a>
+        <a href="/users/premium/{{user.userId}}" class="btn btn-success">Verificar si soy Premium</a>
         {{/if}}
         <a href="/" class="btn btn-danger">Volver</a>
     </div>
