@@ -307,10 +307,8 @@
                                         </ul>
                                     </div>
                                     <hr />
-                                    {{#if product.stock}}
-
                                     <div class="d-flex flex-column flex-sm-row pt-1">
-                                            <form action="/cart/{{product._id}}" method="POST"></form>
+                                            <form action="/cart/{{this._id}}" method="POST"></form>
                                                 <div class="card">
                                                     {{#if product.stock}}
                                                     <input type="number" name="cantidad" class="form-control" value="1" min="1" max={{product.stock}}>
@@ -323,31 +321,7 @@
                                                     {{/if}}
                                                 </div>
                                             </form>
-                                            <a href="#" class="btn btn-outline-secondary btn-wishlist me-0 me-sm-1 mb-1 mb-sm-0">
-                                                <i data-feather="heart" class="me-50"></i>
-                                                <span>Wishlist</span>
-                                            </a>
-                                            <div class="btn-group dropdown-icon-wrapper btn-share">
-                                                <button type="button" class="btn btn-icon hide-arrow btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <i data-feather="share-2"></i>
-                                                </button>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a href="#" class="dropdown-item">
-                                                        <i data-feather="facebook"></i>
-                                                    </a>
-                                                    <a href="#" class="dropdown-item">
-                                                        <i data-feather="twitter"></i>
-                                                    </a>
-                                                    <a href="#" class="dropdown-item">
-                                                        <i data-feather="youtube"></i>
-                                                    </a>
-                                                    <a href="#" class="dropdown-item">
-                                                        <i data-feather="instagram"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
                                     </div>
-                                    {{/if}}
                                 </div>
                             </div>
                         </div>
@@ -405,9 +379,9 @@
     <!-- END: Footer-->
 
     <!-- BEGIN: Page Vendor JS-->
-    <script src="/assets/vendors/jquery.bootstrap-touchspin.js"></script>
-    <script src="/assets/vendors/swiper.min.js"></script>
-    <script src="/assets/vendors/toastr.min.js"></script>
+    <script src="/assets/js/jquery.bootstrap-touchspin.js"></script>
+    <script src="/assets/js/swiper.min.js"></script>
+    <script src="/assets/js/toastr.min.js"></script>
     <!-- END: Page Vendor JS-->
 
     <!-- BEGIN: Page JS-->

@@ -199,44 +199,94 @@
     </div>
     <!-- END: Main Menu-->
 
-<section class="noAutorizado">
-  <div class="container checkout">
-    <h2>Your purchase was successful!</h2>
-    <h2>Thank you
-      {{user.first_name}}
-      {{user.last_name}}
-      {{user.user.first_name}}
-      for shopping at El Sétimo Rayo!</h2>
-    <h1>User e-mail: {{cart.user.email}}</h1>
-    <h2>Purchase details:</h2>
-    <ul>
-      {{#each cart.items}}
-        <section class="flex-card">
-          <div>
-            <img
-              class="card-img-top checkout-img"
-              src="{{this.producto.thumbnail}}"
-              alt="Imagen del producto"
-            />
-          </div>
-          <div class="card-body">
-            <h4 class="card-title">{{this.producto.title}}</h4>
-            <h3 class="card-text">Amount: {{this.cantidad}}</h3>
-            <h5 class="card-text">Price: $ {{this.producto.price}}.-</h5>
-          </div>
-        </section>
-      {{/each}}
-    </ul>
-    <h5 class="card-text">Total price: $ {{totalPrice}}.-</h5>
-    <h3>Purchase code: {{cart.code}}</h3>
-    <h3>Date and time of purchase: {{cart.purchase_datetime}}</h3>
-    <form action="/cart/{{cart._id}}/delete" method="POST">
-      <input type="hidden" name="cid" value="{{cart._id}}" />
-      <div class="input-group group-comprar">
-        <button type="submit" class="btn btn-danger">
-          OK
-        </button>
-      </div>
-    </form>
-  </div>
-</section>
+        <!-- BEGIN: Content-->
+    <div class="app-content content ">
+        <div class="content-overlay"></div>
+        <div class="header-navbar-shadow"></div>
+        <div class="content-wrapper container-xxl p-0">
+            <div class="content-header row">
+                <div class="content-header-left col-md-9 col-12 mb-2">
+                    <div class="row breadcrumbs-top">
+                        <div class="col-12">
+                            <h2 class="content-header-title float-start mb-0">Checkout</h2>
+                            <div class="breadcrumb-wrapper">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="/">Home</a>
+                                    </li>
+                                    <li class="breadcrumb-item"><a href="/products">Shop</a>
+                                    </li>
+                                    <li class="breadcrumb-item active">Purchase made
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="alert alert-primary" role="alert">
+                            <div class="alert-body">
+                                <strong>Your purchase was successful!</strong> 
+                                <h2>Thank you {{user.first_name}} {{user.last_name}} {{user.user.first_name}} for shopping at El Sétimo Rayo!</h2>
+                            </div>
+                            <div class="alert-body">
+                                <strong>Purchase details:</strong> 
+                                    <ul>
+                                        {{#each cart.items}}
+                                        <section class="flex-card">
+                                        <div>
+                                            <img
+                                            class="figure-img img-fluid rounded"
+                                            src="{{this.producto.thumbnail}}"
+                                            alt="Imagen del producto"
+                                            />
+                                        </div>
+                                        <div class="card-body">
+                                            <h4 class="card-title">{{this.producto.title}}</h4>
+                                            <h3 class="card-text">Amount: {{this.cantidad}}</h3>
+                                            <h5 class="card-text">Price: $ {{this.producto.price}}.-</h5>
+                                        </div>
+                                        </section>
+                                        {{/each}}
+                                    </ul>
+                                <h5 class="card-text">Total price: $ {{totalPrice}}.-</h5>
+                                <h3>Purchase code: {{cart.code}}</h3>
+                                <h3>Date and time of purchase: {{cart.purchase_datetime}}</h3>
+                                <form action="/cart/{{cart._id}}/delete" method="POST">
+                                <input type="hidden" name="cid" value="{{cart._id}}" />
+                                <div class="input-group group-comprar">
+                                    <button type="submit" class="btn btn-danger">
+                                    OK
+                                    </button>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- END: Content-->
+
+    <div class="sidenav-overlay"></div>
+    <div class="drag-target"></div>
+
+    <!-- BEGIN: Footer-->
+    <footer class="footer footer-static footer-light">
+        <p class="clearfix mb-0">
+            <span class="float-md-start d-block d-md-inline-block mt-25">COPYRIGHT &copy; 2023
+                <a class="ms-25" href="#" target="_blank">Lucí digital</a>
+                <span class="d-none d-sm-inline-block">, All rights Reserved</span>
+            </span>
+            <span class="float-md-end d-none d-md-block">Hand-crafted &amp; made with<i data-feather="heart"></i></span></p>
+    </footer>
+    <button class="btn btn-primary btn-icon scroll-top" type="button"><i data-feather="arrow-up"></i></button>
+    <!-- END: Footer-->
+
+    
+</body>
+<!-- END: Body-->

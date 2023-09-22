@@ -1,6 +1,6 @@
     <!-- BEGIN: Vendor CSS-->
-    <link rel="stylesheet" type="text/css" href="/assets/vendors/nouislider.min.css">
-    <link rel="stylesheet" type="text/css" href="/assets/vendors/toastr.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/vendors/css/nouislider.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/vendors/css/toastr.min.css">
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Page CSS-->
@@ -323,21 +323,23 @@
                                 <nav aria-label="Page navigation example">
                                     <ul class="pagination justify-content-center mt-2">
                                         {{#if prevLink}}
-                                        <li class="page-item">
-                                            <a class="page-link" href="{{prevLink}}" aria-label="Prev">
-                                                <span aria-hidden="true">&laquo; Prev</span>
+                                        <li class="page-item prev-item">
+                                            <a class="page-link" href="{{prevLink}}">
+                                            Prev
                                             </a>
                                         </li>
                                         {{/if}}
-                                        {{#each pages}}
-                                        <li class="page-item{{#if current}} active{{/if}}">
-                                            <a class="page-link" href="{{this.link}}">{{this.page}}</a>
-                                        </li>
-                                        {{/each}}
+                                        <li class="page-item {{#if currentPage}} active{{/if}}"><a class="page-link" href="/products?page=1">1</a></li>
+                                        <li class="page-item {{#if currentPage}} active{{/if}}"><a class="page-link" href="/products?page=2">2</a></li>
+                                        <li class="page-item {{#if currentPage}} active{{/if}}"><a class="page-link" href="/products?page=3">3</a></li>
+                                        <li class="page-item {{#if currentPage}} active{{/if}}"><a class="page-link" href="/products?page=4">4</a></li>
+                                        <li class="page-item {{#if currentPage}} active{{/if}}"><a class="page-link" href="/products?page=5">5</a></li>
+                                        <li class="page-item {{#if currentPage}} active{{/if}}"><a class="page-link" href="/products?page=6">6</a></li>
+                                        <li class="page-item {{#if currentPage}} active{{/if}}"><a class="page-link" href="/products?page=7">7</a></li>
                                         {{#if nextLink}}
-                                        <li class="page-item">
-                                            <a class="page-link" href="{{nextLink}}" aria-label="Next">
-                                                <span aria-hidden="true">Next &raquo;</span>
+                                        <li class="page-item next-item">
+                                            <a class="page-link" href="{{nextLink}}">
+                                                Next
                                             </a>
                                         </li>
                                         {{/if}}
@@ -392,10 +394,22 @@
     <div class="sidenav-overlay"></div>
     <div class="drag-target"></div>
 
+    <!-- BEGIN: Footer-->
+    <footer class="footer footer-static footer-light">
+        <p class="clearfix mb-0">
+            <span class="float-md-start d-block d-md-inline-block mt-25">COPYRIGHT &copy; 2023
+                <a class="ms-25" href="#" target="_blank">Lucí digital</a>
+                <span class="d-none d-sm-inline-block">, All rights Reserved</span>
+            </span>
+            <span class="float-md-end d-none d-md-block">Hand-crafted &amp; made with<i data-feather="heart"></i></span></p>
+    </footer>
+    <button class="btn btn-primary btn-icon scroll-top" type="button"><i data-feather="arrow-up"></i></button>
+    <!-- END: Footer-->
+
     <!-- BEGIN: Page Vendor JS-->
-    <script src="/assets/vendors/wNumb.min.js"></script>
-    <script src="/assets/vendors/nouislider.min.js"></script>
-    <script src="/assets/vendors/toastr.min.js"></script>
+    <script src="/assets/vendors/js/wNumb.min.js"></script>
+    <script src="/assets/vendors/js/nouislider.min.js"></script>
+    <script src="/assets/vendors/js/toastr.min.js"></script>
     <!-- END: Page Vendor JS-->
 
     <!-- BEGIN: Page JS-->

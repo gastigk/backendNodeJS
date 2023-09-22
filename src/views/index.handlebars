@@ -1,6 +1,6 @@
     <!-- BEGIN: Vendor CSS-->
-    <link rel="stylesheet" type="text/css" href="/assets/vendors/nouislider.min.css">
-    <link rel="stylesheet" type="text/css" href="/assets/vendors/toastr.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/vendors/css/nouislider.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/vendors/css/toastr.min.css">
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Page CSS-->
@@ -228,7 +228,7 @@
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="/">Home</a>
                                     </li>
-                                    <li class="breadcrumb-item active">Products
+                                    <li class="breadcrumb-item active"><a href="/products">Products</a>
                                     </li>
                                 </ol>
                             </div>
@@ -349,42 +349,6 @@
                     <!-- E-commerce Pagination Ends -->
                 </div>
             </div>
-            <div class="sidebar-detached sidebar-left">
-                <div class="sidebar">
-                    <!-- Ecommerce Sidebar Starts -->
-                    <div class="sidebar-shop">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <h6 class="filter-heading d-none d-lg-block">Filters</h6>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-body">
-                                <!-- Categories Starts -->
-                                <div id="product-categories">
-                                    <h6 class="filter-title">Categories</h6>
-                                    <ul class="list-unstyled categories-list">
-                                        <form action="/products" method="GET">
-                                            <select class="form-select" name="category">
-                                                <option>Select</option>
-                                                {{#each allCategories}}
-                                                <option value="{{ this }}">{{ this }}</option>
-                                                {{/each}}
-                                            </select>
-                                            <div class="container botones-filtro">
-                                                <button type="submit" class="btn btn-secondary mt-1">Filter</button>
-                                            </div>
-                                        </form>
-                                    </ul>
-                                </div>
-                                <!-- Categories Ends -->
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Ecommerce Sidebar Ends -->
-
-                </div>
-            </div>
         </div>
     </div>
     <!-- END: Content-->
@@ -392,10 +356,22 @@
     <div class="sidenav-overlay"></div>
     <div class="drag-target"></div>
 
+    <!-- BEGIN: Footer-->
+    <footer class="footer footer-static footer-light">
+        <p class="clearfix mb-0">
+            <span class="float-md-start d-block d-md-inline-block mt-25">COPYRIGHT &copy; 2023
+                <a class="ms-25" href="#" target="_blank">Lucí digital</a>
+                <span class="d-none d-sm-inline-block">, All rights Reserved</span>
+            </span>
+            <span class="float-md-end d-none d-md-block">Hand-crafted &amp; made with<i data-feather="heart"></i></span></p>
+    </footer>
+    <button class="btn btn-primary btn-icon scroll-top" type="button"><i data-feather="arrow-up"></i></button>
+    <!-- END: Footer-->
+    
     <!-- BEGIN: Page Vendor JS-->
-    <script src="/assets/vendors/wNumb.min.js"></script>
-    <script src="/assets/vendors/nouislider.min.js"></script>
-    <script src="/assets/vendors/toastr.min.js"></script>
+    <script src="/assets/vendors/js/wNumb.min.js"></script>
+    <script src="/assets/vendors/js/nouislider.min.js"></script>
+    <script src="/assets/vendors/js/toastr.min.js"></script>
     <!-- END: Page Vendor JS-->
 
     <!-- BEGIN: Page JS-->

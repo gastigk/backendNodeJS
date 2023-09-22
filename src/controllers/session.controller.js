@@ -29,7 +29,7 @@ export const getLogoutController = async (req, res) => {
   try {
     await UserService.update(userId, { active: false });
     res.clearCookie(config.jwt.cookieName);
-    res.redirect('/');
+    res.redirect('/auth/login');
   } catch (err) {
     customError(err);
     loggers.error('Error to update user status to inactive');
@@ -45,7 +45,7 @@ export const getSignupController = async (req, res) => {
 // no DAO applied
 export const getSignupAdminController = (req, res) => {
   const user = getUserFromToken(req);
-  res.render('signupadmin', { user });
+  res.render('auth/register-admin', { user });
 };
 
 export const getUserFromCookiesController = async (req, res) => {

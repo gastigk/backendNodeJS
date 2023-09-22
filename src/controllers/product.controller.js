@@ -123,9 +123,10 @@ export const getProductsController = async (req, res) => {
     const products = await ProductService.getAll();
     const userToken = req.cookies[config.jwt.cookieName];
     const user = getUserFromToken(req);
+    
     if (!userToken || !user) {
       res.status(200).render('index', {
-        products: products.slice(0, 4),
+        products: products.slice(0, 9),
         productLength: products.length,
         user: null,
       });
@@ -133,7 +134,7 @@ export const getProductsController = async (req, res) => {
     }
     if (isNaN(limit)) {
       res.status(200).render('index', {
-        products: products.slice(0, 4),
+        products: products.slice(0, 9),
         productLength: products.length,
         user,
       });
