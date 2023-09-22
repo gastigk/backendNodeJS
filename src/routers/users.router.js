@@ -24,16 +24,16 @@ const uploadDocuments = configurationMulter('documents');
 
 router.get('/', isAdmin, getUsersController);
 router.get('/profile', isLoggedIn, getProfileController);
-router.post('/profile/documents/:id', isLoggedIn, uploadDocuments.single('document'), setUsersDocumentsController);
 router.get('/profile/set-photo/:id', isLoggedIn, setProfileUsersController);
-router.post('/profile/set-photo/:id', isLoggedIn, uploadProfilePhoto.single('photo'), setPhotoProfileUsersController);
 router.get('/user-new', isAdmin, getNewUserTestController);
-router.post('/user-new', isAdmin, createNewUserTestController);
 router.get('/edit/:id', isAdmin, getUserForEditController);
-router.post('/edit/:id', isAdmin, editUserController);
 router.get('/delete/:id', isAdmin, deleteUserController);
 router.get('/documents', isLoggedIn, getUsersDocumentsController);
 router.get('/premium/:id', setUsersPremiumController);
 router.get('/eliminated/:id', deleteUserController);
+router.post('/profile/documents/:id', isLoggedIn, uploadDocuments.single('document'), setUsersDocumentsController);
+router.post('/user-new', isAdmin, createNewUserTestController);
+router.post('/profile/set-photo/:id', isLoggedIn, uploadProfilePhoto.single('photo'), setPhotoProfileUsersController);
+router.post('/edit/:id', isAdmin, editUserController);
 
 export default router;

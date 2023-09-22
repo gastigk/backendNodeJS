@@ -12,8 +12,8 @@ const router = Router();
 const upload = configurationMulter('images/products');
 
 router.get('/', getAllProductsController);
-router.post('/', upload.single('thumbnail'), createProductController);
 router.get('/filter/:category', getProductByCategoryController);
 router.get('/:pid', getProductByIdController);
+router.post('/', upload.single('thumbnail'), createProductController);
 
 export default router;
